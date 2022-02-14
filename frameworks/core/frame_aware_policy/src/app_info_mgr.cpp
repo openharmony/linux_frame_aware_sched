@@ -110,10 +110,10 @@ void AppInfoMgr::OnUiProcessStart(const int pid, const int tid)
 bool AppInfoMgr::OnProcessDied(const int pid, const int tid)
 {
     bool deleted = false;
-    if (mForegroundAppList.find(pid) != mForegroundAppList.end()) {
+    if (mForegroundAppList.count(pid)) {
         mForegroundAppList.erase(pid);
         deleted = true;
-    } else if (mBackgroundAppList.find(pid) != mBackgroundAppList.end()) {
+    } else if (mBackgroundAppList.count(pid)) {
         mBackgroundAppList.erase(pid);
     }
     RME_LOGI("[OnProcessDied]: pid: %{public}d, tid:%{public}d, deleted:%{public}d.\n", pid, tid, deleted);

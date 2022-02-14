@@ -88,8 +88,7 @@ bool ParaConfig::IsValidNode(const xmlNode& currNode)
 
 void ParaConfig::ReadConfigInfo(const xmlNodePtr& root)
 {
-    xmlChar* context = nullptr;
-    context = xmlNodeGetContent(root);
+    xmlChar* context = xmlNodeGetContent(root);
     if (context == nullptr) {
 	RME_LOGE("[GetConfigInfo]:read xml node error: nodeName:(%{public}s)", root->name);
 	return;
@@ -181,8 +180,7 @@ void ParaConfig::ReadFrameConfig(const xmlNodePtr& root)
 
 void ParaConfig::ReadAttr(xmlNodePtr& root, const std::string& attrName, std::string& res)
 {
-    xmlChar* attr = nullptr;
-    attr = xmlGetProp(root, reinterpret_cast<const xmlChar*>(attrName.c_str()));
+    xmlChar* attr = xmlGetProp(root, reinterpret_cast<const xmlChar*>(attrName.c_str()));
     if (attr == nullptr) {
         RME_LOGE("[ReadAttr]: attr <%{public}s> read error!", attrName.c_str());
     }

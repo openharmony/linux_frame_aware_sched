@@ -43,13 +43,13 @@ void RmeCoreSched::Init()
 void RmeCoreSched::BeginFlushAnimation()
 {
     int ret = BeginFrameFreq(2 ,0);
-    RME_LOGI("[BeginFlushAnimation]: set BeginFrameFreq(2, 0), ret: %{public}d!", ret); 
     int flushAnimationTime = 1;  // TO DO
     if (flushAnimationTime >= m_flushAnimationPeriod) {
         flushAnimationTime = 2;
     } else {
         flushAnimationTime = 3;
     }
+    RME_LOGI("[BeginFlushAnimation]: set BeginFrameFreq(2, 0), ret: %{public}d!, flushAnimationTime: %{public}d", ret, flushAnimationTime); 
     return;
 }
 

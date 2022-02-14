@@ -30,6 +30,7 @@ int FrameWindowMgr::GetEnable()
         bool prop = true;
         if (prop) {
             m_enable = 1; 
+            prop = false;
         } else {
             m_enable = 0;
         }

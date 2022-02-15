@@ -28,14 +28,8 @@ DEFINE_RMELOG_INTELLISENSE("ueaClient-FrameWindowMgr");
 int FrameWindowMgr::GetEnable()
 {
     if (m_enable == -1) {
-        bool prop = true;
-        if (prop) {
-            m_enable = 1;
-            prop = false;
-        } else {
-            m_enable = 0;
-        }
-        RME_LOGI("[GetEnable]: prop: %{public}d", prop);
+        m_enable = 1;
+        RME_LOGI("[GetEnable]: m_enable: %{public}d", m_enable);
     }
     return m_enable;
 }

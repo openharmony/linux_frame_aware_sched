@@ -1,0 +1,67 @@
+{
+    "name": "@ohos/resource_schedule_service",
+    "description": "resource_schedule_service",
+    "version": "3.1",
+    "license": "Apache License 2.0",
+    "publishAs": "code-segment",
+    "segment": {
+        "destPath": "foundation/resourceschedule/plugins/frame_aware_sched"
+    },
+    "dirs": {},
+    "scripts": {},
+    "component": {
+        "name": "frame_aware_sched",
+        "subsystem": "resourceschedule",
+        "syscap": [],
+        "features": [],
+        "adapted_system_type": [
+            "mini",
+            "small",
+            "standard"
+        ],
+        "rom": "2048KB",
+        "ram": "10240KB",
+        "deps": {
+            "components": [
+                "libeventhandler",
+                "ipc_core",
+                "samgr_proxy",
+                "system_ability_fwk"
+            ],
+            "third_party": [
+                "xml2"
+            ]
+        },
+        "build": {
+            "sub_component": [
+                "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf:frame_ui_intf",
+                "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf:frame_msg_intf",
+                "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf:rtg_interface",
+                "//foundation/resourceschedule/plugins/frame_aware_sched/profiles:frame_aware_sched_config"
+            ],
+            "inner_kits": [
+                {
+                    "header": {
+                        "header_base": "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf",
+                        "header_files": [
+                            "frame_ui_intf.h"
+                        ]
+                    },
+                    "name": "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf:frame_ui_intf"
+                },
+                {
+                    "header": {
+                        "header_base": "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf",
+                        "header_files": [
+                            "frame_msg_intf.h"
+                        ]
+                    },
+                    "name": "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf:frame_msg_intf"
+                }
+            ],
+            "test": [
+                "//foundation/resourceschedule/plugins/frame_aware_sched/test:frame_unittest"
+            ]
+        }
+    }
+}

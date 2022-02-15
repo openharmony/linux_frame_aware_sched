@@ -47,14 +47,14 @@ bool IntelliSenseServer::ReadXml()
     m_needReadXml = false;
     if (ParaConfig::IsXmlPrepared(configFilePath)) {
         m_generalPara = ParaConfig::GetGeneralConfig();
-	    m_subEventPara = ParaConfig::GetSubEventConfig();
-	    m_fpsList = ParaConfig::GetFpsList();
+        m_subEventPara = ParaConfig::GetSubEventConfig();
+        m_fpsList = ParaConfig::GetFpsList();
         m_renderTypeList = ParaConfig::GetRenderTypeList();
         if (!m_generalPara.empty() && !m_subEventPara.empty() && !m_fpsList.empty() && !m_renderTypeList.empty()) {
-	    m_readXmlSuc = true;
-	    RME_LOGI("[ReadXml]: read slide scene xml success!");
-	    return true;
-	}
+        m_readXmlSuc = true;
+        RME_LOGI("[ReadXml]: read slide scene xml success!");
+        return true;
+        }
     }
     RME_LOGE("[ReadXml]: read slide scene xml not success!");
     return false;
@@ -62,7 +62,6 @@ bool IntelliSenseServer::ReadXml()
 
 void IntelliSenseServer::ReportMessage(std::string appName, std::string processName, int pid, AppStateUpdateReason reason)
 {
-    
     int rtGrp = AppInfoMgr::GetInstance().GetAppRtgrp(pid);
     switch (reason) {
         case AppStateUpdateReason::APP_FOREGROUND:
@@ -76,7 +75,7 @@ void IntelliSenseServer::ReportMessage(std::string appName, std::string processN
             RME_LOGI("[ReportMessage]: App_background!");
             break;
         case AppStateUpdateReason::APP_TERMINATED:
-            RtgMsgMgr::GetInstance().ProcessDied(pid, -1); 
+            RtgMsgMgr::GetInstance().ProcessDied(pid, -1);
             AppInfoMgr::GetInstance().OnAppTerminateChanged(pid, appName);
             RME_LOGI("[ReportMessage]: App terminated!");
             break;
@@ -107,7 +106,6 @@ void IntelliSenseServer::ReportWindowFocus(const int pid, int isFocus)
             break;
         default:
             RME_LOGI("[ReportWindowFocus]:unknown msg!");
-            
     }
     AppInfoMgr::GetInstance().OnWindowFocus(pid, isFocus);
     RtgMsgMgr::GetInstance().FocusChanged(pid, isFocus);
@@ -121,13 +119,16 @@ void IntelliSenseServer::ReportProcessInfo(const int pid, const int tid, ThreadS
                 int ret = AppInfoMgr::GetInstance().OnProcessDied(pid, tid);
                 if (ret) {
                     RtgMsgMgr::GetInstance().ProcessDied(pid, tid);
-                    RME_LOGI("process died, need to delete the rtgrp.");
-                } 
-                RME_LOGI("process died, do not need to delete the rtgrp:pid:%{public}d, tid: %{public}d, threadstate: %{public}d", pid, tid, static_cast<int>(state));
+                    RME_LOGI("process died, need to delete the rtgrp:pid:%{public}d, tid: %{public}d, \
+                        threadstate: %{public}d", pid, tid, static_cast<int>(state));
+                }
+                RME_LOGI("process died, do not need to delete the rtgrp:pid:%{public}d, tid: %{public}d",
+                    pid, tid);
             }
             break;
         case ThreadState::CREATE:
-            RME_LOGI("process create, pid: %{public}d, tid: %{public}d, threadstate: %{public}d", pid, tid, static_cast<int>(state));
+            RME_LOGI("process create, pid: %{public}d, tid: %{public}d, threadstate: %{public}d",
+                pid, tid, static_cast<int>(state));
             break;
         default:
             RME_LOGI("unknown state : %{public}d", static_cast<int>(state));

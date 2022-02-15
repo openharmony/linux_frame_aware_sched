@@ -42,14 +42,13 @@ void RmeCoreSched::Init()
 
 void RmeCoreSched::BeginFlushAnimation()
 {
-    int ret = BeginFrameFreq(2 ,0);
-    int flushAnimationTime = 1;  // TO DO
-    if (flushAnimationTime >= m_flushAnimationPeriod) {
-        flushAnimationTime = 2;
-    } else {
-        flushAnimationTime = 3;
+    int tid = gettid();
+    int rtGrp = SearchRtgForTid(tid);
+    if (rtGrp < 0) {
+        RME_LOGE("[BeginFlushAnimation]: search rtg for tid failed!");
     }
-    RME_LOGI("[BeginFlushAnimation]: set BeginFrameFreq(2, 0), ret: %{public}d!, flushAnimationTime: %{public}d", ret, flushAnimationTime); 
+    int ret = BeginFrameFreq(rtGrp, 0);
+    RME_LOGI("[BeginFlushAnimation]: set BeginFrameFreq(2, 0), ret: %{public}d!",ret);
     return;
 }
 
@@ -91,6 +90,15 @@ void RmeCoreSched::ProcessCommandsStart()
 
 void RmeCoreSched::AnimateStart()
 {
+    int rendertid = gettid();
+    int uitid = getpid(); // ui tid equals pid now.
+    int rtGrp = SearchRtgForTid(uitid);
+    if (rtGrp < 0) {
+        RME_LOGE("[AnimateStart]: search rtg for tid failed! uitid:%{public}d", uitid);
+    }
+    int ret = AddThreadToRtg(rendertid, rtGrp);
+    RME_LOGE("[AnimateStart]:add rtg grp failed! ret: %{public}d, rendertid: \
+        %{public}d, rtGrp: %{public}d", ret, rendertid, rtGrp);
 }
 
 void RmeCoreSched::RenderStart()
@@ -99,7 +107,12 @@ void RmeCoreSched::RenderStart()
 
 void RmeCoreSched::SendCommandsStart()
 {
-    int ret = EndFrameFreq(2, 16); 
+    int tid = gettid();
+    int rtGrp = SearchRtgForTid(tid);
+    if (rtGrp < 0) {
+        RME_LOGE("[BeginFlushAnimation]: search rtg for tid failed!");
+    }
+    int ret = EndFrameFreq(rtGrp, 16); 
     RME_LOGI("[SendCommandsStart]: set EndFrameFreq(2, 16), ret: %{public}d!", ret);
 }
 

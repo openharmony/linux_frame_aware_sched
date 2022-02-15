@@ -189,7 +189,8 @@ int AddThreadsToRtg(vector<int> tids, int grpId)
     return ret;
 };
 
-int RemoveRtgThread(int tid){
+int RemoveRtgThread(int tid)
+{
     struct rtg_grp_data grp_data;
     int ret;
     int fd = BasicOpenRtgNode(tid);
@@ -210,7 +211,8 @@ int RemoveRtgThread(int tid){
     return ret;
 };
 
-int ClearRtgGrp(int GrpId){
+int ClearRtgGrp(int GrpId)
+{
     struct rtg_grp_data grp_data;
     int ret;
     int pid = getpid();
@@ -231,7 +233,8 @@ int ClearRtgGrp(int GrpId){
     return ret;
 };
 
-int DestroyRtgGrp(int GrpId){
+int DestroyRtgGrp(int GrpId)
+{
     struct rtg_grp_data grp_data;
     int ret;
     int pid = getpid();
@@ -253,7 +256,8 @@ int DestroyRtgGrp(int GrpId){
 };
 
 
-int SetMaxVipRtgs(int rtframe){
+int SetMaxVipRtgs(int rtframe)
+{
     int ret = 0;
     char str_data[MAX_STR_LEN] = {};
     snprintf(str_data, MAX_STR_LEN, "rtframe:%d", rtframe);
@@ -276,7 +280,8 @@ int SetMaxVipRtgs(int rtframe){
     return ret;
 }
 
-int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType){
+int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
+{
     int ret = 0;
     char str_data[MAX_LENGTH] = {};
     snprintf(str_data, MAX_LENGTH, "rtgId:%d;rate:%d;type:%d", rtgId, rate, rtgType);
@@ -299,7 +304,8 @@ int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType){
     return ret;
 }
 
-int BeginFrameFreq(int grpId, int stateParam){
+int BeginFrameFreq(int grpId, int stateParam)
+{
     int ret = 0;
     struct proc_state_data state_data;	
     state_data.grp_id = grpId;
@@ -320,7 +326,8 @@ int BeginFrameFreq(int grpId, int stateParam){
     return ret;
 }
 
-int EndFrameFreq(int grpId, int stateParam){
+int EndFrameFreq(int grpId, int stateParam)
+{
     int ret = 0;
     struct proc_state_data state_data;	
     state_data.grp_id = grpId;
@@ -342,7 +349,8 @@ int EndFrameFreq(int grpId, int stateParam){
     return ret;
 }
 
-int EndScene(int rtgId){
+int EndScene(int rtgId)
+{
     int ret = 0;
     struct proc_state_data state_data;	
     state_data.grp_id = rtgId;
@@ -363,7 +371,8 @@ int EndScene(int rtgId){
     return ret;
 }
 
-int SetMinUtil(int grpId, int stateParam){
+int SetMinUtil(int grpId, int stateParam)
+{
     int ret = 0;
     struct proc_state_data state_data;	
     state_data.grp_id = grpId;
@@ -385,7 +394,8 @@ int SetMinUtil(int grpId, int stateParam){
     return ret;
 }
 
-int SetMargin(int grpId, int stateParam) {
+int SetMargin(int grpId, int stateParam)
+{
     int ret = 0;
     struct proc_state_data state_data;	
     state_data.grp_id = grpId;
@@ -462,7 +472,7 @@ int ListRtgThread(int grpId, vector<int> *rs)
     return ret;
 }
 
-int SearchRtgForTid(int stateParam)
+int SearchRtgForTid(int tid)
 {
     int ret = 0;
     struct proc_state_data search_data;
@@ -471,17 +481,17 @@ int SearchRtgForTid(int stateParam)
     if (fd < 0) {
         return fd;
     }
-    if (stateParam <= 0) {
+    if (tid <= 0) {
         RME_LOGI("Search tid err: invalid tid.");
         return -1;
     }
     memset(&search_data, 0, sizeof(struct proc_state_data));
-    search_data.state_param = stateParam;
+    search_data.state_param = tid;
     ret = ioctl(fd, CMD_ID_SEARCH_RTG, &search_data);
     if ( ret < 0) {
         RME_LOGE("Search tid fail, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
-        RME_LOGI("Search tid %{public}d success with rtg_grp %{public}d", stateParam, ret);
+        RME_LOGI("Search tid %{public}d success with rtg_grp %{public}d", tid, ret);
     }
     close(fd);
     return ret;

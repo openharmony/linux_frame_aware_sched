@@ -63,10 +63,9 @@ DEFINE_RMELOG_INTELLISENSE("rtg_interface");
 #define CMD_ID_SEARCH_RTG \
     _IOWR(RTG_SCHED_IPC_MAGIC, SEARCH_RTG, struct proc_state_data)
 
-int BasicOpenRtgNode(int pid)
+int BasicOpenRtgNode()
 {
-    char fileName[MAX_PATH_LEN] = {0};
-    snprintf(fileName, MAX_PATH_LEN, "/proc/%d/rtg", pid);
+    char fileName[] = "/proc/rtg_ctrl";
     int fd = open(fileName, O_RDWR);
     if (fd < 0) {
         RME_LOGE("Open fail, errno = %{public}d(%{public}s), dev = %{public}s", errno, strerror(errno), fileName);
@@ -86,12 +85,11 @@ int EnableRtg(bool flag)
 {
     struct rtg_enable_data enableData;
     char configStr[] = "load_freq_switch:1;sched_cycle:1";
-    int pid = getpid();
 
     enableData.enable = flag;
     enableData.len = sizeof(configStr);
     enableData.data = configStr;
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -108,8 +106,7 @@ int CreateNewRtgGrp(int prioType, int rtNum)
 {
     struct rtg_grp_data grp_data;
     int ret;
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -135,7 +132,7 @@ int AddThreadToRtg(int tid, int grpId)
 {
     struct rtg_grp_data grp_data;
     int ret;
-    int fd = BasicOpenRtgNode(tid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         RME_LOGE("open node failed.");
         return fd;
@@ -159,8 +156,7 @@ int AddThreadsToRtg(vector<int> tids, int grpId)
 {
     struct rtg_grp_data grp_data;
     int ret;
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -193,7 +189,7 @@ int RemoveRtgThread(int tid)
 {
     struct rtg_grp_data grp_data;
     int ret;
-    int fd = BasicOpenRtgNode(tid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -215,8 +211,7 @@ int ClearRtgGrp(int GrpId)
 {
     struct rtg_grp_data grp_data;
     int ret;
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -237,8 +232,7 @@ int DestroyRtgGrp(int GrpId)
 {
     struct rtg_grp_data grp_data;
     int ret;
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -265,8 +259,7 @@ int SetMaxVipRtgs(int rtframe)
     strData.len = strlen(str_data);
     strData.data = str_data;
 
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -289,8 +282,7 @@ int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
     strData.len = strlen(str_data);
     strData.data = str_data;
 
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -311,8 +303,7 @@ int BeginFrameFreq(int grpId, int stateParam)
     state_data.grp_id = grpId;
 	state_data.state_param = stateParam;
 
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -333,8 +324,7 @@ int EndFrameFreq(int grpId, int stateParam)
     state_data.grp_id = grpId;
 	state_data.state_param = stateParam;
 
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -355,8 +345,7 @@ int EndScene(int rtgId)
     struct proc_state_data state_data;	
     state_data.grp_id = rtgId;
 
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -378,8 +367,7 @@ int SetMinUtil(int grpId, int stateParam)
     state_data.grp_id = grpId;
 	state_data.state_param = stateParam;
 
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -401,8 +389,7 @@ int SetMargin(int grpId, int stateParam)
     state_data.grp_id = grpId;
 	state_data.state_param = stateParam;
 
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -421,8 +408,7 @@ int ListRtgGroup(vector<int> *rs)
 {
     int ret = 0;
     struct rtg_info rtg_info;
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -448,8 +434,7 @@ int ListRtgThread(int grpId, vector<int> *rs)
 {
     int ret = 0;
     struct rtg_grp_data grp_data;
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
@@ -476,8 +461,7 @@ int SearchRtgForTid(int tid)
 {
     int ret = 0;
     struct proc_state_data search_data;
-    int pid = getpid();
-    int fd = BasicOpenRtgNode(pid);
+    int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }

@@ -72,7 +72,7 @@ void AppInfoMgr::OnAppTerminateChanged(const int pid, const std::string appName)
 void AppInfoMgr::OnWindowFocus(const int pid, bool isFocus)
 {
     RME_LOGI("[OnAppFocus]: pid:%{public}d, isFocus:%{public}d", pid, isFocus);
-    std::shared_ptr<AppInfo> appInfo = nullptr; 
+    std::shared_ptr<AppInfo> appInfo = nullptr;
     if (mForegroundAppList.find(pid) != mForegroundAppList.end()) {
         appInfo = mForegroundAppList[pid];
         mForegroundAppList.erase(pid);
@@ -94,7 +94,7 @@ void AppInfoMgr::OnWindowFocus(const int pid, bool isFocus)
 void AppInfoMgr::OnUiProcessStart(const int pid, const int tid)
 {
     RME_LOGI("[OnUiProcessStart]:pid:%{public}d, uitid:%{public}d.\n", pid, tid);
-    std::shared_ptr<AppInfo> appInfo = nullptr; 
+    std::shared_ptr<AppInfo> appInfo = nullptr;
     if (mForegroundAppList.find(pid) != mForegroundAppList.end()) {
         appInfo = mForegroundAppList[pid];
         mForegroundAppList.erase(pid);
@@ -123,7 +123,7 @@ bool AppInfoMgr::OnProcessDied(const int pid, const int tid)
 void AppInfoMgr::OnRenderProcessStart(const int pid, const int tid)
 {
     RME_LOGI("[OnRenderProcessStart]:pid:%{public}d, tid:%{public}d.\n", pid, tid);
-    std::shared_ptr<AppInfo> appInfo = nullptr; 
+    std::shared_ptr<AppInfo> appInfo = nullptr;
     if (mForegroundAppList.find(pid) != mForegroundAppList.end()) {
         appInfo = mForegroundAppList[pid];
         mForegroundAppList.erase(pid);

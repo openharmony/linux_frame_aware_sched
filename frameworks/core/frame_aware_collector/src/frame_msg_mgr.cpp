@@ -51,13 +51,13 @@ void FrameMsgMgr::EventUpdate(FrameEvent event, EventState value)
 {
     switch (event) {
         case FrameEvent::EVENT_SET_PARAM:
-	    SetSchedParam();
-	    break;
-	case FrameEvent::EVENT_RTG_ENABLE:
-        RME_LOGI("[EventUpdate]:rtg enable!");
-	    break;
-	default:
-	    HandleDefaultEvent(event, value);
+            SetSchedParam();
+            break;
+        case FrameEvent::EVENT_RTG_ENABLE:
+            RME_LOGI("[EventUpdate]:rtg enable!");
+            break;
+        default:
+            HandleDefaultEvent(event, value);
             break;    
     }
     return;
@@ -88,13 +88,13 @@ void FrameMsgMgr::HandleDefaultEvent(FrameEvent event, EventState value)
                 scene->EndFlushAnimation();
             }
             break;
-	case FrameEvent::FLUSH_BUILD: 
+        case FrameEvent::FLUSH_BUILD:
             if (value == EventState::EVENT_ENTER) {
-	        scene->BeginFlushBuild();
+                scene->BeginFlushBuild();
             } else {
-	        scene->EndFlushBuild();
+                scene->EndFlushBuild();
             }
-	    break;
+            break;
         case FrameEvent::FLUSH_LAYOUT:
             if (value == EventState::EVENT_ENTER) {
                 scene->BeginFlushLayout();
@@ -124,9 +124,10 @@ void FrameMsgMgr::HandleDefaultEvent(FrameEvent event, EventState value)
         case FrameEvent::SEND_COMMANDS:
             scene->SendCommandsStart();
             break;
-	default:
-	    RME_LOGE("[HandleDefaultEvent]: unknown event id: %{public}d, event state:%{public}d\n", static_cast<int>(event), static_cast<int>(value));
-	    return;
+        default:
+            RME_LOGE("[HandleDefaultEvent]: unknown event id: %{public}d, event state:%{public}d\n",
+                static_cast<int>(event), static_cast<int>(value));
+            return;
     }
 }
 

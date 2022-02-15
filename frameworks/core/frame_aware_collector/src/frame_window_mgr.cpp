@@ -23,17 +23,18 @@ const std::string SCHEME_SWITCH_PROP = ""; // to add prop
 }
 
 IMPLEMENT_SINGLE_INSTANCE(FrameWindowMgr);
+DEFINE_RMELOG_INTELLISENSE("ueaClient-FrameWindowMgr");
 
 int FrameWindowMgr::GetEnable()
 {
     if (m_enable == -1) {
         bool prop = true;
         if (prop) {
-            m_enable = 1; 
-            prop = false;
+            m_enable = 1;
         } else {
             m_enable = 0;
         }
+        RME_LOGI("[GetEnable]: prop: %{public}d", prop);
     }
     return m_enable;
 }

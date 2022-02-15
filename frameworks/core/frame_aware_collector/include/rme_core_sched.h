@@ -16,6 +16,7 @@
 #ifndef RME_CORE_SCHED_H
 #define RME_CORE_SCHED_H
 
+#include <unistd.h>
 #include "rme_log_domain.h"
 
 namespace OHOS {
@@ -48,10 +49,6 @@ public:
     
     RmeCoreSched(const RmeCoreSched &) = delete;
     RmeCoreSched &operator=(const RmeCoreSched &) = delete;
-
-private:
-    int m_flushAnimationPeriod = 3;
-
 };
 
 } // namespace RME

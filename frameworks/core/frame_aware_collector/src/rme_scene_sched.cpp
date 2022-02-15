@@ -37,7 +37,7 @@ bool RmeSceneSched::Init()
     if (rmeCoreSched == nullptr) {
         rmeCoreSched = new RmeCoreSched();
     }
- 
+
     curWorkingStatus = 1;
     if (rmeCoreSched == nullptr) {
         return false;

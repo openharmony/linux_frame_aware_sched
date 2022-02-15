@@ -18,6 +18,7 @@
 
 #include <string>
 #include "single_instance.h"
+#include "rme_log_domain.h"
 
 namespace OHOS {
 namespace RME {
@@ -31,7 +32,6 @@ public:
 private:
     int m_enable = -1;
     bool m_startFlag;
-//    static int m_propName;
 };
 
 } // namespace RME

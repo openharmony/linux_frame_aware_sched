@@ -86,9 +86,11 @@
 
 ### 使用说明<a name="section_instructions"></a>
 
-系统开发者可以通过配置productdefine/common/products下的产品定义json文件，增加或移除本部件，来启用或停用本部件。
+系统开发者可以通过配置productdefine/common/products下的产品定义json文件，增加或移除本部件，来启用或停用本部件：
 
+```
 "resourceschedule:frame_aware_sched":{}
+```
 
 
 

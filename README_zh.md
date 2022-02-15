@@ -1,18 +1,6 @@
 # 智能感知调度
 
-- [简介](#section_introduction)
 
-- [目录](#section_catalogue)
-
--   [框架](#section_framework)
-    
-    - [绘帧信息收集](#section_strategy)
-    
-    -   [帧感知调度机制](#section_mechanism)
-    
-- [相关仓](#related_repositories)
-
-  
 
 ## 简介<a name="section_introduction"></a>
 
@@ -45,7 +33,7 @@
 ```
 
 
-## 框架<a name="section_framework"></a>
+## 说明<a name="section_illustration"></a>
 
 智能感知调度部件根据执行时所属线程进行划分，可包含两大组件，即运行在App进程的绘帧信息收集器组件和运行在系统服务进程的帧感知调度机制组件，每个组件分为若干模块。
 
@@ -77,13 +65,13 @@
 
 应用绘帧感知主要负责调节内核调度的参数，进行线程负载的缩放。当用户在APP界面滑动时，识别出应用的关键线程（诸如绘帧主线程、渲染线程），感知应用绘帧子过程的执行情况，根据是否超时来判断是否调整内核调度参数，进行实时的资源供给，进行优先调度。
 
-- 根据屏幕刷新率，判断当前帧率信息。根据越接近绘帧结束时刻，越加大关键线程的资源供给
+- 根据屏幕刷新率，判断当前帧率信息，根据越接近绘帧结束时刻，越加大关键线程的资源供给；
 
 
-- 根据界面绘帧图形渲染过程中的各个子阶段的时长，调节资源供给。
+- 根据界面绘帧图形渲染过程中的各个子阶段的时长，调节资源供给；
 
 
-- 对可能发生丢帧卡顿的高概率事件，增加资源供给
+- 对可能发生丢帧卡顿的高概率事件，增加资源供给。
 
 
 
@@ -96,24 +84,20 @@
 
 
 
-### 使用说明<a name="instructions"></a>
+### 使用说明<a name="section_instructions"></a>
 
-系统开发者可以通过配置productdefine/common/products下的产品定义json文件，增加或移除本部件，来启用或停用本部件
+系统开发者可以通过配置productdefine/common/products下的产品定义json文件，增加或移除本部件，来启用或停用本部件。
 
 "resourceschedule:frame_aware_sched":{}
 
 
 
-### 相关仓<a name="related_repositories"></a>
+## 相关仓<a name="section_related_repositories"></a>
 
-- resource_schedule_service
-
-- ace_ace_engine
-
-- graphic_standard
-
-- aafwk_standard
-
+- [resource_schedule_service](https://gitee.com/openharmony/resourceschedule_resource_schedule_service)
+- [ace_ace_engine]( https://gitee.com/openharmony/ace_ace_engine)
+- [graphic_standard](https://gitee.com/openharmony/graphic_standard)
+- [aafwk_standard](https://gitee.com/openharmony/aafwk_standard ) 
 - **frame_aware_sched**
 
 

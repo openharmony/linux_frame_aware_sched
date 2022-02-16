@@ -32,7 +32,7 @@
 ```
 
 
-## 说明<a name="section_illustration"></a>
+## 框架<a name="section_frameworks"></a>
 
 智能感知调度部件根据执行时所属线程进行划分，可包含两大组件，即运行在App进程的绘帧信息收集组件和运行在系统服务进程的帧感知调度机制组件，每个组件分为若干模块。
 
@@ -83,7 +83,7 @@
 
 
 
-### 使用说明<a name="section_instructions"></a>
+## 使用说明<a name="section_instructions"></a>
 
 系统开发者可以通过配置productdefine/common/products下的产品定义json文件，增加或移除本部件，来启用或停用本部件：
 

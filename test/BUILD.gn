@@ -14,88 +14,84 @@
 import("//build/ohos.gni")
 import("//build/ohos_var.gni")
 import("//build/test.gni")
-import("//foundation/resourceschedule/plugins/frame_aware_sched/frameaware.gni")
+import("//foundation/resourceschedule/frame_aware_sched/frameaware.gni")
 
 module_output_path = "frameawareschedtest/"
 
-frame_aware_sched_configs = [ "${innerkits_path}/frameintf:frame_msg_intf_config" ]
+frame_aware_sched_configs =
+    [ "${innerkits_path}/frameintf:frame_msg_intf_config" ]
 
 frame_aware_sched_deps = [
-    "//utils/native/base:utils",
-    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
-    "${innerkits_path}/frameintf:frame_ui_intf",
-    "${innerkits_path}/frameintf:frame_msg_intf",
-    "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
+  "${innerkits_path}/frameintf:frame_msg_intf",
+  "${innerkits_path}/frameintf:frame_ui_intf",
+  "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+  "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
+  "//utils/native/base:utils",
 ]
 
 frame_aware_sched_external_deps = [
-    "hiviewdfx_hilog_native:libhilog",
-    "ipc:ipc_core",
+  "hiviewdfx_hilog_native:libhilog",
+  "ipc:ipc_core",
 ]
 
 frame_aware_sched_public_deps = [ "//third_party/googletest:gtest_main" ]
 
-
 ohos_unittest("frame_ui_intf_test") {
-    module_out_path = module_output_path
-    configs = frame_aware_sched_configs
+  module_out_path = module_output_path
+  configs = frame_aware_sched_configs
 
-    sources = [ "unittest/phone/frame_ui_intf_test.cpp" ]
+  sources = [ "unittest/phone/frame_ui_intf_test.cpp" ]
 
-    deps = frame_aware_sched_deps
-   
-    if (is_standard_system) {
-        external_deps = frame_aware_sched_external_deps
-        public_deps = frame_aware_sched_public_deps
-    } 
-    part_name = "frame_aware_sched"
-    subsystem_name = "resourceschedule"
+  deps = frame_aware_sched_deps
 
+  if (is_standard_system) {
+    external_deps = frame_aware_sched_external_deps
+    public_deps = frame_aware_sched_public_deps
+  }
+  part_name = "frame_aware_sched"
+  subsystem_name = "resourceschedule"
 }
 
 ohos_unittest("frame_msg_intf_test") {
-    module_out_path = module_output_path
-    
-    sources = [ "unittest/phone/frame_msg_intf_test.cpp" ]
+  module_out_path = module_output_path
 
-    configs = frame_aware_sched_configs
+  sources = [ "unittest/phone/frame_msg_intf_test.cpp" ]
 
-    deps = frame_aware_sched_deps
+  configs = frame_aware_sched_configs
 
-    if (is_standard_system) {
-        external_deps = frame_aware_sched_external_deps
-        public_deps = frame_aware_sched_public_deps
-    } 
+  deps = frame_aware_sched_deps
 
-    part_name = "frame_aware_sched"
-    subsystem_name = "resourceschedule"
+  if (is_standard_system) {
+    external_deps = frame_aware_sched_external_deps
+    public_deps = frame_aware_sched_public_deps
+  }
+
+  part_name = "frame_aware_sched"
+  subsystem_name = "resourceschedule"
 }
 
 ohos_unittest("rtg_interface_test") {
-    module_out_path = module_output_path
+  module_out_path = module_output_path
 
-    sources = [ "unittest/phone/rtg_interface_test.cpp" ]
+  sources = [ "unittest/phone/rtg_interface_test.cpp" ]
 
-    include_dirs = [
-        "${frame_aware_path}/common/include",
-    ]
+  include_dirs = [ "${frame_aware_path}/common/include" ]
 
-    deps = frame_aware_sched_deps
+  deps = frame_aware_sched_deps
 
-    if (is_standard_system) {
-        external_deps = frame_aware_sched_external_deps
-        public_deps = frame_aware_sched_public_deps
-    } 
+  if (is_standard_system) {
+    external_deps = frame_aware_sched_external_deps
+    public_deps = frame_aware_sched_public_deps
+  }
 
-    part_name = "frame_aware_sched"
-    subsystem_name = "resourceschedule"
-
+  part_name = "frame_aware_sched"
+  subsystem_name = "resourceschedule"
 }
 
 group("frame_unittest") {
-    testonly = true
-    deps = [
-        ":frame_msg_intf_test",
-        ":rtg_interface_test",
-    ]
+  testonly = true
+  deps = [
+    ":frame_msg_intf_test",
+    ":rtg_interface_test",
+  ]
 }

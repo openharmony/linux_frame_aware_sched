@@ -12,112 +12,102 @@
 # limitations under the License.
 
 import("//build/ohos.gni")
-import("//foundation/resourceschedule/plugins/frame_aware_sched/frameaware.gni")
-
+import("//foundation/resourceschedule/frame_aware_sched/frameaware.gni")
 
 config("frame_ui_intf_config") {
-    visibility = [ ":*" ]
+  visibility = [ ":*" ]
 
-    include_dirs = [
-        "${innerkits_path}/frameintf",
-        "${frame_aware_path}/common/include",
-        "${framework_path}/frame_aware_collector/include",
-        "//utils/native/base/include",
-        "//utils/system/safwk/native/include",
-        "//base/hiviewdfx/interfaces/innerkits/libhilog/include",
-        "//base/hiviewdfx/interfaces/innerkits/libhitrace/include",
-    ]
+  include_dirs = [
+    "${innerkits_path}/frameintf",
+    "${frame_aware_path}/common/include",
+    "${framework_path}/frame_aware_collector/include",
+    "//utils/native/base/include",
+    "//utils/system/safwk/native/include",
+    "//base/hiviewdfx/interfaces/innerkits/libhilog/include",
+    "//base/hiviewdfx/interfaces/innerkits/libhitrace/include",
+  ]
 }
 
 ohos_shared_library("frame_ui_intf") {
-    sources = [ 
-        "frame_ui_intf.cpp",
-        "${framework_path}/frame_aware_collector/src/frame_msg_mgr.cpp",
-        "${framework_path}/frame_aware_collector/src/frame_window_mgr.cpp",
-        "${framework_path}/frame_aware_collector/src/rme_core_sched.cpp",
-        "${framework_path}/frame_aware_collector/src/rme_scene_sched.cpp",
-        "${frame_aware_path}/interfaces/innerkits/frameintf/rtg_interface.cpp",
-    ]
+  sources = [
+    "${frame_aware_path}/interfaces/innerkits/frameintf/rtg_interface.cpp",
+    "${framework_path}/frame_aware_collector/src/frame_msg_mgr.cpp",
+    "${framework_path}/frame_aware_collector/src/frame_window_mgr.cpp",
+    "${framework_path}/frame_aware_collector/src/rme_core_sched.cpp",
+    "${framework_path}/frame_aware_collector/src/rme_scene_sched.cpp",
+    "frame_ui_intf.cpp",
+  ]
 
-    configs = [ ":frame_ui_intf_config" ]
+  configs = [ ":frame_ui_intf_config" ]
 
-    deps = [
-        "//utils/native/base:utils",
-        "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
-    ]
+  deps = [
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+    "//utils/native/base:utils",
+  ]
 
-    public_deps = [
-        "//utils/native/base:utils",
-    ]
+  public_deps = [ "//utils/native/base:utils" ]
 
-    external_deps = [
-        "hiviewdfx_hilog_native:libhilog",
-        "bytrace_standard:bytrace_core",
-        "dsoftbus_standard:softbus_client",
-        "ipc:ipc_core",
-    ]
+  external_deps = [
+    "bytrace_standard:bytrace_core",
+    "dsoftbus_standard:softbus_client",
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+  ]
 
-    subsystem_name = "resourceschedule"
-    part_name = "frame_aware_sched"
+  subsystem_name = "resourceschedule"
+  part_name = "frame_aware_sched"
 }
 
 config("frame_msg_intf_config") {
-    visibility = [ ":*" ]
+  visibility = [ ":*" ]
 
-    include_dirs = [
-        "${innerkits_path}/frameintf",
-        "//third_party/libxml2/include",
-        "${framework_path}/frame_aware_policy/include",
-        "${frame_aware_path}/common/include",
-        "//base/hiviewdfx/interfaces/innerkits/libhilog/include",
-        "//base/hiviewdfx/interfaces/innerkits/libhitrace/include",
-    ]
+  include_dirs = [
+    "${innerkits_path}/frameintf",
+    "//third_party/libxml2/include",
+    "${framework_path}/frame_aware_policy/include",
+    "${frame_aware_path}/common/include",
+    "//base/hiviewdfx/interfaces/innerkits/libhilog/include",
+    "//base/hiviewdfx/interfaces/innerkits/libhitrace/include",
+  ]
 }
 
 ohos_shared_library("frame_msg_intf") {
-    sources = [
-       "frame_msg_intf.cpp",
-       "${framework_path}/frame_aware_policy/src/intellisense_server.cpp",
-       "${framework_path}/frame_aware_policy/src/app_info.cpp",
-       "${framework_path}/frame_aware_policy/src/app_info_mgr.cpp",
-       "${framework_path}/frame_aware_policy/src/para_config.cpp",
-       "${framework_path}/frame_aware_policy/src/rtg_msg_mgr.cpp",
-       "${frame_aware_path}/interfaces/innerkits/frameintf/rtg_interface.cpp",
-    ]
+  sources = [
+    "${frame_aware_path}/interfaces/innerkits/frameintf/rtg_interface.cpp",
+    "${framework_path}/frame_aware_policy/src/app_info.cpp",
+    "${framework_path}/frame_aware_policy/src/app_info_mgr.cpp",
+    "${framework_path}/frame_aware_policy/src/intellisense_server.cpp",
+    "${framework_path}/frame_aware_policy/src/para_config.cpp",
+    "${framework_path}/frame_aware_policy/src/rtg_msg_mgr.cpp",
+    "frame_msg_intf.cpp",
+  ]
 
-    configs = [ ":frame_msg_intf_config" ]
+  configs = [ ":frame_msg_intf_config" ]
 
-    deps = [
-        "//third_party/libxml2:xml2",
-        "//utils/native/base:utils",
-        "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
-    ]
+  deps = [
+    "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
+    "//third_party/libxml2:xml2",
+    "//utils/native/base:utils",
+  ]
 
-    external_deps = [
-        "bytrace_standard:bytrace_core",
-        "hiviewdfx_hilog_native:libhilog",
-        "dsoftbus_standard:softbus_client",
-        "ipc:ipc_core",
-    ]
+  external_deps = [
+    "bytrace_standard:bytrace_core",
+    "dsoftbus_standard:softbus_client",
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+  ]
 
-    subsystem_name =  "resourceschedule"
-    part_name = "frame_aware_sched"
+  subsystem_name = "resourceschedule"
+  part_name = "frame_aware_sched"
 }
 
-
 ohos_shared_library("rtg_interface") {
-    sources = [
-        "rtg_interface.cpp"
-    ]
+  sources = [ "rtg_interface.cpp" ]
 
-    include_dirs = [
-        "${frame_aware_path}/common/include",
-    ]
+  include_dirs = [ "${frame_aware_path}/common/include" ]
 
-    external_deps = [
-        "hiviewdfx_hilog_native:libhilog",
-    ]
+  external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
 
-    install_enable = true
-    part_name = "frame_aware_sched"
+  install_enable = true
+  part_name = "frame_aware_sched"
 }

@@ -14,11 +14,9 @@
 import("//build/ohos.gni")
 import("//foundation/resourceschedule/frame_aware_sched/frameaware.gni")
 
-
 group("libintellisensesched_intf") {
-    public_deps = [ 
-        "${innerkits_path}/frameintf:frame_msg_intf"，
-        "${innerkits_path}/frameintf:frame_ui_intf"，
-    ]
+  public_deps = [
+    "${innerkits_path}/frameintf:frame_msg_intf",
+    "${innerkits_path}/frameintf:frame_ui_intf",
+  ]
 }
-

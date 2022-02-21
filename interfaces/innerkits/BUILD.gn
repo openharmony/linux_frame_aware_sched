@@ -15,9 +15,9 @@ import("//build/ohos.gni")
 import("//foundation/resourceschedule/frame_aware_sched/frame_aware_sched.gni")
 
 group("innerkits_target") {
-    deps = [
-        "frameintf:frame_ui_intf",
-        "frameintf:frame_msg_intf",
-        "frameintf:rtg_interface",
-    ]
+  deps = [
+    "frameintf:frame_msg_intf",
+    "frameintf:frame_ui_intf",
+    "frameintf:rtg_interface",
+  ]
 }

@@ -5,7 +5,7 @@
     "license": "Apache License 2.0",
     "publishAs": "code-segment",
     "segment": {
-        "destPath": "foundation/resourceschedule/plugins/frame_aware_sched"
+        "destPath": "foundation/resourceschedule/frame_aware_sched"
     },
     "dirs": {},
     "scripts": {},
@@ -34,33 +34,33 @@
         },
         "build": {
             "sub_component": [
-                "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf:frame_ui_intf",
-                "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf:frame_msg_intf",
-                "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf:rtg_interface",
-                "//foundation/resourceschedule/plugins/frame_aware_sched/profiles:frame_aware_sched_config"
+                "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf:frame_ui_intf",
+                "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf:frame_msg_intf",
+                "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf:rtg_interface",
+                "//foundation/resourceschedule/frame_aware_sched/profiles:frame_aware_sched_config"
             ],
             "inner_kits": [
                 {
                     "header": {
-                        "header_base": "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf",
+                        "header_base": "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf",
                         "header_files": [
                             "frame_ui_intf.h"
                         ]
                     },
-                    "name": "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf:frame_ui_intf"
+                    "name": "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf:frame_ui_intf"
                 },
                 {
                     "header": {
-                        "header_base": "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf",
+                        "header_base": "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf",
                         "header_files": [
                             "frame_msg_intf.h"
                         ]
                     },
-                    "name": "//foundation/resourceschedule/plugins/frame_aware_sched/interfaces/innerkits/frameintf:frame_msg_intf"
+                    "name": "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf:frame_msg_intf"
                 }
             ],
             "test": [
-                "//foundation/resourceschedule/plugins/frame_aware_sched/test:frame_unittest"
+                "//foundation/resourceschedule/frame_aware_sched/test:frame_unittest"
             ]
         }
     }

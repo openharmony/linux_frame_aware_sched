@@ -23,7 +23,6 @@
 
 namespace OHOS {
 namespace RME {
-
 class RmeSceneSched : public FrameSceneSched {
 public:
     RmeSceneSched();

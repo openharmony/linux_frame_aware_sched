@@ -17,9 +17,8 @@
 
 namespace OHOS {
 namespace RME {
-
 namespace {
-const int RTG_GRP_INIT = -1;
+    constexpr int RTG_GRP_INIT = -1;
 }
 
 AppInfo::AppInfo(std::string appName, int pid, int uiTid, int renderTid, int isFocus, AppState state)
@@ -96,7 +95,5 @@ int AppInfo::GetRtgrp()
 {
     return m_rtGrp;
 }
-
-
 } // namespace RME
 } // namespace OHOS

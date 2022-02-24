@@ -29,11 +29,10 @@ using namespace testing::ext;
 #define RTG_INTERFACE_SO_PATH "/system/lib/librtg_interface.z.so"
 
 enum rtg_type {
-	VIP = 0,
-	TOP_TASK_KEY,
-	TOP_TASK,
-	NORMAL_TASK,
-	RTG_TYPE_MAX,
+    VIP = 0,
+    TOP_TASK_KEY,
+    NORMAL_TASK,
+    RTG_TYPE_MAX,
 };
 
 class RtgInterfaceTest : public testing::Test {

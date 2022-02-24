@@ -24,7 +24,6 @@
 
 namespace OHOS {
 namespace RME {
-
 class RmeSceneSched;
 
 class FrameMsgMgr {
@@ -34,20 +33,14 @@ public:
     ~FrameMsgMgr();
     bool Init();
     void EventUpdate(FrameEvent eventType, EventState state);
-
 private:
     void UpdateScene(SceneEvent scene);
-
     void HandleDefaultEvent(FrameEvent event, EventState state);
     void SetSchedParam();
     FrameSceneSched *GetSceneHandler() const;
-
     SceneEvent sceneType;
     RmeSceneSched *rmeScene;
-
 };
-
-
 } // namespace RME
 } // namespace OHOS
 #endif

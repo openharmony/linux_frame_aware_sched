@@ -28,14 +28,13 @@
 
 namespace OHOS {
 namespace RME {
-
 using namespace std;
 
 class IntelliSenseServer {
     DECLARE_SINGLE_INSTANCE(IntelliSenseServer);
 public:
     void Init();
-    void ReportMessage(std::string appName, std::string processName, int pid, 
+    void ReportMessage(std::string appName, std::string processName, int pid,
         AppStateUpdateReason reason);
     void ReportWindowFocus(const int pid, int isFocus);
     void ReportProcessInfo(const int pid, const int tid, ThreadState state);
@@ -47,11 +46,9 @@ private:
     std::map<std::string, std::map<std::string, int>> m_subEventPara {};
     std::vector<int> m_fpsList {};
     std::vector<int> m_renderTypeList {};
-
     bool m_readXmlSuc = false;
     bool m_needReadXml = true;
 };
-
 } // namespace RME
 } // namesapce OHOS
 #endif

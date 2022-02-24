@@ -18,8 +18,7 @@
 namespace OHOS {
 namespace RME {
 namespace {
-
-const std::string SCHEME_SWITCH_PROP = ""; // to add prop
+    const std::string SCHEME_SWITCH_PROP = ""; // to add prop
 }
 
 IMPLEMENT_SINGLE_INSTANCE(FrameWindowMgr);
@@ -43,6 +42,5 @@ bool FrameWindowMgr::GetStartFlag()
 {
     return m_startFlag;
 }
-
 } // namespace RME
 } // namespace OHOS

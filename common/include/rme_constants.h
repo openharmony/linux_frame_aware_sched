@@ -18,7 +18,6 @@
 
 namespace OHOS {
 namespace RME {
-
 enum class AppStateUpdateReason {
     APP_FOREGROUND,
     APP_BACKGROUND,
@@ -49,8 +48,6 @@ enum class ErrorCode {
     FAIL,
     SUCC,
 };
-
 } // namespace RME
 } // namespace OHOS
-
 #endif

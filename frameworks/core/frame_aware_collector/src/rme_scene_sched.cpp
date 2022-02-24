@@ -17,13 +17,11 @@
 
 namespace OHOS {
 namespace RME {
-
 DEFINE_RMELOG_INTELLISENSE("ueaClient-RmeSceneSched");
 
 RmeSceneSched::RmeSceneSched()
     :curWorkingStatus(0), rmeCoreSched(nullptr)
-{
-}
+{}
 
 RmeSceneSched::~RmeSceneSched()
 {

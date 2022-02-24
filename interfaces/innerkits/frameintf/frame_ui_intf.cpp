@@ -21,10 +21,7 @@
 
 namespace OHOS {
 namespace RME {
-
 DEFINE_RMELOG_INTELLISENSE("ueaCleint-FrameUiIntf");
-
-//TO DO: need to check the init logic.
 
 FrameUiIntf& FrameUiIntf::GetInstance()
 {
@@ -54,9 +51,8 @@ int FrameUiIntf::GetSenseSchedEnable()
     return static_cast<int>(ErrorCode::SUCC);
 }
 
-void FrameUiIntf::BeginFlushAnimation()
+void FrameUiIntf::BeginFlushAnimation() const
 {
-
     RME_LOGI("[BeginFlushAnimation]:start");
     if (!inited) {
         return;
@@ -64,7 +60,7 @@ void FrameUiIntf::BeginFlushAnimation()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_ANIMATION, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::EndFlushAnimation()
+void FrameUiIntf::EndFlushAnimation() const
 {
     if (!inited) {
         return;
@@ -72,16 +68,15 @@ void FrameUiIntf::EndFlushAnimation()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_BUILD, EventState::EVENT_EXIT);
 }
 
-void FrameUiIntf::BeginFlushBuild()
+void FrameUiIntf::BeginFlushBuild() const
 {
     if (!inited) {
         return;
     }
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_BUILD, EventState::EVENT_ENTER);
-    RME_LOGI("[BeginFlushBuild]:success"); 
 }
 
-void FrameUiIntf::EndFlushBuild()
+void FrameUiIntf::EndFlushBuild() const
 {
     if (!inited) {
         return;
@@ -89,15 +84,15 @@ void FrameUiIntf::EndFlushBuild()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_BUILD, EventState::EVENT_EXIT);
 }
 
-void FrameUiIntf::BeginFlushLayout()
-{ 
+void FrameUiIntf::BeginFlushLayout() const
+{
     if (!inited) {
         return;
     }
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_LAYOUT, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::EndFlushLayout()
+void FrameUiIntf::EndFlushLayout() const
 {
     if (!inited) {
         return;
@@ -105,7 +100,7 @@ void FrameUiIntf::EndFlushLayout()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_LAYOUT, EventState::EVENT_EXIT);
 }
 
-void FrameUiIntf::BeginFlushRender()
+void FrameUiIntf::BeginFlushRender() const
 {
     if (!inited) {
         return;
@@ -113,7 +108,7 @@ void FrameUiIntf::BeginFlushRender()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::EndFlushRender()
+void FrameUiIntf::EndFlushRender() const
 {
     if (!inited) {
         return;
@@ -121,7 +116,7 @@ void FrameUiIntf::EndFlushRender()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER, EventState::EVENT_EXIT);
 }
 
-void FrameUiIntf::BeginFlushRenderFinish()
+void FrameUiIntf::BeginFlushRenderFinish() const
 {
     if (!inited) {
         return;
@@ -129,7 +124,7 @@ void FrameUiIntf::BeginFlushRenderFinish()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER_FINISH, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::EndFlushRenderFinish()
+void FrameUiIntf::EndFlushRenderFinish() const
 {
     if (!inited) {
         return;
@@ -137,7 +132,7 @@ void FrameUiIntf::EndFlushRenderFinish()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER_FINISH, EventState::EVENT_EXIT);
 }
 
-void FrameUiIntf::BeginProcessPostFlush()
+void FrameUiIntf::BeginProcessPostFlush() const
 {
     if (!inited) {
         return;
@@ -145,7 +140,7 @@ void FrameUiIntf::BeginProcessPostFlush()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::PROCESS_POST_FLUSH, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::ProcessCommandsStart()
+void FrameUiIntf::ProcessCommandsStart() const
 {
     if (!inited) {
         return;
@@ -153,7 +148,7 @@ void FrameUiIntf::ProcessCommandsStart()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::PROCESS_COMMANDS, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::AnimateStart()
+void FrameUiIntf::AnimateStart() const
 {
     if (!inited) {
         return;
@@ -161,7 +156,7 @@ void FrameUiIntf::AnimateStart()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::ANIMATE, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::RenderStart()
+void FrameUiIntf::RenderStart() const
 {
     if (!inited) {
         return;
@@ -169,7 +164,7 @@ void FrameUiIntf::RenderStart()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::RENDER, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::SendCommandsStart()
+void FrameUiIntf::SendCommandsStart() const
 {
     RME_LOGI("[SendCommandsStart]:start");
     if (!inited) {
@@ -187,7 +182,7 @@ extern "C" void Init()
 extern "C" int GetSenseSchedEnable()
 {
     return FrameUiIntf::GetInstance().GetSenseSchedEnable();
-} 
+}
 
 extern "C" void BeginFlushAnimation()
 {

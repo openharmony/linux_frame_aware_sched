@@ -42,8 +42,8 @@ bool RmeSceneSched::Init()
     if (rmeCoreSched == nullptr) {
         return false;
     }
-    RME_LOGI("[Init]:RmeSceneSched init success!");
-    return true;
+    bool ret = rmeCoreSched->Init();
+    return ret;
 }
 
 void RmeSceneSched::BeginFlushAnimation()

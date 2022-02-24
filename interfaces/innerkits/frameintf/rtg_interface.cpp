@@ -62,10 +62,12 @@ DEFINE_RMELOG_INTELLISENSE("rtg_interface");
 	_IOWR(RTG_SCHED_IPC_MAGIC, LIST_RTG_THREAD, struct rtg_grp_data)
 #define CMD_ID_SEARCH_RTG \
     _IOWR(RTG_SCHED_IPC_MAGIC, SEARCH_RTG, struct proc_state_data)
+#define CMD_ID_GET_ENABLE \
+    _IOWR(RTG_SCHED_IPC_MAGIC, GET_ENABLE, struct rtg_enable_data)
 
 int BasicOpenRtgNode()
 {
-    char fileName[] = "/proc/rtg_ctrl";
+    char fileName[] = "/dev/sched_rtg_ctrl";
     int fd = open(fileName, O_RDWR);
     if (fd < 0) {
         RME_LOGE("Open fail, errno = %{public}d(%{public}s), dev = %{public}s", errno, strerror(errno), fileName);
@@ -143,10 +145,10 @@ int AddThreadToRtg(int tid, int grpId)
     grp_data.grp_id = grpId;
     grp_data.rtg_cmd = CMD_ADD_RTG_THREAD; 
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
-    if ( ret < 0) {
-        RME_LOGE("add rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
+    if (ret == 0) {
         RME_LOGI("add rtg grp success");
+    } else {
+        RME_LOGE("add tid %d to grp %d fail with ret %d", tid, grpId, ret);
     }
     close(fd);
     return ret;
@@ -178,8 +180,10 @@ int AddThreadsToRtg(vector<int> tids, int grpId)
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
     if ( ret < 0) {
         RME_LOGE("add rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
+    } else if (ret == 0) {
         RME_LOGI("add rtg grp success");
+    } else {
+        RME_LOGI("add rtg grp failed with %d threads", ret);
     }
     close(fd);
     return ret;
@@ -317,12 +321,12 @@ int BeginFrameFreq(int grpId, int stateParam)
     return ret;
 }
 
-int EndFrameFreq(int grpId, int stateParam)
+int EndFrameFreq(int grpId)
 {
     int ret = 0;
     struct proc_state_data state_data;	
     state_data.grp_id = grpId;
-	state_data.state_param = stateParam;
+	state_data.state_param = 0;
 
     int fd = BasicOpenRtgNode();
     if (fd < 0) {
@@ -339,11 +343,11 @@ int EndFrameFreq(int grpId, int stateParam)
     return ret;
 }
 
-int EndScene(int rtgId)
+int EndScene(int grpId)
 {
     int ret = 0;
     struct proc_state_data state_data;	
-    state_data.grp_id = rtgId;
+    state_data.grp_id = grpId;
 
     int fd = BasicOpenRtgNode();
     if (fd < 0) {
@@ -479,6 +483,16 @@ int SearchRtgForTid(int tid)
     }
     close(fd);
     return ret;
+}
+
+int GetRtgEnable()
+{
+    struct rtg_enable_data enableData;
+    int fd = BasicOpenRtgNode();
+    if (fd < 0) {
+        return fd;
+    }
+    return ioctl(fd, CMD_ID_GET_ENABLE, &enableData);
 }
 
 } // namespace RME

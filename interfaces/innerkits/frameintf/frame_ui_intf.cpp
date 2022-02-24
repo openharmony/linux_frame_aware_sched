@@ -51,7 +51,6 @@ int FrameUiIntf::GetSenseSchedEnable()
     if (!inited) {
         return static_cast<int>(ErrorCode::FAIL);
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_RTG_ENABLE, EventState::ENABLE);
     return static_cast<int>(ErrorCode::SUCC);
 }
 
@@ -164,5 +163,79 @@ void FrameUiIntf::SendCommandsStart()
     RME_LOGI("[SendCommandsStart]:success");
 }
 
+extern "C" void Init()
+{
+    FrameUiIntf::GetInstance().Init();
+}
+
+extern "C" int GetSenseSchedEnable()
+{
+    return FrameUiIntf::GetInstance().GetSenseSchedEnable();
+} 
+
+extern "C" void BeginFlushAnimation()
+{
+    FrameUiIntf::GetInstance().BeginFlushAnimation();
+}
+
+extern "C" void EndFlushAnimation()
+{
+    FrameUiIntf::GetInstance().EndFlushAnimation();
+}
+
+extern "C" void BeginFlushBuild()
+{
+    FrameUiIntf::GetInstance().BeginFlushBuild();
+}
+
+extern "C" void EndFlushBuild()
+{
+    FrameUiIntf::GetInstance().EndFlushBuild();
+}
+
+extern "C" void BeginFlushLayout()
+{
+    FrameUiIntf::GetInstance().BeginFlushLayout();
+}
+
+extern "C" void EndFlushLayout()
+{
+    FrameUiIntf::GetInstance().EndFlushLayout();
+}
+
+extern "C" void BeginFlushRender()
+{
+    FrameUiIntf::GetInstance().BeginFlushRender();
+}
+
+extern "C" void EndFlushRender()
+{
+    FrameUiIntf::GetInstance().EndFlushRender();
+}
+
+extern "C" void BeginProcessPostFlush()
+{
+    FrameUiIntf::GetInstance().BeginProcessPostFlush();
+}
+
+extern "C" void ProcessCommandsStart()
+{
+    FrameUiIntf::GetInstance().ProcessCommandsStart();
+}
+
+extern "C" void AnimateStart()
+{
+    FrameUiIntf::GetInstance().AnimateStart();
+}
+
+extern "C" void RenderStart()
+{
+    FrameUiIntf::GetInstance().RenderStart();
+}
+
+extern "C" void SendCommandsStart()
+{
+    FrameUiIntf::GetInstance().SendCommandsStart();
+}
 } // namespace RME
 } // namespace OHOS

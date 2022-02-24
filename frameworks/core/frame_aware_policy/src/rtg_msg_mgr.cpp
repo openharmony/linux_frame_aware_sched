@@ -39,12 +39,14 @@ int RtgMsgMgr::OnForeground(const std::string appName, const int pid)
     RME_LOGI("[OnForeground]:pid:%{public}d:", pid);
     int rtGrp = CreateNewRtgGrp(PRIO_TYPE, RT_NUM);
     RME_LOGI("[OnForeground]: createNewRtgGroup begin! rtGrp:%{public}d, pid: %{public}d", rtGrp, pid);
-    if (rtGrp < 0) {
+    if (rtGrp <= 0) {
         RME_LOGI("[OnForeground]: createNewRtgGroup failed! rtGrp:%{public}d, pid: %{public}d", rtGrp, pid);
-        rtGrp = -1;
         return rtGrp;
     }
-    AddThreadToRtg(pid, rtGrp); // add ui thread
+    int ret = AddThreadToRtg(pid, rtGrp); // add ui thread
+    if (ret != 0) {
+        RME_LOGI("[OnForeground]: add thread pid: %{public}d to rtgGrp: %{public}d failed! ret: %{publid}d", pid, rtGrp, ret);
+    }
     return rtGrp;
 }
 

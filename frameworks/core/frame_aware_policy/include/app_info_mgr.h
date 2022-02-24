@@ -17,6 +17,8 @@
 #define APP_INFO_MGR_H
 
 #include <map>
+#include <mutex>
+#include <thread>
 
 #include "app_info.h"
 #include "rme_log_domain.h"
@@ -34,11 +36,9 @@ public:
     void OnBackgroundChanged(const int pid, const std::string appName);
     void OnAppTerminateChanged(const int pid, const std::string appName);
     void OnWindowFocus(const int pid, bool isFocus);
-    void OnUiProcessStart(const int pid, const int tid);
-    void OnRenderProcessStart(const int pid, const int tid);
     bool OnProcessDied(const int pid, const int tid);
     std::shared_ptr<AppInfo> GetFocusApp() const;
-    void SetFocusApp(const int pid);
+    void SetFocusApp(const int pid, bool isFocus);
     int GetAppRtgrp(const int pid);
 
 private:

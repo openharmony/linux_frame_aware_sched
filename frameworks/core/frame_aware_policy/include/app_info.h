@@ -54,7 +54,7 @@ private:
     int m_uiTid;
     int m_renderTid; 
     int m_isFocus;
-    int m_rtgrp;
+    int m_rtGrp;
     AppState m_appState;
 };
 

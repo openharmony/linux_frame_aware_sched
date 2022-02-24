@@ -27,7 +27,7 @@ public:
     RmeCoreSched();
     ~RmeCoreSched();
 
-    void Init();
+    bool Init();
 
     void BeginFlushAnimation();
     void EndFlushAnimation();
@@ -49,6 +49,10 @@ public:
     
     RmeCoreSched(const RmeCoreSched &) = delete;
     RmeCoreSched &operator=(const RmeCoreSched &) = delete;
+private:
+    int m_currentPid = -1;
+    int m_currentRtg = -1;
+    bool isRenderAdd = false;
 };
 
 } // namespace RME

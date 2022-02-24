@@ -83,6 +83,7 @@ enum rtg_sched_cmdid {
 	LIST_RTG,
 	LIST_RTG_THREAD,
 	SEARCH_RTG,
+	GET_ENABLE,
 	RTG_CTRL_MAX_NR,
 };
 
@@ -98,13 +99,14 @@ extern "C"{
 	int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType);
 	int SetMaxVipRtgs(int rtframe);
 	int BeginFrameFreq(int grpId, int stateParam);
-	int EndFrameFreq(int grpId, int stateParam);
-	int EndScene(int rtgId);
+	int EndFrameFreq(int grpId);
+	int EndScene(int grpId);
 	int SetMinUtil(int grpId, int stateParam);
 	int SetMargin(int grpId, int stateParam);
 	int ListRtgThread(int grpId, vector<int> *rs); // list all tasks of grpId;
 	int ListRtgGroup(vector<int> *rs);
 	int SearchRtgForTid(int stateParam);
+	int GetRtgEnable();
 }
 
 } // namespace RME

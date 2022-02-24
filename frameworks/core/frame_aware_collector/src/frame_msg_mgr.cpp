@@ -40,7 +40,7 @@ bool FrameMsgMgr::Init()
     }
 
     if (!rmeScene->Init()) {
-        RME_LOGE("[Init]:inited success!");
+        RME_LOGE("[Init]:inited failed!");
         return false;
     }
     RME_LOGI("[Init]:inited success!");
@@ -52,9 +52,6 @@ void FrameMsgMgr::EventUpdate(FrameEvent event, EventState value)
     switch (event) {
         case FrameEvent::EVENT_SET_PARAM:
             SetSchedParam();
-            break;
-        case FrameEvent::EVENT_RTG_ENABLE:
-            RME_LOGI("[EventUpdate]:rtg enable!");
             break;
         default:
             HandleDefaultEvent(event, value);
@@ -68,7 +65,6 @@ void FrameMsgMgr::UpdateScene(SceneEvent scene)
     if (scene < SceneEvent::SCENE_INVALID || scene >= SceneEvent::SCENE_MAX) {
         scene = SceneEvent::SCENE_INVALID;
     }
-
     sceneType = scene;
 }
 

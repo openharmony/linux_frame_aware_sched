@@ -17,36 +17,27 @@
 
 namespace OHOS {
 namespace RME {
-
-DEFINE_RMELOG_SERVICE("ueaServer-AppInfoMgr");
-
 namespace {
     constexpr int INIT_VAL = -1;
-    std::mutex mMutex;
 }
-
+DEFINE_RMELOG_SERVICE("ueaServer-AppInfoMgr");
 IMPLEMENT_SINGLE_INSTANCE(AppInfoMgr);
 
 void AppInfoMgr::OnForegroundChanged(const int pid, const std::string appName, const int rtGrp)
 {
     if (mBackgroundAppList.count(pid)) {
-        RME_LOGE("[OnForegroundChanged]: back yes!pid:%{public}d", pid);
+        RME_LOGI("[OnForegroundChanged]: back yes!pid:%{public}d", pid);
         mBackgroundAppList[pid]->SetAppName(appName);
         mBackgroundAppList[pid]->SetAppState(AppState::APP_FOREGROUND);
         mForegroundAppList[pid] = mBackgroundAppList[pid];
         mBackgroundAppList.erase(pid);
     } else {
-        RME_LOGE("[OnForegroundChanged]: back No!pid:%{public}d", pid);
+        RME_LOGI("[OnForegroundChanged]: back No!pid:%{public}d", pid);
         auto appInfo = std::make_shared<AppInfo>(appName, pid, INIT_VAL, INIT_VAL, INIT_VAL, AppState::APP_FOREGROUND);
         mForegroundAppList[pid] = appInfo;
     }
     mForegroundAppList[pid]->SetRtgrp(rtGrp);
-
-    int isExistFore = mForegroundAppList.count(pid);
-    int isExistBack = mBackgroundAppList.count(pid);
-    RME_LOGE("[OnForegroundChanged]:isExistFore: %{public}d, size:%{public}d, isExistBack: %{public}d, size:%{public}d", isExistFore, mForegroundAppList.size(), isExistBack, mBackgroundAppList.size());
-
-    RME_LOGE("[OnForegroundChanged]:pid:%{public}d, rtgrp:%{public}d, \
+    RME_LOGI("[OnForegroundChanged]:pid:%{public}d, rtgrp:%{public}d, \
         app_state: %{public}d", pid, rtGrp, static_cast<int>(mForegroundAppList[pid]->GetAppState()));
 }
 
@@ -62,23 +53,14 @@ void AppInfoMgr::OnBackgroundChanged(const int pid, const std::string appName)
         RME_LOGE("[OnBackgroundChanged]:unfind app in foreground app when go to background! pid:%{public}d", pid);
     }
     mBackgroundAppList[pid]->SetRtgrp(INIT_VAL);
-    int isExistFore = mForegroundAppList.count(pid);
-    int isExistBack = mBackgroundAppList.count(pid);
-    RME_LOGE("[OnBackgroundChanged]:isExistFore: %{public}d,size:%{public}d, isExistBack: %{public}d, size:%{public}d", isExistFore,  mForegroundAppList.size(), isExistBack, mBackgroundAppList.size());
-
-    RME_LOGE("[OnBackgroundChanged]:pid:%{public}d, appName:%{public}s", pid, appName.c_str());
+    RME_LOGI("[OnBackgroundChanged]:pid:%{public}d, appName:%{public}s", pid, appName.c_str());
 }
 
 void AppInfoMgr::OnAppTerminateChanged(const int pid, const std::string appName)
 {
     mForegroundAppList.erase(pid);
     mBackgroundAppList.erase(pid);
-
-    int isExistFore = mForegroundAppList.count(pid);
-    int isExistBack = mBackgroundAppList.count(pid);
-    RME_LOGE("[OnAppTerminatedChanged]:isExistFore: %{public}d,size:%{public}d, isExistBack: %{public}d, size:%{public}d", isExistFore, isExistBack, mForegroundAppList.size(), mBackgroundAppList.size());
-
-    RME_LOGE("[OnAppTerminatedChanged]: pid: %{public}d, appName: %{public}s, \
+    RME_LOGI("[OnAppTerminatedChanged]: pid: %{public}d, appName: %{public}s, \
         ", pid, appName.c_str());
 }
 
@@ -92,7 +74,6 @@ void AppInfoMgr::OnWindowFocus(const int pid, bool isFocus)
             RME_LOGE("[OnAppFocus]:not found pid %{public}d in fore map", pid);
             return;
         }
-        
     } else {
         appInfo = mBackgroundAppList[pid];
         if (appInfo == nullptr) {
@@ -102,11 +83,7 @@ void AppInfoMgr::OnWindowFocus(const int pid, bool isFocus)
     }
     SetFocusApp(pid, isFocus);
     appInfo->SetFocusState(isFocus);
-    int isExistFore = mForegroundAppList.count(pid);
-    int isExistBack = mBackgroundAppList.count(pid);
-    RME_LOGE("[OnAppFocus]:isExistFore:isExistFore: %{public}d,size:%{public}d, isExistBack: %{public}d, size:%{public}d", isExistFore, mForegroundAppList.size(), isExistBack, mBackgroundAppList.size());
-
-    RME_LOGE("[OnAppFocus]: pid:%{public}d, isFocus:%{public}d, \
+    RME_LOGI("[OnAppFocus]: pid:%{public}d, isFocus:%{public}d, \
         ", pid, isFocus);
 }
 
@@ -131,11 +108,7 @@ bool AppInfoMgr::OnProcessDied(const int pid, const int tid)
             mBackgroundAppList[pid]->SetRenderTid(INIT_VAL);
         }
     }
-    int isExistFore = mForegroundAppList.count(pid);
-    int isExistBack = mBackgroundAppList.count(pid);
-    RME_LOGE("[OnProcessDied]:isExistFore: %{public}d,size:%{public}d, isExistBack: %{public}d, size:%{public}d", isExistFore, isExistBack, mForegroundAppList.size(), mBackgroundAppList.size());
-
-    RME_LOGE("[OnProcessDied]: pid: %{public}d, tid:%{public}d, deleted:%{public}d, isExist:foreground:%{public}d, \
+    RME_LOGI("[OnProcessDied]: pid: %{public}d, tid:%{public}d, deleted:%{public}d, isExist:foreground:%{public}d, \
         background:%{public}d.", pid, tid, deleted, mForegroundAppList.count(pid), mBackgroundAppList.count(pid));
     return deleted;
 }
@@ -147,7 +120,7 @@ void AppInfoMgr::SetFocusApp(const int pid, bool isFocus)
     } else {
         mFocusApp = nullptr;
     }
-    RME_LOGE("[SetFocusApp]:pid: %{public}d, isFocus%{public}d", pid, isFocus);
+    RME_LOGI("[SetFocusApp]:pid: %{public}d, isFocus%{public}d", pid, isFocus);
 }
 
 std::shared_ptr<AppInfo> AppInfoMgr::GetFocusApp() const
@@ -172,6 +145,5 @@ std::map<int, std::shared_ptr<AppInfo>> AppInfoMgr::GetForegroundApp() const
 {
     return mForegroundAppList;
 }
-
 } // namespace RME
 } // namespace OHOS

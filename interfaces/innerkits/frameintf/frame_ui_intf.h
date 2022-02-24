@@ -18,35 +18,33 @@
 
 namespace OHOS {
 namespace RME {
-
 class FrameUiIntf {
 public:
     static FrameUiIntf& GetInstance();
     void Init();
     int GetSenseSchedEnable();
-    void BeginFlushAnimation();
-    void EndFlushAnimation();
+    void BeginFlushAnimation() const;
+    void EndFlushAnimation() const;
 
-    void BeginFlushBuild();
-    void EndFlushBuild();
-    void BeginFlushLayout();
-    void EndFlushLayout();
+    void BeginFlushBuild() const;
+    void EndFlushBuild() const;
+    void BeginFlushLayout() const;
+    void EndFlushLayout() const;
 
-    void BeginFlushRender();
-    void EndFlushRender();
+    void BeginFlushRender() const;
+    void EndFlushRender() const;
 
-    void BeginFlushRenderFinish();
-    void EndFlushRenderFinish();
+    void BeginFlushRenderFinish() const;
+    void EndFlushRenderFinish() const;
 
-    void BeginProcessPostFlush();
-    void ProcessCommandsStart();
-    void AnimateStart();
-    void RenderStart();
-    void SendCommandsStart();
-
-    bool inited = false; 
+    void BeginProcessPostFlush() const;
+    void ProcessCommandsStart() const;
+    void AnimateStart() const;
+    void RenderStart() const;
+    void SendCommandsStart() const;
+private:
+    bool inited = false;
 };
-
 } // namespace RME
 } // namespace OHOS
 #endif

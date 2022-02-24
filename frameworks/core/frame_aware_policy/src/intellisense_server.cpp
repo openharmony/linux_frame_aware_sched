@@ -24,13 +24,12 @@
 
 namespace OHOS {
 namespace RME {
-
+namespace {
+    static std::string configFilePath = "/system/etc/frame_aware_sched/hwrme.xml"; // need To check the exact file path.
+}
 using namespace std;
 
-static std::string configFilePath = "/system/etc/frame_aware_sched/hwrme.xml"; // need To check the exact file path.
-
 DEFINE_RMELOG_INTELLISENSE("ueaServer-IntelliSenseServer");
-
 IMPLEMENT_SINGLE_INSTANCE(IntelliSenseServer);
 
 void IntelliSenseServer::Init()
@@ -151,7 +150,5 @@ void IntelliSenseServer::SetPara(const int32_t currentFps, const int32_t current
     map<std::string, int> tempMap = m_subEventPara[key];
     RME_LOGI("[SetPara]:subEventPara map size: %{public}d", tempMap.size());
 }
-
-
 } // namespace RME
 } // namesapce OHOS

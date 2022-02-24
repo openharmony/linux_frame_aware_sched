@@ -20,7 +20,6 @@
 
 namespace OHOS {
 namespace RME {
-
 DEFINE_RMELOG_INTELLISENSE("ueaServer-FrameMsgIntf");
 
 FrameMsgIntf& FrameMsgIntf::GetInstance()
@@ -79,7 +78,6 @@ void FrameMsgIntf::ReportWindowFocus(const int pid, const int isFocus)
 
 void FrameMsgIntf::ReportProcessInfo(const int pid, const int tid, ThreadState state)
 {
-
     if (threadHandler_ == nullptr) {
         RME_LOGI("[ReportWindowFocus]:threandHandler none!");
         return;
@@ -97,7 +95,6 @@ void FrameMsgIntf::Stop()
     }
     RME_LOGI("stop eventRunner success!");
 }
-
 } // namespace RME
 } // namespace OHOS
 

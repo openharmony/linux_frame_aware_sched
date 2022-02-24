@@ -22,7 +22,6 @@
 
 namespace OHOS {
 namespace RME {
-
 class FrameWindowMgr {
     DECLARE_SINGLE_INSTANCE(FrameWindowMgr);
 public:

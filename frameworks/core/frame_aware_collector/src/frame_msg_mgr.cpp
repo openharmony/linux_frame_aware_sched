@@ -17,14 +17,12 @@
 
 namespace OHOS {
 namespace RME {
-
 DEFINE_RMELOG_INTELLISENSE("ueaClient-FrameMsgMgr");
 IMPLEMENT_SINGLE_INSTANCE(FrameMsgMgr);
 
 FrameMsgMgr::FrameMsgMgr()
     : sceneType(SceneEvent::SLIDE), rmeScene(nullptr)
-{
-}
+{}
 
 FrameMsgMgr::~FrameMsgMgr()
 {
@@ -38,7 +36,6 @@ bool FrameMsgMgr::Init()
     if (rmeScene == nullptr) {
         rmeScene = new RmeSceneSched();
     }
-
     if (!rmeScene->Init()) {
         RME_LOGE("[Init]:inited failed!");
         return false;
@@ -75,7 +72,6 @@ void FrameMsgMgr::HandleDefaultEvent(FrameEvent event, EventState value)
         RME_LOGE("[HandleDefaultEvent]:scene nullptr");
         return;
     }
-
     switch (event) {
         case FrameEvent::FLUSH_ANIMATION:
             if (value == EventState::EVENT_ENTER) {
@@ -140,7 +136,6 @@ void FrameMsgMgr::SetSchedParam()
 
 FrameSceneSched *FrameMsgMgr::GetSceneHandler() const
 {
-
     if (sceneType == SceneEvent::SCENE_INVALID) {
         RME_LOGE("[GetSceneHandler]:get nullptr sceneType %{public}d,", static_cast<int>(sceneType));
         return nullptr;

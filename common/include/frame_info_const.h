@@ -18,7 +18,6 @@
 
 namespace OHOS {
 namespace RME {
-
 enum class FrameEvent {
     FLUSH_ANIMATION,
     FLUSH_BUILD,
@@ -52,7 +51,6 @@ enum class SceneEvent {
     CLICK,
     SCENE_MAX,
 };
-
 } // namespace RME
 } // namespace OHOS
 

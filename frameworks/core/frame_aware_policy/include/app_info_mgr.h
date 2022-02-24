@@ -26,7 +26,6 @@
 
 namespace OHOS {
 namespace RME {
-
 class AppInfoMgr {
     DECLARE_SINGLE_INSTANCE(AppInfoMgr);
 
@@ -40,14 +39,11 @@ public:
     std::shared_ptr<AppInfo> GetFocusApp() const;
     void SetFocusApp(const int pid, bool isFocus);
     int GetAppRtgrp(const int pid);
-
 private:
     std::map<int, std::shared_ptr<AppInfo>> mForegroundAppList;
     std::map<int, std::shared_ptr<AppInfo>> mBackgroundAppList;
     std::shared_ptr<AppInfo> mFocusApp;
 };
-
-
 } // namespace RME
 } // namespace OHOS
 #endif

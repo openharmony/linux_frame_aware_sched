@@ -18,12 +18,10 @@
 namespace OHOS {
 namespace RME {
 namespace {
-const int PRIO_TYPE = 0;
-const int RT_NUM = 0;
+    constexpr int PRIO_TYPE = 0;
+    constexpr int RT_NUM = 0;
 }
-
 DEFINE_RMELOG_INTELLISENSE("ueaServer-RtgMsgMgr");
-
 IMPLEMENT_SINGLE_INSTANCE(RtgMsgMgr);
 
 void RtgMsgMgr::Init()
@@ -35,12 +33,11 @@ void RtgMsgMgr::Init()
 }
 
 int RtgMsgMgr::OnForeground(const std::string appName, const int pid)
-{   // for multiwindow
-    RME_LOGI("[OnForeground]:pid:%{public}d:", pid);
+{   
+    // for multiwindow
     int rtGrp = CreateNewRtgGrp(PRIO_TYPE, RT_NUM);
-    RME_LOGI("[OnForeground]: createNewRtgGroup begin! rtGrp:%{public}d, pid: %{public}d", rtGrp, pid);
     if (rtGrp <= 0) {
-        RME_LOGI("[OnForeground]: createNewRtgGroup failed! rtGrp:%{public}d, pid: %{public}d", rtGrp, pid);
+        RME_LOGE("[OnForeground]: createNewRtgGroup failed! rtGrp:%{public}d, pid: %{public}d", rtGrp, pid);
         return rtGrp;
     }
     int ret = AddThreadToRtg(pid, rtGrp); // add ui thread
@@ -52,9 +49,8 @@ int RtgMsgMgr::OnForeground(const std::string appName, const int pid)
 
 void RtgMsgMgr::OnBackground(const std::string appName, const int pid, const int grpId)
 {
-    RME_LOGI("[OnBackground]:pid:%{public}d", pid);
     if (grpId <= 0) {
-        RME_LOGI("[OnBackground]:do not find grpid, pid:%{public}d, grpId:%{public}d", pid, grpId);
+        RME_LOGE("[OnBackground]:do not find grpid, pid:%{public}d, grpId:%{public}d", pid, grpId);
         return;
     }
     DestroyRtgGrp(grpId);
@@ -63,7 +59,7 @@ void RtgMsgMgr::OnBackground(const std::string appName, const int pid, const int
 void RtgMsgMgr::ProcessStart(const int tid, const int grpId)
 {
     if (grpId <= 0) {
-        RME_LOGI("[ProcessStart]:do not find grpid, tid:%{public}d, grpId:%{public}d", tid, grpId);
+        RME_LOGE("[ProcessStart]:do not find grpid, tid:%{public}d, grpId:%{public}d", tid, grpId);
         return;
     }
     AddThreadToRtg(tid, grpId);
@@ -79,9 +75,11 @@ void RtgMsgMgr::ProcessDied(const int pid, const int tid)
     }
     int ret = RemoveRtgThread(removeTid);
     if (ret < 0) {
-        RME_LOGI("[ProcessDied]: removeRtgGroup failed!pid:%{public}d, tid:%{public}d", pid, tid);
+        RME_LOGE("[ProcessDied]: removeRtgGroup failed!pid:%{public}d, tid:%{public}d", pid, tid);
+    } else {
+        RME_LOGI("[ProcessDied]: removeRtgGroup success! pid:%{public}d, tid:%{public}d:tid", pid, tid);
     }
-    RME_LOGI("[ProcessDied]: removeRtgGroup success! pid:%{public}d, tid:%{public}d:tid", pid, tid);
+
 }
 
 void RtgMsgMgr::FpsChanged()
@@ -93,6 +91,5 @@ void RtgMsgMgr::FocusChanged(const int pid, bool isFocus)
 {
     RME_LOGI("[FocusChanged]: need to change prio for rtggrp");
 }
-
 } // RME
 } // OHOS

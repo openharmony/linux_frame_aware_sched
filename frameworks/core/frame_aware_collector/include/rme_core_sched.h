@@ -21,26 +21,20 @@
 
 namespace OHOS {
 namespace RME {
-
 class RmeCoreSched {
 public:
     RmeCoreSched();
     ~RmeCoreSched();
 
     bool Init();
-
     void BeginFlushAnimation();
     void EndFlushAnimation();
-
     void BeginFlushBuild();
     void EndFlushBuild();
-
     void BeginFlushLayout();
     void EndFlushLayout();
-
     void BeginFlushRender();
     void EndFlushRender();
-
     void BeginFlushRenderFinish();
     void EndFlushRenderFinish();
 

@@ -56,7 +56,7 @@ void FrameMsgIntfTest::TearDown()
 {
     FrameMsgIntf::GetInstance().Stop();
     std::shared_ptr<AppExecFwk::EventHandler> thread = FrameMsgIntf::GetInstance().threadHandler_;
-    EXPECT_TRUE(thread == nullptr); 
+    EXPECT_TRUE(thread == nullptr);
 }
 
 HWTEST_F(FrameMsgIntfTest, FrameMsgIntfReportAppInfoColdStart, TestSize.Level1)
@@ -69,7 +69,6 @@ HWTEST_F(FrameMsgIntfTest, FrameMsgIntfReportAppInfoColdStart, TestSize.Level1)
     sleep(1);
     std::map<int, std::shared_ptr<AppInfo>> mapList = AppInfoMgr::GetInstance().GetForegroundApp();
     bool isAppPidExist = AppInfoMgr::GetInstance().GetForegroundApp().count(pid_1);
-    std::cout << "cold start: size:" << mapList.size() << " count:" << mapList.count(pid_1) << " isAppPidExist:" << isAppPidExist << std::endl;
     EXPECT_TRUE(isAppPidExist); // should be true
 }
 
@@ -86,7 +85,6 @@ HWTEST_F(FrameMsgIntfTest, FrameMsgIntfReportAppInfoWarmStart, TestSize.Level1)
 
     std::map<int, std::shared_ptr<AppInfo>> mapList = AppInfoMgr::GetInstance().GetForegroundApp();
     bool isAppPidExist = AppInfoMgr::GetInstance().GetForegroundApp().count(pid_1);
-    std::cout << "warm start: size:" << mapList.size() << " count:" << mapList.count(pid_1) << " isAppPidExist:" << isAppPidExist << std::endl;
     EXPECT_TRUE(isAppPidExist); // should be true
 }
 
@@ -103,7 +101,6 @@ HWTEST_F(FrameMsgIntfTest, FrameMsgIntfReportAppInfoTerminated, TestSize.Level1)
 
     std::map<int, std::shared_ptr<AppInfo>> mapList = AppInfoMgr::GetInstance().GetForegroundApp();
     bool isAppPidExist = AppInfoMgr::GetInstance().GetForegroundApp().count(pid_1);
-    std::cout << "app terminated: size:" << mapList.size() << " count:" << mapList.count(pid_1) << " isAppPidExist:" << isAppPidExist << std::endl;
     EXPECT_FALSE(isAppPidExist);
 }
 
@@ -114,7 +111,6 @@ HWTEST_F(FrameMsgIntfTest, FrameMsgIntfReportAppInfoSwitch, TestSize.Level1)
     int pid_2 = 10041;
     std::string appName_2 = "com.ohos.frameaware.testAppSwitch2";
 
-    // app foreground
     FrameMsgIntf::GetInstance().ReportAppInfo(appName_1, appName_1, pid_1, AppStateUpdateReason::APP_FOREGROUND);
     
     FrameMsgIntf::GetInstance().ReportAppInfo(appName_2, appName_2, pid_2, AppStateUpdateReason::APP_FOREGROUND);
@@ -125,60 +121,44 @@ HWTEST_F(FrameMsgIntfTest, FrameMsgIntfReportAppInfoSwitch, TestSize.Level1)
     sleep(1);
 
     std::map<int, std::shared_ptr<AppInfo>> mapList = AppInfoMgr::GetInstance().GetForegroundApp();
-    std::cout << "size:" << mapList.size() << " count:" << mapList.count(pid_1) << std::endl;
     bool isAppPidExist = AppInfoMgr::GetInstance().GetForegroundApp().count(pid_1);
     bool isAppPidExist2 = AppInfoMgr::GetInstance().GetForegroundApp().count(pid_2);
-
-    std::cout << "app switch: size:" << mapList.size() << " count:" << mapList.count(pid_1) << " isAppPidExist:" << isAppPidExist << std::endl;
-    
     EXPECT_TRUE(isAppPidExist); // should be true
     EXPECT_FALSE(isAppPidExist2); // should be false
 }
 
 HWTEST_F(FrameMsgIntfTest, FrameMsgIntfReportWindowFocus, TestSize.Level1)
 {
-
     int pid_1 = 1005;
-
     std::string appName_1 = "com.ohos.frameaware.testWindowFocus";
 
-    // app focus
     FrameMsgIntf::GetInstance().ReportAppInfo(appName_1, appName_1, pid_1, AppStateUpdateReason::APP_FOREGROUND);
     FrameMsgIntf::GetInstance().ReportWindowFocus(pid_1, 0);
     sleep(1);
-
     std::shared_ptr<AppInfo> app_1 = AppInfoMgr::GetInstance().GetFocusApp();
     bool focusSta_1 = app_1->GetFocusState();
-
     EXPECT_EQ(focusSta_1, false); // 0 means focus
 }
 
 HWTEST_F(FrameMsgIntfTest, FrameMsgIntfReportWindowUnFocus, TestSize.Level1)
 {
-
     int pid_1 = 1006;
-
     std::string appName_1 = "com.ohos.frameaware.testWindowUnfocus";
 
-    // app focus
     FrameMsgIntf::GetInstance().ReportAppInfo(appName_1, appName_1, pid_1, AppStateUpdateReason::APP_FOREGROUND);
     FrameMsgIntf::GetInstance().ReportAppInfo(appName_1, appName_1, pid_1, AppStateUpdateReason::APP_BACKGROUND);
     FrameMsgIntf::GetInstance().ReportWindowFocus(pid_1, 0);
     FrameMsgIntf::GetInstance().ReportWindowFocus(pid_1, 1);
     sleep(1);
-
     std::shared_ptr<AppInfo> app_1 = AppInfoMgr::GetInstance().GetFocusApp();
-
     EXPECT_EQ(app_1 == nullptr, true); // 1 means unfocus
 }
 
 HWTEST_F(FrameMsgIntfTest, FrameMsgIntfReportProcessInfoUiDiedFore, TestSize.Level1)
 {
-    //process died 
     int pid_1 = 1007;
     int ui_tid = pid_1;
 
-    // foreground ui died
     FrameMsgIntf::GetInstance().ReportWindowFocus(pid_1, 0);
     sleep(1);
     std::map<int, std::shared_ptr<AppInfo>> mapList = AppInfoMgr::GetInstance().GetForegroundApp();
@@ -194,7 +174,7 @@ HWTEST_F(FrameMsgIntfTest, FrameMsgIntfReportProcessInfoUiDiedBack, TestSize.Lev
 {
     int pid_1 = 1008;
     int ui_tid = pid_1;
-    //background ui died
+
     FrameMsgIntf::GetInstance().ReportWindowFocus(pid_1, 0);
     FrameMsgIntf::GetInstance().ReportWindowFocus(pid_1, 1);
     FrameMsgIntf::GetInstance().ReportProcessInfo(pid_1, ui_tid, ThreadState::DIED);
@@ -208,7 +188,6 @@ HWTEST_F(FrameMsgIntfTest, FrameMsgIntfReportProcessInfoRenderDiedFore, TestSize
     int pid_2 = 1009;
     int render_tid = 10091;
     
-    // foreground render died
     FrameMsgIntf::GetInstance().ReportWindowFocus(pid_2, 0);
     sleep(1);
     std::map<int, std::shared_ptr<AppInfo>> mapList = AppInfoMgr::GetInstance().GetForegroundApp();

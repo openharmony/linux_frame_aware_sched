@@ -105,6 +105,12 @@ void FrameMsgMgr::HandleDefaultEvent(FrameEvent event, EventState value)
                 scene->EndFlushRender();
             }
             break;
+        case FrameEvent::FLUSH_RENDER_FINISH:
+            if (value == EventState::EVENT_ENTER) {
+                scene->BeginFlushRenderFinish();
+            } else {
+                scene->EndFlushRenderFinish();
+            }
         case FrameEvent::PROCESS_POST_FLUSH:
             scene->BeginProcessPostFlush();
             break;
@@ -141,7 +147,5 @@ FrameSceneSched *FrameMsgMgr::GetSceneHandler() const
     }
     return rmeScene;
 }
-
-
 } // namespace RME
 } // namespace OHOS

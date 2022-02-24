@@ -26,7 +26,6 @@ public:
     FrameSceneSched() {};
     virtual ~FrameSceneSched() = default;
 
-//    virtual void UpdateBufferCount(int count);
     virtual void BeginFlushAnimation() = 0;
     virtual void EndFlushAnimation() = 0;
     virtual void BeginFlushBuild() = 0;
@@ -35,16 +34,15 @@ public:
     virtual void EndFlushLayout() = 0;
     virtual void BeginFlushRender() = 0;
     virtual void EndFlushRender() = 0;
+    virtual void BeginFlushRenderFinish() = 0;
+    virtual void EndFlushRenderFinish() = 0;
     virtual void BeginProcessPostFlush() = 0;
     virtual void ProcessCommandsStart() = 0;
     virtual void AnimateStart() = 0;
     virtual void RenderStart() = 0;
     virtual void SendCommandsStart() = 0;
-
 };
-
 } // namespace RME
-
 } // namespace OHOS
 
 #endif

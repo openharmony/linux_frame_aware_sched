@@ -41,6 +41,9 @@ public:
     void BeginFlushRender();
     void EndFlushRender();
 
+    void BeginFlushRenderFinish();
+    void EndFlushRenderFinish();
+
     void BeginProcessPostFlush();
     void ProcessCommandsStart();
     void AnimateStart();
@@ -54,7 +57,6 @@ private:
     int m_currentRtg = -1;
     bool isRenderAdd = false;
 };
-
 } // namespace RME
 } // namespace OHOS
 #endif

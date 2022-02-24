@@ -121,6 +121,22 @@ void FrameUiIntf::EndFlushRender()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER, EventState::EVENT_EXIT);
 }
 
+void FrameUiIntf::BeginFlushRenderFinish()
+{
+    if (!inited) {
+        return;
+    }
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER_FINISH, EventState::EVENT_ENTER);
+}
+
+void FrameUiIntf::EndFlushRenderFinish()
+{
+    if (!inited) {
+        return;
+    }
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER_FINISH, EventState::EVENT_EXIT);
+}
+
 void FrameUiIntf::BeginProcessPostFlush()
 {
     if (!inited) {
@@ -211,6 +227,16 @@ extern "C" void BeginFlushRender()
 extern "C" void EndFlushRender()
 {
     FrameUiIntf::GetInstance().EndFlushRender();
+}
+
+extern "C" void BeginFlushRenderFinish()
+{
+    FrameUiIntf::GetInstance().BeginFlushRenderFinish();
+}
+
+extern "C" void EndFlushRenderFinish()
+{
+    FrameUiIntf::GetInstance().EndFlushRenderFinish();
 }
 
 extern "C" void BeginProcessPostFlush()

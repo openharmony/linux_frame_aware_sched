@@ -106,6 +106,20 @@ void RmeSceneSched::EndFlushRender()
     }
 }
 
+void RmeSceneSched::BeginFlushRenderFinish()
+{
+    if (curWorkingStatus == 1) {
+        rmeCoreSched->BeginFlushRenderFinish();
+    }
+}
+
+void RmeSceneSched::EndFlushRenderFinish()
+{
+    if (curWorkingStatus == 1) {
+        rmeCoreSched->EndFlushRenderFinish();
+    }
+}
+
 void RmeSceneSched::BeginProcessPostFlush()
 {
     if (curWorkingStatus == 1) {
@@ -141,6 +155,5 @@ void RmeSceneSched::SendCommandsStart()
         RME_LOGI("[SendCommandsStart]:RmeSceneSched send msg success!");
     }
 }
-
 } // namespace RME
 } // namespace OHOS

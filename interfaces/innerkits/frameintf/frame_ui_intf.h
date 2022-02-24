@@ -35,6 +35,9 @@ public:
     void BeginFlushRender();
     void EndFlushRender();
 
+    void BeginFlushRenderFinish();
+    void EndFlushRenderFinish();
+
     void BeginProcessPostFlush();
     void ProcessCommandsStart();
     void AnimateStart();

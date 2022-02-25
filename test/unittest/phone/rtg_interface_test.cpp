@@ -232,7 +232,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceEndFrameFreq, TestSize.Level1)
     int grpId = 0;
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
-    ret = EndFrameFreq(grpId, 0);
+    ret = EndFrameFreq(grpId);
     EXPECT_EQ(ret, 0);
     ret = DestroyRtgGrp(grpId);
     EXPECT_EQ(ret, 0);
@@ -246,7 +246,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceEndFrameFreq, TestSize.Level1)
 HWTEST_F(RtgInterfaceTest, RtgInterfaceEndFrameFreqWithErrorGrp, TestSize.Level1)
 {
     int ret = 0;
-    ret = EndFrameFreq(-1, 0);
+    ret = EndFrameFreq(-1);
     EXPECT_NE(ret, 0);
 }
 

@@ -30,8 +30,9 @@
 namespace OHOS {
 namespace RME {
 namespace {
-    constexpr int MAX_LENGTH = 100;
-    constexpr int MAX_STR_LEN = 100;
+    constexpr size_t MAX_LENGTH = 100;
+    constexpr size_t MAX_STR_LEN = 100;
+    constexpr int RTG_TYPE_MAX = 3;
 }
 DEFINE_RMELOG_INTELLISENSE("rtg_interface");
 
@@ -73,13 +74,6 @@ int BasicOpenRtgNode()
     }
     return fd;
 }
-
-enum rtg_type {
-    VIP = 0,
-    TOP_TASK_KEY,
-    NORMAL_TASK,
-    RTG_TYPE_MAX,
-};
 
 int EnableRtg(bool flag)
 {

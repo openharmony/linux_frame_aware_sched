@@ -74,7 +74,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceCreateAndDestroy, TestSize.Level1)
 {
     int ret = 0;
     int grpId = 0;
-    grpId = CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(NORMAL_TASK, 0);
     EXPECT_GT(grpId, 0);
     ret = DestroyRtgGrp(grpId);
     EXPECT_EQ(ret, 0);

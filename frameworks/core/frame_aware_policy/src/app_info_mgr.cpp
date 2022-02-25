@@ -37,8 +37,7 @@ void AppInfoMgr::OnForegroundChanged(const int pid, const std::string appName, c
         mForegroundAppList[pid] = appInfo;
     }
     mForegroundAppList[pid]->SetRtgrp(rtGrp);
-    RME_LOGI("[OnForegroundChanged]:pid:%{public}d, rtgrp:%{public}d, \
-        app_state: %{public}d", pid, rtGrp, static_cast<int>(mForegroundAppList[pid]->GetAppState()));
+    RME_LOGI("[OnForegroundChanged]:pid:%{public}d, rtgrp:%{public}d", pid, rtGrp);
 }
 
 void AppInfoMgr::OnBackgroundChanged(const int pid, const std::string appName)
@@ -108,8 +107,7 @@ bool AppInfoMgr::OnProcessDied(const int pid, const int tid)
             mBackgroundAppList[pid]->SetRenderTid(INIT_VAL);
         }
     }
-    RME_LOGI("[OnProcessDied]: pid: %{public}d, tid:%{public}d, deleted:%{public}d, isExist:foreground:%{public}d, \
-        background:%{public}d.", pid, tid, deleted, mForegroundAppList.count(pid), mBackgroundAppList.count(pid));
+    RME_LOGI("[OnProcessDied]: pid: %{public}d, tid:%{public}d, deleted:%{public}d.", pid, tid, deleted);
     return deleted;
 }
 

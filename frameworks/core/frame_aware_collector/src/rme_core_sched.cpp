@@ -50,16 +50,16 @@ void RmeCoreSched::BeginFlushAnimation()
     if (m_currentRtg == -1) {
         m_currentRtg = SearchRtgForTid(m_currentPid);
         if (m_currentRtg <= 0) {
-            RME_LOGE("[BeginFlushAnimation]:Search rtg for pid %{public}d failed! \
-                m_currentRtg: %{public}d", m_currentPid, m_currentRtg);
+            RME_LOGE("[BeginFlushAnimation]:Search rtg failed!pid %{public}d,Rtg: %{public}d",
+                m_currentPid, m_currentRtg);
             return;
         } else {
-            RME_LOGI("[BeginFlushAnimation]:Search rtg sucess m_currentRtg, val:%{public}d", m_currentRtg);
+            RME_LOGI("[BeginFlushAnimation]:Search rtg sucess Rtg, val:%{public}d", m_currentRtg);
         }
     }
     int ret = BeginFrameFreq(m_currentRtg, 0);
-    RME_LOGI("[BeginFlushAnimation]: set BeginFrameFreq, currentRtg:%{public}d, currentPid:%{public}d, \
-        tid:%{public}d, ret:%{public}d!", m_currentRtg, m_currentPid, tid, ret);
+    RME_LOGI("[BeginFlushAnimation]:BeginFrameFreq,Rtg:%{public}d,Pid:%{public}d,tid:%{public}d, ret:%{public}d!",
+        m_currentRtg, m_currentPid, tid, ret);
     return;
 }
 
@@ -100,21 +100,17 @@ void RmeCoreSched::AnimateStart()
         return;
     }
     if (m_currentRtg <= 0) {
-        RME_LOGE("[AnimateStart]: search rtg error! m_currentRtg:%{public}d, \
-            m_currentPid:%{public}d", m_currentRtg, m_currentPid);
+        RME_LOGE("[AnimateStart]: search rtg error! Rtg:%{public}d, Pid:%{public}d", m_currentRtg, m_currentPid);
         return;
     }
     int rendertid = gettid();
-    int pid = getpid(); // ui tid equals pid now.
     int ret = AddThreadToRtg(rendertid, m_currentRtg);
     if (ret) {  // 1 means false.
-        RME_LOGE("[AnimateStart]:add rtg grp failed!, ret: %{public}d, rtGrp: %{public}d, rendertid: \
-            %{public}d, m_currentPid:%{public}d, pid: %{public}d", ret, m_currentRtg, rendertid, m_currentPid, pid);
+        RME_LOGE("[AnimateStart]:add rtg failed! rtGrp: %{public}d, rendertid: %{public}d, m_currentPid:%{public}d",
+            m_currentRtg, rendertid, m_currentPid);
     } else {
         isRenderAdd = true;
-        RME_LOGI("[AnimateStart]:add rtg grp SUCESS! rendertid: \
-            %{public}d, pid: %{public}d, rtGrp: %{public}d, m_currentPid:%{public}d",
-            rendertid, pid, m_currentRtg, m_currentPid);
+        RME_LOGI("[AnimateStart]:add rtg SUCESS! rendertid:%{public}d, rtGrp:%{public}d",rendertid, m_currentRtg);
     }
 }
 

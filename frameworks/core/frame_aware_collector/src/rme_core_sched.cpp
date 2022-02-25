@@ -110,7 +110,7 @@ void RmeCoreSched::AnimateStart()
             m_currentRtg, rendertid, m_currentPid);
     } else {
         isRenderAdd = true;
-        RME_LOGI("[AnimateStart]:add rtg SUCESS! rendertid:%{public}d, rtGrp:%{public}d",rendertid, m_currentRtg);
+        RME_LOGI("[AnimateStart]:add rtg SUCESS! rendertid:%{public}d, rtGrp:%{public}d", rendertid, m_currentRtg);
     }
 }
 

@@ -42,7 +42,7 @@ int RtgMsgMgr::OnForeground(const std::string appName, const int pid)
     }
     int ret = AddThreadToRtg(pid, rtGrp); // add ui thread
     if (ret != 0) {
-        RME_LOGE("[OnFore]:add thread fail! pid:%{public}d,rtg:%{public}d!ret:%{publid}d",pid, rtGrp, ret);
+        RME_LOGE("[OnFore]:add thread fail! pid:%{public}d,rtg:%{public}d!ret:%{publid}d", pid, rtGrp, ret);
     }
     return rtGrp;
 }

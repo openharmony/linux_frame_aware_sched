@@ -250,7 +250,7 @@ int SetMaxVipRtgs(int rtframe)
 {
     int ret = 0;
     char str_data[MAX_STR_LEN] = {};
-    (void)snprintf_s(str_data, MAX_STR_LEN, MAX_STR_LEN - 1, "rtframe:%d", rtframe);
+    snprintf(str_data, MAX_STR_LEN, "rtframe:%d", rtframe);
     struct rtg_str_data strData;
     strData.len = strlen(str_data);
     strData.data = str_data;
@@ -273,7 +273,7 @@ int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
 {
     int ret = 0;
     char str_data[MAX_LENGTH] = {};
-    (void)snprintf_s(str_data, MAX_LENGTH, MAX_LENGTH - 1, "rtgId:%d;rate:%d;type:%d", rtgId, rate, rtgType);
+    snprintf(str_data, MAX_LENGTH, "rtgId:%d;rate:%d;type:%d", rtgId, rate, rtgType);
     struct rtg_str_data strData;
     strData.len = strlen(str_data);
     strData.data = str_data;

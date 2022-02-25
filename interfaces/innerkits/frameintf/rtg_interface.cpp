@@ -14,7 +14,6 @@
  */
 
 #include "rtg_interface.h"
-#include <linux/types.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -24,16 +23,17 @@
 #include <cerrno>
 #include <string>
 #include <iostream>
+#include <linux/types.h>
 
 #include "rme_log_domain.h"
 
 namespace OHOS {
 namespace RME {
+namespace {
+    constexpr int MAX_LENGTH = 100;
+    constexpr int MAX_STR_LEN = 100;
+}
 DEFINE_RMELOG_INTELLISENSE("rtg_interface");
-
-#define MAX_LENGTH 100
-#define MAX_STR_LEN 100
-#define MAX_PATH_LEN 100
 
 #define RTG_SCHED_IPC_MAGIC 0xAB
 
@@ -322,9 +322,9 @@ int BeginFrameFreq(int grpId, int stateParam)
 int EndFrameFreq(int grpId)
 {
     int ret = 0;
-    struct proc_state_data state_data;	
+    struct proc_state_data state_data;
     state_data.grp_id = grpId;
-	state_data.state_param = 0;
+    state_data.state_param = 0;
 
     int fd = BasicOpenRtgNode();
     if (fd < 0) {
@@ -344,7 +344,7 @@ int EndFrameFreq(int grpId)
 int EndScene(int grpId)
 {
     int ret = 0;
-    struct proc_state_data state_data;	
+    struct proc_state_data state_data;
     state_data.grp_id = grpId;
 
     int fd = BasicOpenRtgNode();
@@ -387,9 +387,9 @@ int SetMinUtil(int grpId, int stateParam)
 int SetMargin(int grpId, int stateParam)
 {
     int ret = 0;
-    struct proc_state_data state_data;	
+    struct proc_state_data state_data;
     state_data.grp_id = grpId;
-	state_data.state_param = stateParam;
+    state_data.state_param = stateParam;
 
     int fd = BasicOpenRtgNode();
     if (fd < 0) {

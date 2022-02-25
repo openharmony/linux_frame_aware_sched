@@ -33,7 +33,7 @@ void RtgMsgMgr::Init()
 }
 
 int RtgMsgMgr::OnForeground(const std::string appName, const int pid)
-{   
+{
     // for multiwindow
     int rtGrp = CreateNewRtgGrp(PRIO_TYPE, RT_NUM);
     if (rtGrp <= 0) {
@@ -42,7 +42,8 @@ int RtgMsgMgr::OnForeground(const std::string appName, const int pid)
     }
     int ret = AddThreadToRtg(pid, rtGrp); // add ui thread
     if (ret != 0) {
-        RME_LOGI("[OnForeground]: add thread pid: %{public}d to rtgGrp: %{public}d failed! ret: %{publid}d", pid, rtGrp, ret);
+        RME_LOGI("[OnForeground]: add thread pid: %{public}d to rtgGrp: %{public}d \
+            failed! ret: %{publid}d", pid, rtGrp, ret);
     }
     return rtGrp;
 }
@@ -79,7 +80,6 @@ void RtgMsgMgr::ProcessDied(const int pid, const int tid)
     } else {
         RME_LOGI("[ProcessDied]: removeRtgGroup success! pid:%{public}d, tid:%{public}d:tid", pid, tid);
     }
-
 }
 
 void RtgMsgMgr::FpsChanged()

@@ -17,11 +17,11 @@
 
 #define private public
 #define protected public
+#include <map>
+#include <iostream>
 #include "frame_msg_intf.h"
 #include "app_info_mgr.h"
 #include "app_info.h"
-#include <map>
-#include <iostream>
 #undef private
 #undef protected
 

@@ -35,7 +35,7 @@ RmeCoreSched::~RmeCoreSched()
 bool RmeCoreSched::Init()
 {
     int ret = GetRtgEnable();
-    if (ret) {
+    if (ret > 0) {
         RME_LOGE("[Init]: rtgEnabled! scheme Open!ret: %{public}d", ret);
     } else {
         RME_LOGE("[Init]: do not enabled!ret: %{public}d", ret);
@@ -56,10 +56,10 @@ void RmeCoreSched::BeginFlushAnimation()
         } else {
             RME_LOGI("[BeginFlushAnimation]:Search rtg sucess m_currentRtg, val:%{public}d", m_currentRtg);
         }
-    }   
+    }
     int ret = BeginFrameFreq(m_currentRtg, 0);
     RME_LOGI("[BeginFlushAnimation]: set BeginFrameFreq, currentRtg:%{public}d, currentPid:%{public}d, \
-	    tid:%{public}d, ret:%{public}d!", m_currentRtg, m_currentPid, tid, ret);
+        tid:%{public}d, ret:%{public}d!", m_currentRtg, m_currentPid, tid, ret);
     return;
 }
 
@@ -112,8 +112,9 @@ void RmeCoreSched::AnimateStart()
             %{public}d, m_currentPid:%{public}d, pid: %{public}d", ret, m_currentRtg, rendertid, m_currentPid, pid);
     } else {
         isRenderAdd = true;
-        RME_LOGI("[AnimateStart]:add rtg grp SUCESS! rendertid: %{public}d, pid: %{public}d,\
-            rtGrp: %{public}d, m_currentPid:%{public}d", rendertid, pid, m_currentRtg, m_currentPid);
+        RME_LOGI("[AnimateStart]:add rtg grp SUCESS! rendertid: \
+            %{public}d, pid: %{public}d, rtGrp: %{public}d, m_currentPid:%{public}d",
+            rendertid, pid, m_currentRtg, m_currentPid);
     }
 }
 
@@ -126,13 +127,13 @@ void RmeCoreSched::SendCommandsStart()
 {
     int pid = getpid();
     if (m_currentRtg <= 0) {
-        RME_LOGE("[SendCommandStart]: m_currentRtg error! rtGrp:%{public}d, \
-            m_currentPid:%{public}d, pid:%{public}d!", m_currentRtg, m_currentPid, pid);
+        RME_LOGE("[SendCommandStart]: m_currentRtg error! rtGrp:%{public}d, m_currentPid:%{public}d, pid:%{public}d!",
+            m_currentRtg, m_currentPid, pid);
         return;
     }
     int ret = EndFrameFreq(m_currentRtg);
-    RME_LOGI("[SendCommandsStart]: set EndFrameFreq, ret: %{public}d, m_currentPid:\
-        %{publid}d, pid:%{public}d!", ret, m_currentPid, pid);
+    RME_LOGI("[SendCommandsStart]: set EndFrameFreq, ret: %{public}d, m_currentPid:%{publid}d, pid:%{public}d!",
+        ret, m_currentPid, pid);
 }
 } // namespace RME
 } // OHOS

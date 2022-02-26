@@ -24,13 +24,12 @@
 
 namespace OHOS {
 namespace RME {
-
+namespace {
+    static std::string configFilePath = "/system/etc/frame_aware_sched/hwrme.xml"; // need To check the exact file path.
+}
 using namespace std;
 
-static std::string configFilePath = "/system/etc/frame_aware_sched/hwrme.xml"; // need To check the exact file path.
-
 DEFINE_RMELOG_INTELLISENSE("ueaServer-IntelliSenseServer");
-
 IMPLEMENT_SINGLE_INSTANCE(IntelliSenseServer);
 
 void IntelliSenseServer::Init()
@@ -65,19 +64,25 @@ void IntelliSenseServer::ReportMessage(std::string appName, std::string processN
     int rtGrp = AppInfoMgr::GetInstance().GetAppRtgrp(pid);
     switch (reason) {
         case AppStateUpdateReason::APP_FOREGROUND:
-            rtGrp = RtgMsgMgr::GetInstance().OnForeground(appName, pid);
-            AppInfoMgr::GetInstance().OnForegroundChanged(pid, appName, rtGrp);
-            RME_LOGI("[ReportMessage]: App_foreground!");
+            {
+                rtGrp = RtgMsgMgr::GetInstance().OnForeground(appName, pid);
+                AppInfoMgr::GetInstance().OnForegroundChanged(pid, appName, rtGrp);
+                RME_LOGI("[ReportMessage]: App_foreground! rtGrp: %{public}d", rtGrp);
+            }
             break;
         case AppStateUpdateReason::APP_BACKGROUND:
-            RtgMsgMgr::GetInstance().OnBackground(appName, pid, rtGrp);
-            AppInfoMgr::GetInstance().OnBackgroundChanged(pid, appName);
-            RME_LOGI("[ReportMessage]: App_background!");
+            {
+                RtgMsgMgr::GetInstance().OnBackground(appName, pid, rtGrp);
+                AppInfoMgr::GetInstance().OnBackgroundChanged(pid, appName);
+                RME_LOGI("[ReportMessage]: App_background! rtGrp: %{public}d", rtGrp);
+            }
             break;
         case AppStateUpdateReason::APP_TERMINATED:
-            RtgMsgMgr::GetInstance().ProcessDied(pid, -1);
-            AppInfoMgr::GetInstance().OnAppTerminateChanged(pid, appName);
-            RME_LOGI("[ReportMessage]: App terminated!");
+            {
+                RtgMsgMgr::GetInstance().ProcessDied(pid, -1);
+                AppInfoMgr::GetInstance().OnAppTerminateChanged(pid, appName);
+                RME_LOGI("[ReportMessage]: App terminated! rtGrp: %{public}d", rtGrp);
+            }
             break;
         default:
             RME_LOGI("[ReportMessage]: get unuse app state msg!");
@@ -90,22 +95,23 @@ void IntelliSenseServer::ReportWindowFocus(const int pid, int isFocus)
 {
     int rtGrp = AppInfoMgr::GetInstance().GetAppRtgrp(pid);
     switch (isFocus) {
-        case static_cast<int>(WindowState::FOCUS_YES):
+        case static_cast<int>(WindowState::FOCUS_YES): // isFocus: 0
             {
                 rtGrp = RtgMsgMgr::GetInstance().OnForeground("", pid);
                 AppInfoMgr::GetInstance().OnForegroundChanged(pid, "", rtGrp);
-                RME_LOGI("[ReportWindowFocus]: Focus yes!");
+                RME_LOGI("[ReportWindowFocus]: Focus yes!rtGrp: %{public}d", rtGrp);
             }
             break;
-        case static_cast<int>(WindowState::FOCUS_NO):
+        case static_cast<int>(WindowState::FOCUS_NO): // isFocus: 1
             {
                 RtgMsgMgr::GetInstance().OnBackground("", pid, rtGrp);
                 AppInfoMgr::GetInstance().OnBackgroundChanged(pid, "");
-                RME_LOGI("[ReportWindowFocus]: Focus No!");
+                RME_LOGI("[ReportWindowFocus]: Focus No!rtGrp: %{public}d", rtGrp);
             }
             break;
         default:
             RME_LOGI("[ReportWindowFocus]:unknown msg!");
+            break;
     }
     AppInfoMgr::GetInstance().OnWindowFocus(pid, isFocus);
     RtgMsgMgr::GetInstance().FocusChanged(pid, isFocus);
@@ -144,7 +150,5 @@ void IntelliSenseServer::SetPara(const int32_t currentFps, const int32_t current
     map<std::string, int> tempMap = m_subEventPara[key];
     RME_LOGI("[SetPara]:subEventPara map size: %{public}d", tempMap.size());
 }
-
-
 } // namespace RME
 } // namesapce OHOS

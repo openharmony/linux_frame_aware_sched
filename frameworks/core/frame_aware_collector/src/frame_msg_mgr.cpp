@@ -17,14 +17,12 @@
 
 namespace OHOS {
 namespace RME {
-
 DEFINE_RMELOG_INTELLISENSE("ueaClient-FrameMsgMgr");
 IMPLEMENT_SINGLE_INSTANCE(FrameMsgMgr);
 
 FrameMsgMgr::FrameMsgMgr()
     : sceneType(SceneEvent::SLIDE), rmeScene(nullptr)
-{
-}
+{}
 
 FrameMsgMgr::~FrameMsgMgr()
 {
@@ -38,9 +36,8 @@ bool FrameMsgMgr::Init()
     if (rmeScene == nullptr) {
         rmeScene = new RmeSceneSched();
     }
-
     if (!rmeScene->Init()) {
-        RME_LOGE("[Init]:inited success!");
+        RME_LOGE("[Init]:inited failed!");
         return false;
     }
     RME_LOGI("[Init]:inited success!");
@@ -52,9 +49,6 @@ void FrameMsgMgr::EventUpdate(FrameEvent event, EventState value)
     switch (event) {
         case FrameEvent::EVENT_SET_PARAM:
             SetSchedParam();
-            break;
-        case FrameEvent::EVENT_RTG_ENABLE:
-            RME_LOGI("[EventUpdate]:rtg enable!");
             break;
         default:
             HandleDefaultEvent(event, value);
@@ -68,7 +62,6 @@ void FrameMsgMgr::UpdateScene(SceneEvent scene)
     if (scene < SceneEvent::SCENE_INVALID || scene >= SceneEvent::SCENE_MAX) {
         scene = SceneEvent::SCENE_INVALID;
     }
-
     sceneType = scene;
 }
 
@@ -79,7 +72,6 @@ void FrameMsgMgr::HandleDefaultEvent(FrameEvent event, EventState value)
         RME_LOGE("[HandleDefaultEvent]:scene nullptr");
         return;
     }
-
     switch (event) {
         case FrameEvent::FLUSH_ANIMATION:
             if (value == EventState::EVENT_ENTER) {
@@ -109,6 +101,12 @@ void FrameMsgMgr::HandleDefaultEvent(FrameEvent event, EventState value)
                 scene->EndFlushRender();
             }
             break;
+        case FrameEvent::FLUSH_RENDER_FINISH:
+            if (value == EventState::EVENT_ENTER) {
+                scene->BeginFlushRenderFinish();
+            } else {
+                scene->EndFlushRenderFinish();
+            }
         case FrameEvent::PROCESS_POST_FLUSH:
             scene->BeginProcessPostFlush();
             break;
@@ -138,14 +136,11 @@ void FrameMsgMgr::SetSchedParam()
 
 FrameSceneSched *FrameMsgMgr::GetSceneHandler() const
 {
-
     if (sceneType == SceneEvent::SCENE_INVALID) {
         RME_LOGE("[GetSceneHandler]:get nullptr sceneType %{public}d,", static_cast<int>(sceneType));
         return nullptr;
     }
     return rmeScene;
 }
-
-
 } // namespace RME
 } // namespace OHOS

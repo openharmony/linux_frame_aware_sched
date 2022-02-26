@@ -14,72 +14,66 @@
  */
 
 #include "rtg_interface.h"
-#include <linux/types.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>  
-#include <errno.h>
+#include <unistd.h>
+#include <securec.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cerrno>
 #include <string>
 #include <iostream>
+#include <linux/types.h>
 
 #include "rme_log_domain.h"
 
 namespace OHOS {
 namespace RME {
-
+namespace {
+    constexpr size_t MAX_LENGTH = 100;
+    constexpr size_t MAX_STR_LEN = 100;
+    constexpr int RTG_TYPE_MAX = 3;
+}
 DEFINE_RMELOG_INTELLISENSE("rtg_interface");
-
-#define MAX_LENGTH 100
-#define MAX_STR_LEN 100
-#define MAX_PATH_LEN 100
 
 #define RTG_SCHED_IPC_MAGIC 0xAB
 
 #define CMD_ID_SET_ENABLE \
-	_IOWR(RTG_SCHED_IPC_MAGIC, SET_ENABLE, struct rtg_enable_data)
+    _IOWR(RTG_SCHED_IPC_MAGIC, SET_ENABLE, struct rtg_enable_data)
 #define CMD_ID_SET_RTG \
-	_IOWR(RTG_SCHED_IPC_MAGIC, SET_RTG, struct rtg_str_data)
+    _IOWR(RTG_SCHED_IPC_MAGIC, SET_RTG, struct rtg_str_data)
 #define CMD_ID_SET_CONFIG \
-	_IOWR(RTG_SCHED_IPC_MAGIC, SET_CONFIG, struct rtg_str_data)
+    _IOWR(RTG_SCHED_IPC_MAGIC, SET_CONFIG, struct rtg_str_data)
 #define CMD_ID_SET_RTG_ATTR \
-	_IOWR(RTG_SCHED_IPC_MAGIC, SET_RTG_ATTR, struct rtg_str_data)
+    _IOWR(RTG_SCHED_IPC_MAGIC, SET_RTG_ATTR, struct rtg_str_data)
 #define CMD_ID_BEGIN_FRAME_FREQ \
-	_IOWR(RTG_SCHED_IPC_MAGIC, BEGIN_FRAME_FREQ, struct proc_state_data)
+    _IOWR(RTG_SCHED_IPC_MAGIC, BEGIN_FRAME_FREQ, struct proc_state_data)
 #define CMD_ID_END_FRAME_FREQ \
-	_IOWR(RTG_SCHED_IPC_MAGIC, END_FRAME_FREQ, struct proc_state_data)
+    _IOWR(RTG_SCHED_IPC_MAGIC, END_FRAME_FREQ, struct proc_state_data)
 #define CMD_ID_END_SCENE \
-	_IOWR(RTG_SCHED_IPC_MAGIC, END_SCENE, struct proc_state_data)
+    _IOWR(RTG_SCHED_IPC_MAGIC, END_SCENE, struct proc_state_data)
 #define CMD_ID_SET_MIN_UTIL \
-	_IOWR(RTG_SCHED_IPC_MAGIC, SET_MIN_UTIL, struct proc_state_data)
+    _IOWR(RTG_SCHED_IPC_MAGIC, SET_MIN_UTIL, struct proc_state_data)
 #define CMD_ID_SET_MARGIN \
-	_IOWR(RTG_SCHED_IPC_MAGIC, SET_MARGIN, struct proc_state_data)
+    _IOWR(RTG_SCHED_IPC_MAGIC, SET_MARGIN, struct proc_state_data)
 #define CMD_ID_LIST_RTG \
-	_IOWR(RTG_SCHED_IPC_MAGIC, LIST_RTG, struct rtg_info)
+    _IOWR(RTG_SCHED_IPC_MAGIC, LIST_RTG, struct rtg_info)
 #define CMD_ID_LIST_RTG_THREAD \
-	_IOWR(RTG_SCHED_IPC_MAGIC, LIST_RTG_THREAD, struct rtg_grp_data)
+    _IOWR(RTG_SCHED_IPC_MAGIC, LIST_RTG_THREAD, struct rtg_grp_data)
 #define CMD_ID_SEARCH_RTG \
     _IOWR(RTG_SCHED_IPC_MAGIC, SEARCH_RTG, struct proc_state_data)
+#define CMD_ID_GET_ENABLE \
+    _IOWR(RTG_SCHED_IPC_MAGIC, GET_ENABLE, struct rtg_enable_data)
 
 int BasicOpenRtgNode()
 {
-    char fileName[] = "/proc/rtg_ctrl";
+    char fileName[] = "/dev/sched_rtg_ctrl";
     int fd = open(fileName, O_RDWR);
     if (fd < 0) {
         RME_LOGE("Open fail, errno = %{public}d(%{public}s), dev = %{public}s", errno, strerror(errno), fileName);
     }
     return fd;
 }
-
-enum rtg_type {
-	VIP = 0,
-	TOP_TASK_KEY,
-	TOP_TASK,
-	NORMAL_TASK,
-	RTG_TYPE_MAX,
-};
 
 int EnableRtg(bool flag)
 {
@@ -110,7 +104,7 @@ int CreateNewRtgGrp(int prioType, int rtNum)
     if (fd < 0) {
         return fd;
     }
-    memset(&grp_data, 0, sizeof(struct rtg_grp_data));
+    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     if ((prioType > 0) && (prioType < RTG_TYPE_MAX)) {
         grp_data.prio_type = prioType;
     }
@@ -137,16 +131,16 @@ int AddThreadToRtg(int tid, int grpId)
         RME_LOGE("open node failed.");
         return fd;
     }
-    memset(&grp_data, 0, sizeof(struct rtg_grp_data));
+    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     grp_data.tid_num = 1;
     grp_data.tids[0] = tid;
     grp_data.grp_id = grpId;
-    grp_data.rtg_cmd = CMD_ADD_RTG_THREAD; 
+    grp_data.rtg_cmd = CMD_ADD_RTG_THREAD;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
-    if ( ret < 0) {
-        RME_LOGE("add rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
+    if (ret == 0) {
         RME_LOGI("add rtg grp success");
+    } else {
+        RME_LOGE("add tid %d to grp %d fail with ret %d", tid, grpId, ret);
     }
     close(fd);
     return ret;
@@ -160,7 +154,7 @@ int AddThreadsToRtg(vector<int> tids, int grpId)
     if (fd < 0) {
         return fd;
     }
-    memset(&grp_data, 0, sizeof(struct rtg_grp_data));
+    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     int num = tids.size();
     if (num > MAX_TID_NUM) {
         return -1;
@@ -178,8 +172,10 @@ int AddThreadsToRtg(vector<int> tids, int grpId)
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
     if ( ret < 0) {
         RME_LOGE("add rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
+    } else if (ret == 0) {
         RME_LOGI("add rtg grp success");
+    } else {
+        RME_LOGI("add rtg grp failed with %d threads", ret);
     }
     close(fd);
     return ret;
@@ -193,10 +189,10 @@ int RemoveRtgThread(int tid)
     if (fd < 0) {
         return fd;
     }
-    memset(&grp_data, 0, sizeof(struct rtg_grp_data));
+    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     grp_data.tid_num = 1;
     grp_data.tids[0] = tid;
-    grp_data.rtg_cmd = CMD_REMOVE_RTG_THREAD; 
+    grp_data.rtg_cmd = CMD_REMOVE_RTG_THREAD;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
     if ( ret < 0) {
         RME_LOGE("remove grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
@@ -215,8 +211,8 @@ int ClearRtgGrp(int GrpId)
     if (fd < 0) {
         return fd;
     }
-    memset(&grp_data, 0, sizeof(struct rtg_grp_data));
-    grp_data.rtg_cmd = CMD_CLEAR_RTG_GRP; 
+    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
+    grp_data.rtg_cmd = CMD_CLEAR_RTG_GRP;
     grp_data.grp_id = GrpId;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
     if ( ret < 0) {
@@ -236,8 +232,8 @@ int DestroyRtgGrp(int GrpId)
     if (fd < 0) {
         return fd;
     }
-    memset(&grp_data, 0, sizeof(struct rtg_grp_data));
-    grp_data.rtg_cmd = CMD_DESTROY_RTG_GRP; 
+    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
+    grp_data.rtg_cmd = CMD_DESTROY_RTG_GRP;
     grp_data.grp_id = GrpId;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
     if ( ret < 0) {
@@ -317,12 +313,12 @@ int BeginFrameFreq(int grpId, int stateParam)
     return ret;
 }
 
-int EndFrameFreq(int grpId, int stateParam)
+int EndFrameFreq(int grpId)
 {
     int ret = 0;
-    struct proc_state_data state_data;	
+    struct proc_state_data state_data;
     state_data.grp_id = grpId;
-	state_data.state_param = stateParam;
+    state_data.state_param = 0;
 
     int fd = BasicOpenRtgNode();
     if (fd < 0) {
@@ -339,11 +335,11 @@ int EndFrameFreq(int grpId, int stateParam)
     return ret;
 }
 
-int EndScene(int rtgId)
+int EndScene(int grpId)
 {
     int ret = 0;
-    struct proc_state_data state_data;	
-    state_data.grp_id = rtgId;
+    struct proc_state_data state_data;
+    state_data.grp_id = grpId;
 
     int fd = BasicOpenRtgNode();
     if (fd < 0) {
@@ -365,7 +361,7 @@ int SetMinUtil(int grpId, int stateParam)
     int ret = 0;
     struct proc_state_data state_data;	
     state_data.grp_id = grpId;
-	state_data.state_param = stateParam;
+    state_data.state_param = stateParam;
 
     int fd = BasicOpenRtgNode();
     if (fd < 0) {
@@ -385,9 +381,9 @@ int SetMinUtil(int grpId, int stateParam)
 int SetMargin(int grpId, int stateParam)
 {
     int ret = 0;
-    struct proc_state_data state_data;	
+    struct proc_state_data state_data;
     state_data.grp_id = grpId;
-	state_data.state_param = stateParam;
+    state_data.state_param = stateParam;
 
     int fd = BasicOpenRtgNode();
     if (fd < 0) {
@@ -415,7 +411,7 @@ int ListRtgGroup(vector<int> *rs)
     if (!rs) {
         return -1;
     }
-    memset(&rtg_info, 0, sizeof(struct rtg_info));
+    memset_s(&rtg_info, sizeof(struct rtg_info), 0, sizeof(struct rtg_info));
     ret = ioctl(fd, CMD_ID_LIST_RTG, &rtg_info);
     if ( ret < 0) {
         RME_LOGE("list rtg group failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
@@ -441,7 +437,7 @@ int ListRtgThread(int grpId, vector<int> *rs)
     if (!rs) {
         return -1;
     }
-    memset(&grp_data, 0, sizeof(struct rtg_grp_data));
+    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     grp_data.grp_id = grpId;
     ret = ioctl(fd, CMD_ID_LIST_RTG_THREAD, &grp_data);
     if ( ret < 0) {
@@ -469,7 +465,7 @@ int SearchRtgForTid(int tid)
         RME_LOGI("Search tid err: invalid tid.");
         return -1;
     }
-    memset(&search_data, 0, sizeof(struct proc_state_data));
+    memset_s(&search_data, sizeof(struct proc_state_data), 0, sizeof(struct proc_state_data));
     search_data.state_param = tid;
     ret = ioctl(fd, CMD_ID_SEARCH_RTG, &search_data);
     if ( ret < 0) {
@@ -481,5 +477,14 @@ int SearchRtgForTid(int tid)
     return ret;
 }
 
+int GetRtgEnable()
+{
+    struct rtg_enable_data enableData;
+    int fd = BasicOpenRtgNode();
+    if (fd < 0) {
+        return fd;
+    }
+    return ioctl(fd, CMD_ID_GET_ENABLE, &enableData);
+}
 } // namespace RME
 } // namespace OHOS

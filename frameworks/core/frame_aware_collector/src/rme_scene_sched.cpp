@@ -17,13 +17,11 @@
 
 namespace OHOS {
 namespace RME {
-
 DEFINE_RMELOG_INTELLISENSE("ueaClient-RmeSceneSched");
 
 RmeSceneSched::RmeSceneSched()
     :curWorkingStatus(0), rmeCoreSched(nullptr)
-{
-}
+{}
 
 RmeSceneSched::~RmeSceneSched()
 {
@@ -42,8 +40,8 @@ bool RmeSceneSched::Init()
     if (rmeCoreSched == nullptr) {
         return false;
     }
-    RME_LOGI("[Init]:RmeSceneSched init success!");
-    return true;
+    bool ret = rmeCoreSched->Init();
+    return ret;
 }
 
 void RmeSceneSched::BeginFlushAnimation()
@@ -106,6 +104,20 @@ void RmeSceneSched::EndFlushRender()
     }
 }
 
+void RmeSceneSched::BeginFlushRenderFinish()
+{
+    if (curWorkingStatus == 1) {
+        rmeCoreSched->BeginFlushRenderFinish();
+    }
+}
+
+void RmeSceneSched::EndFlushRenderFinish()
+{
+    if (curWorkingStatus == 1) {
+        rmeCoreSched->EndFlushRenderFinish();
+    }
+}
+
 void RmeSceneSched::BeginProcessPostFlush()
 {
     if (curWorkingStatus == 1) {
@@ -141,6 +153,5 @@ void RmeSceneSched::SendCommandsStart()
         RME_LOGI("[SendCommandsStart]:RmeSceneSched send msg success!");
     }
 }
-
 } // namespace RME
 } // namespace OHOS

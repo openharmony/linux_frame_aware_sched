@@ -29,11 +29,10 @@ using namespace testing::ext;
 #define RTG_INTERFACE_SO_PATH "/system/lib/librtg_interface.z.so"
 
 enum rtg_type {
-	VIP = 0,
-	TOP_TASK_KEY,
-	TOP_TASK,
-	NORMAL_TASK,
-	RTG_TYPE_MAX,
+    VIP = 0,
+    TOP_TASK_KEY,
+    NORMAL_TASK,
+    RTG_TYPE_MAX,
 };
 
 class RtgInterfaceTest : public testing::Test {
@@ -75,7 +74,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceCreateAndDestroy, TestSize.Level1)
 {
     int ret = 0;
     int grpId = 0;
-    grpId = CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(NORMAL_TASK, 0);
     EXPECT_GT(grpId, 0);
     ret = DestroyRtgGrp(grpId);
     EXPECT_EQ(ret, 0);
@@ -233,7 +232,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceEndFrameFreq, TestSize.Level1)
     int grpId = 0;
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
-    ret = EndFrameFreq(grpId, 0);
+    ret = EndFrameFreq(grpId);
     EXPECT_EQ(ret, 0);
     ret = DestroyRtgGrp(grpId);
     EXPECT_EQ(ret, 0);
@@ -247,7 +246,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceEndFrameFreq, TestSize.Level1)
 HWTEST_F(RtgInterfaceTest, RtgInterfaceEndFrameFreqWithErrorGrp, TestSize.Level1)
 {
     int ret = 0;
-    ret = EndFrameFreq(-1, 0);
+    ret = EndFrameFreq(-1);
     EXPECT_NE(ret, 0);
 }
 

@@ -21,25 +21,22 @@
 
 namespace OHOS {
 namespace RME {
-
 class RmeCoreSched {
 public:
     RmeCoreSched();
     ~RmeCoreSched();
 
-    void Init();
-
+    bool Init();
     void BeginFlushAnimation();
     void EndFlushAnimation();
-
     void BeginFlushBuild();
     void EndFlushBuild();
-
     void BeginFlushLayout();
     void EndFlushLayout();
-
     void BeginFlushRender();
     void EndFlushRender();
+    void BeginFlushRenderFinish();
+    void EndFlushRenderFinish();
 
     void BeginProcessPostFlush();
     void ProcessCommandsStart();
@@ -49,8 +46,11 @@ public:
     
     RmeCoreSched(const RmeCoreSched &) = delete;
     RmeCoreSched &operator=(const RmeCoreSched &) = delete;
+private:
+    int m_currentPid = -1;
+    int m_currentRtg = -1;
+    bool isRenderAdd = false;
 };
-
 } // namespace RME
 } // namespace OHOS
 #endif

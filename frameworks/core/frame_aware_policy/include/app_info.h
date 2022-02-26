@@ -20,14 +20,12 @@
 
 namespace OHOS {
 namespace RME {
-
 enum class AppState {
     APP_FOREGROUND,
     APP_BACKGROUND,
     APP_TERMINATED,
     APP_UNKNOWN,
 };
-
 
 class AppInfo {
 public:
@@ -47,18 +45,15 @@ public:
     int GetAppPid();
     void SetRtgrp(const int grpNum);
     int GetRtgrp();
-    
 private:
     std::string m_appName;
     int m_pid;
     int m_uiTid;
-    int m_renderTid; 
+    int m_renderTid;
     int m_isFocus;
-    int m_rtgrp;
+    int m_rtGrp;
     AppState m_appState;
 };
-
-
 } // RME
 } // OHOS
 #endif

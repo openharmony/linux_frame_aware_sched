@@ -23,12 +23,12 @@
 
 namespace OHOS {
 namespace RME {
-
 class RmeSceneSched : public FrameSceneSched {
 public:
     RmeSceneSched();
     ~RmeSceneSched() override;
 
+    bool Init();
     void BeginFlushAnimation() override;
     void EndFlushAnimation() override;
 
@@ -41,20 +41,18 @@ public:
     void BeginFlushRender() override;
     void EndFlushRender() override;
 
+    void BeginFlushRenderFinish() override;
+    void EndFlushRenderFinish() override;
+
     void BeginProcessPostFlush() override;
     void ProcessCommandsStart() override;
     void AnimateStart() override;
     void RenderStart() override;
     void SendCommandsStart() override;
-
-    bool Init();
-
 private:
     int curWorkingStatus;
     RmeCoreSched *rmeCoreSched;
 };
-
-
 } // namespace RME
 } // namespace OHOS
 #endif

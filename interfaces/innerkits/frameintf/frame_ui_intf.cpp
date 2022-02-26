@@ -21,10 +21,7 @@
 
 namespace OHOS {
 namespace RME {
-
 DEFINE_RMELOG_INTELLISENSE("ueaCleint-FrameUiIntf");
-
-//TO DO: need to check the init logic.
 
 FrameUiIntf& FrameUiIntf::GetInstance()
 {
@@ -51,13 +48,11 @@ int FrameUiIntf::GetSenseSchedEnable()
     if (!inited) {
         return static_cast<int>(ErrorCode::FAIL);
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_RTG_ENABLE, EventState::ENABLE);
     return static_cast<int>(ErrorCode::SUCC);
 }
 
-void FrameUiIntf::BeginFlushAnimation()
+void FrameUiIntf::BeginFlushAnimation() const
 {
-
     RME_LOGI("[BeginFlushAnimation]:start");
     if (!inited) {
         return;
@@ -65,7 +60,7 @@ void FrameUiIntf::BeginFlushAnimation()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_ANIMATION, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::EndFlushAnimation()
+void FrameUiIntf::EndFlushAnimation() const
 {
     if (!inited) {
         return;
@@ -73,16 +68,15 @@ void FrameUiIntf::EndFlushAnimation()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_BUILD, EventState::EVENT_EXIT);
 }
 
-void FrameUiIntf::BeginFlushBuild()
+void FrameUiIntf::BeginFlushBuild() const
 {
     if (!inited) {
         return;
     }
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_BUILD, EventState::EVENT_ENTER);
-    RME_LOGI("[BeginFlushBuild]:success"); 
 }
 
-void FrameUiIntf::EndFlushBuild()
+void FrameUiIntf::EndFlushBuild() const
 {
     if (!inited) {
         return;
@@ -90,15 +84,15 @@ void FrameUiIntf::EndFlushBuild()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_BUILD, EventState::EVENT_EXIT);
 }
 
-void FrameUiIntf::BeginFlushLayout()
-{ 
+void FrameUiIntf::BeginFlushLayout() const
+{
     if (!inited) {
         return;
     }
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_LAYOUT, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::EndFlushLayout()
+void FrameUiIntf::EndFlushLayout() const
 {
     if (!inited) {
         return;
@@ -106,7 +100,7 @@ void FrameUiIntf::EndFlushLayout()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_LAYOUT, EventState::EVENT_EXIT);
 }
 
-void FrameUiIntf::BeginFlushRender()
+void FrameUiIntf::BeginFlushRender() const
 {
     if (!inited) {
         return;
@@ -114,7 +108,7 @@ void FrameUiIntf::BeginFlushRender()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::EndFlushRender()
+void FrameUiIntf::EndFlushRender() const
 {
     if (!inited) {
         return;
@@ -122,7 +116,23 @@ void FrameUiIntf::EndFlushRender()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER, EventState::EVENT_EXIT);
 }
 
-void FrameUiIntf::BeginProcessPostFlush()
+void FrameUiIntf::BeginFlushRenderFinish() const
+{
+    if (!inited) {
+        return;
+    }
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER_FINISH, EventState::EVENT_ENTER);
+}
+
+void FrameUiIntf::EndFlushRenderFinish() const
+{
+    if (!inited) {
+        return;
+    }
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER_FINISH, EventState::EVENT_EXIT);
+}
+
+void FrameUiIntf::BeginProcessPostFlush() const
 {
     if (!inited) {
         return;
@@ -130,7 +140,7 @@ void FrameUiIntf::BeginProcessPostFlush()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::PROCESS_POST_FLUSH, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::ProcessCommandsStart()
+void FrameUiIntf::ProcessCommandsStart() const
 {
     if (!inited) {
         return;
@@ -138,7 +148,7 @@ void FrameUiIntf::ProcessCommandsStart()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::PROCESS_COMMANDS, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::AnimateStart()
+void FrameUiIntf::AnimateStart() const
 {
     if (!inited) {
         return;
@@ -146,7 +156,7 @@ void FrameUiIntf::AnimateStart()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::ANIMATE, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::RenderStart()
+void FrameUiIntf::RenderStart() const
 {
     if (!inited) {
         return;
@@ -154,7 +164,7 @@ void FrameUiIntf::RenderStart()
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::RENDER, EventState::EVENT_ENTER);
 }
 
-void FrameUiIntf::SendCommandsStart()
+void FrameUiIntf::SendCommandsStart() const
 {
     RME_LOGI("[SendCommandsStart]:start");
     if (!inited) {
@@ -164,5 +174,89 @@ void FrameUiIntf::SendCommandsStart()
     RME_LOGI("[SendCommandsStart]:success");
 }
 
+extern "C" void Init()
+{
+    FrameUiIntf::GetInstance().Init();
+}
+
+extern "C" int GetSenseSchedEnable()
+{
+    return FrameUiIntf::GetInstance().GetSenseSchedEnable();
+}
+
+extern "C" void BeginFlushAnimation()
+{
+    FrameUiIntf::GetInstance().BeginFlushAnimation();
+}
+
+extern "C" void EndFlushAnimation()
+{
+    FrameUiIntf::GetInstance().EndFlushAnimation();
+}
+
+extern "C" void BeginFlushBuild()
+{
+    FrameUiIntf::GetInstance().BeginFlushBuild();
+}
+
+extern "C" void EndFlushBuild()
+{
+    FrameUiIntf::GetInstance().EndFlushBuild();
+}
+
+extern "C" void BeginFlushLayout()
+{
+    FrameUiIntf::GetInstance().BeginFlushLayout();
+}
+
+extern "C" void EndFlushLayout()
+{
+    FrameUiIntf::GetInstance().EndFlushLayout();
+}
+
+extern "C" void BeginFlushRender()
+{
+    FrameUiIntf::GetInstance().BeginFlushRender();
+}
+
+extern "C" void EndFlushRender()
+{
+    FrameUiIntf::GetInstance().EndFlushRender();
+}
+
+extern "C" void BeginFlushRenderFinish()
+{
+    FrameUiIntf::GetInstance().BeginFlushRenderFinish();
+}
+
+extern "C" void EndFlushRenderFinish()
+{
+    FrameUiIntf::GetInstance().EndFlushRenderFinish();
+}
+
+extern "C" void BeginProcessPostFlush()
+{
+    FrameUiIntf::GetInstance().BeginProcessPostFlush();
+}
+
+extern "C" void ProcessCommandsStart()
+{
+    FrameUiIntf::GetInstance().ProcessCommandsStart();
+}
+
+extern "C" void AnimateStart()
+{
+    FrameUiIntf::GetInstance().AnimateStart();
+}
+
+extern "C" void RenderStart()
+{
+    FrameUiIntf::GetInstance().RenderStart();
+}
+
+extern "C" void SendCommandsStart()
+{
+    FrameUiIntf::GetInstance().SendCommandsStart();
+}
 } // namespace RME
 } // namespace OHOS

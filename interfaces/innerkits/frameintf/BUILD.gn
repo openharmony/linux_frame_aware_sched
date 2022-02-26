@@ -104,7 +104,12 @@ ohos_shared_library("frame_msg_intf") {
 ohos_shared_library("rtg_interface") {
   sources = [ "rtg_interface.cpp" ]
 
-  include_dirs = [ "${frame_aware_path}/common/include" ]
+  include_dirs = [
+    "${frame_aware_path}/common/include",
+    "//utils/native/base/include",
+  ]
+
+  deps = [ "//utils/native/base:utilsecurec" ]
 
   external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
 

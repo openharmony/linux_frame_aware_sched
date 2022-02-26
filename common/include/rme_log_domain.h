@@ -21,7 +21,6 @@
 
 namespace OHOS {
 namespace RmeLogDomain {
-
 constexpr uint32_t COMMON = 0xD006600;
 constexpr uint32_t RME_SERVICE = 0xD006601;
 constexpr uint32_t RME_TEST = 0xD006602;
@@ -50,23 +49,19 @@ constexpr uint32_t RME_INTELLISENSE = 0xD006604;
 */
 
 #define DEFINE_RMELOG_LABEL(name) \
-    static constexpr OHOS::HiviewDFX::HiLogLabel RME_LOG_LABEL = {LOG_CORE, OHOS::RmeLogDomain::COMMON, name};
+    static constexpr OHOS::HiviewDFX::HiLogLabel RME_LOG_LABEL = {LOG_CORE, OHOS::RmeLogDomain::COMMON, name}
 #define DEFINE_RMELOG_INTELLISENSE(name) \
-    static constexpr OHOS::HiviewDFX::HiLogLabel RME_LOG_LABEL = {LOG_CORE, OHOS::RmeLogDomain::RME_INTELLISENSE, name};
+    static constexpr OHOS::HiviewDFX::HiLogLabel RME_LOG_LABEL = {LOG_CORE, OHOS::RmeLogDomain::RME_INTELLISENSE, name}
 #define DEFINE_RMELOG_SERVICE(name) \
-    static constexpr OHOS::HiviewDFX::HiLogLabel RME_LOG_LABEL = {LOG_CORE, OHOS::RmeLogDomain::RME_SERVICE, name};
+    static constexpr OHOS::HiviewDFX::HiLogLabel RME_LOG_LABEL = {LOG_CORE, OHOS::RmeLogDomain::RME_SERVICE, name}
 #define DEFINE_RMELOG_TEST(name) \
-    static constexpr OHOS::HiviewDFX::HiLogLabel RME_LOG_LABEL = {LOG_CORE, OHOS::RmeLogDomain::RME_TEST, name};
-
+    static constexpr OHOS::HiviewDFX::HiLogLabel RME_LOG_LABEL = {LOG_CORE, OHOS::RmeLogDomain::RME_TEST, name}
 
 #define RME_LOGF(...) (void)OHOS::HiviewDFX::HiLog::Fatal(RME_LOG_LABEL, ##__VA_ARGS__)
 #define RME_LOGE(...) (void)OHOS::HiviewDFX::HiLog::Error(RME_LOG_LABEL, ##__VA_ARGS__)
 #define RME_LOGW(...) (void)OHOS::HiviewDFX::HiLog::Warn(RME_LOG_LABEL, ##__VA_ARGS__)
 #define RME_LOGI(...) (void)OHOS::HiviewDFX::HiLog::Info(RME_LOG_LABEL, ##__VA_ARGS__)
 #define RME_LOGD(...) (void)OHOS::HiviewDFX::HiLog::Debug(RME_LOG_LABEL, ##__VA_ARGS__)
-
-
 } // namespace RmeLogDomain
 } // namespace OHOS
-
 #endif // RME_LOG_DOMAIN_H

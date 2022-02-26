@@ -21,7 +21,7 @@
 #include <vector>
 #include <memory>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "third_party/libxml2/include/libxml/parser.h"
 #include "third_party/libxml2/include/libxml/tree.h"
@@ -31,7 +31,6 @@
 
 namespace OHOS {
 namespace RME {
-
 class ParaConfig {
 public:
     ParaConfig();
@@ -47,14 +46,11 @@ public:
     static std::map<std::string, std::map<std::string, int>> GetSubEventConfig();
     static std::vector<int> GetFpsList();
     static std::vector<int> GetRenderTypeList();
-//    static bool GetSwitchEnable();
-
 private:
     static std::map<std::string, std::string> m_generalConfig;
     static std::map<std::string, std::map<std::string, int>> m_subEventConfig;
     static std::vector<int> m_fpsList;
     static std::vector<int> m_renderTypeList;
-//    static bool m_switchEnable;
 
     static void ReadAttr(xmlNodePtr& root, const std::string& attrName, std::string& res);
     static void ReadFrameConfig(const xmlNodePtr& root);
@@ -64,11 +60,7 @@ private:
     static void SplitString(const std::string& context, const std::string& character,
         std::vector<int> &mList, const int maxVal, const std::string& attrName);
     static bool IsValidNode(const xmlNode& currNode);
-
 };
-
-
 } // namespace RME
-
 } // namespace OHOS
 #endif

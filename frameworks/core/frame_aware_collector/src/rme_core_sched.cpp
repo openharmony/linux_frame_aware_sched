@@ -18,103 +18,118 @@
 
 namespace OHOS {
 namespace RME {
-
-DEFINE_RMELOG_INTELLISENSE("ueaClient-RmeCoreSched");
-
-RmeCoreSched::RmeCoreSched()
-{
-    return;
+namespace {
+    constexpr int CPU_MARGIN_THREE = -3;
+    constexpr int CPU_MARGIN_FIVE = -5;
+    constexpr int CPU_MARGIN_SEVEN = -7;
 }
+DEFINE_RMELOG_INTELLISENSE("ueaClient-RmeCoreSched");
+RmeCoreSched::RmeCoreSched() {}
 
 RmeCoreSched::~RmeCoreSched()
 {
+    EnableRtg(false);
     return;
 }
 
-void RmeCoreSched::Init()
+bool RmeCoreSched::Init()
 {
-    int ret = EnableRtg(true);
-    if (ret < 0) {
-        RME_LOGE("[Init]: enableRtg failed!");
+    int ret = GetRtgEnable();
+    if (ret > 0) {
+        RME_LOGE("[Init]: rtgEnabled! scheme Open!ret: %{public}d", ret);
+    } else {
+        RME_LOGE("[Init]: do not enabled!ret: %{public}d", ret);
     }
-    return;
+    return ret;
 }
 
 void RmeCoreSched::BeginFlushAnimation()
 {
+    m_currentPid = getpid();
     int tid = gettid();
-    int rtGrp = SearchRtgForTid(tid);
-    if (rtGrp < 0) {
-        RME_LOGE("[BeginFlushAnimation]: search rtg for tid failed!");
+    if (m_currentRtg == -1) {
+        m_currentRtg = SearchRtgForTid(m_currentPid);
+        if (m_currentRtg <= 0) {
+            RME_LOGE("[BeginFlushAnimation]:Search rtg failed!pid %{public}d,Rtg: %{public}d",
+                m_currentPid, m_currentRtg);
+            return;
+        } else {
+            RME_LOGI("[BeginFlushAnimation]:Search rtg sucess Rtg, val:%{public}d", m_currentRtg);
+        }
     }
-    int ret = BeginFrameFreq(rtGrp, 0);
-    RME_LOGI("[BeginFlushAnimation]: set BeginFrameFreq(2, 0), ret: %{public}d!",ret);
+    int ret = BeginFrameFreq(m_currentRtg, 0);
+    RME_LOGI("[BeginFlushAnimation]:BeginFrameFreq,Rtg:%{public}d,Pid:%{public}d,tid:%{public}d, ret:%{public}d!",
+        m_currentRtg, m_currentPid, tid, ret);
     return;
 }
 
-void RmeCoreSched::EndFlushAnimation()
-{
-}
+void RmeCoreSched::EndFlushAnimation() {}
 
 void RmeCoreSched::BeginFlushBuild()
 {
+    SetMargin(m_currentRtg, CPU_MARGIN_THREE);
 }
 
-void RmeCoreSched::EndFlushBuild()
-{
-}
+void RmeCoreSched::EndFlushBuild() {}
 
-void RmeCoreSched::BeginFlushLayout()
-{
-}
+void RmeCoreSched::BeginFlushLayout() {}
 
-void RmeCoreSched::EndFlushLayout()
-{
-}
+void RmeCoreSched::EndFlushLayout() {}
 
 void RmeCoreSched::BeginFlushRender()
 {
+    SetMargin(m_currentRtg, CPU_MARGIN_FIVE);
 }
 
-void RmeCoreSched::EndFlushRender()
+void RmeCoreSched::EndFlushRender() {}
+
+void RmeCoreSched::BeginFlushRenderFinish()
 {
+    SetMargin(m_currentRtg, CPU_MARGIN_SEVEN);
 }
 
-void RmeCoreSched::BeginProcessPostFlush()
-{
-}
+void RmeCoreSched::EndFlushRenderFinish() {}
 
-void RmeCoreSched::ProcessCommandsStart()
-{
-}
+void RmeCoreSched::BeginProcessPostFlush() {}
+
+void RmeCoreSched::ProcessCommandsStart() {}
 
 void RmeCoreSched::AnimateStart()
 {
-    int rendertid = gettid();
-    int uitid = getpid(); // ui tid equals pid now.
-    int rtGrp = SearchRtgForTid(uitid);
-    if (rtGrp < 0) {
-        RME_LOGE("[AnimateStart]: search rtg for tid failed! uitid:%{public}d", uitid);
+    if (isRenderAdd) {
+        return;
     }
-    int ret = AddThreadToRtg(rendertid, rtGrp);
-    RME_LOGE("[AnimateStart]:add rtg grp failed! ret: %{public}d, rendertid: \
-        %{public}d, rtGrp: %{public}d", ret, rendertid, rtGrp);
+    if (m_currentRtg <= 0) {
+        RME_LOGE("[AnimateStart]: search rtg error! Rtg:%{public}d, Pid:%{public}d", m_currentRtg, m_currentPid);
+        return;
+    }
+    int rendertid = gettid();
+    int ret = AddThreadToRtg(rendertid, m_currentRtg);
+    if (ret) {  // 1 means false.
+        RME_LOGE("[AnimateStart]:add rtg failed! rtGrp: %{public}d, rendertid: %{public}d, m_currentPid:%{public}d",
+            m_currentRtg, rendertid, m_currentPid);
+    } else {
+        isRenderAdd = true;
+        RME_LOGI("[AnimateStart]:add rtg SUCESS! rendertid:%{public}d, rtGrp:%{public}d", rendertid, m_currentRtg);
+    }
 }
 
 void RmeCoreSched::RenderStart()
 {
+    SetMargin(m_currentRtg, CPU_MARGIN_THREE);
 }
 
 void RmeCoreSched::SendCommandsStart()
 {
-    int tid = gettid();
-    int rtGrp = SearchRtgForTid(tid);
-    if (rtGrp < 0) {
-        RME_LOGE("[BeginFlushAnimation]: search rtg for tid failed!");
+    int pid = getpid();
+    if (m_currentRtg <= 0) {
+        RME_LOGE("[SendCommandStart]: m_currentRtg error! rtGrp:%{public}d, m_currentPid:%{public}d, pid:%{public}d!",
+            m_currentRtg, m_currentPid, pid);
+        return;
     }
-    int ret = EndFrameFreq(rtGrp, 16); 
-    RME_LOGI("[SendCommandsStart]: set EndFrameFreq(2, 16), ret: %{public}d!", ret);
+    int ret = EndFrameFreq(m_currentRtg);
+    RME_LOGI("[SendCommandsStart]: set EndFrameFreq, ret: %{public}d, m_currentPid:%{publid}d, pid:%{public}d!",
+        ret, m_currentPid, pid);
 }
-
 } // namespace RME
 } // OHOS

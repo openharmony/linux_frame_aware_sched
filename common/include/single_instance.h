@@ -41,9 +41,7 @@ className& className::GetInstance()          \
 {                                            \
     static auto instance = new className();  \
     return *instance;                        \
-}    
-
+}
 } // namespace RME
 } // namespace OHOS
-
 #endif // SINGLE_INSTANCE_H

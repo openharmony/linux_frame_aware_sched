@@ -15,12 +15,11 @@
 
 #include "para_config.h"
 
-namespace OHOS { 
+namespace OHOS {
 namespace RME {
-
 namespace {
-constexpr int FPS_MAX_VALUE = 120;
-constexpr int RENDER_TYPE_MAX_VALUE = 2;
+    constexpr int FPS_MAX_VALUE = 120;
+    constexpr int RENDER_TYPE_MAX_VALUE = 2;
 }
 
 DEFINE_RMELOG_INTELLISENSE("ueaServer-ParaConfig");
@@ -33,27 +32,25 @@ std::vector<int> ParaConfig::m_renderTypeList;
 bool ParaConfig::IsXmlPrepared(const std::string& filePath)
 {
     RME_LOGI("[IsXmlPrepared]:begin!");
-    xmlDocPtr docPtr;
-    docPtr = xmlReadFile(filePath.c_str(), nullptr, XML_PARSE_NOBLANKS);
+    xmlDocPtr docPtr = xmlReadFile(filePath.c_str(), nullptr, XML_PARSE_NOBLANKS);
     RME_LOGI("[IsXmlPrepared]:filePath:%{public}s", filePath.c_str());
     if (docPtr == nullptr) {
         RME_LOGE("[IsXmlPrepared]:load xml error!");
-	    return false;
+        return false;
     }
 
-    xmlNodePtr rootPtr;
-    rootPtr = xmlDocGetRootElement(docPtr);
+    xmlNodePtr rootPtr = xmlDocGetRootElement(docPtr);
     if (rootPtr == nullptr || rootPtr->name == nullptr) {
         RME_LOGE("[IsXmlPrepared]: get root element failed!");
         xmlFreeDoc(docPtr);
-	    return false;
+        return false;
     }
     for (xmlNodePtr curNodePtr = rootPtr->xmlChildrenNode; curNodePtr != nullptr; curNodePtr = curNodePtr->next) {
         if (IsValidNode(*curNodePtr)) {
             RME_LOGE("[IsXmlPrepared]: invalid node!");
             continue;
         }
-	auto nodeName = curNodePtr->name; // char* to string
+    auto nodeName = curNodePtr->name; // char* to string
         if (!xmlStrcmp(nodeName, reinterpret_cast<const xmlChar*>("log_open")) || 
             !xmlStrcmp(nodeName, reinterpret_cast<const xmlChar*>("enable")) ||
             !xmlStrcmp(nodeName, reinterpret_cast<const xmlChar*>("SOC")) ||
@@ -90,8 +87,8 @@ void ParaConfig::ReadConfigInfo(const xmlNodePtr& root)
 {
     xmlChar* context = xmlNodeGetContent(root);
     if (context == nullptr) {
-	RME_LOGE("[GetConfigInfo]:read xml node error: nodeName:(%{public}s)", root->name);
-	return;
+        RME_LOGE("[GetConfigInfo]:read xml node error: nodeName:(%{public}s)", root->name);
+        return;
     }
     std::string nodeName = reinterpret_cast<const char *>(root->name);
     m_generalConfig[nodeName] = std::string(reinterpret_cast<const char*>(context));
@@ -103,7 +100,7 @@ void ParaConfig::ReadFpsConfig(const xmlNodePtr& root)
     xmlChar* context = xmlNodeGetContent(root);
     if (context == nullptr) {
         RME_LOGE("[GetFpsConfig]: fps read failed!");
-	return;
+    return;
     }
 
     SplitString(std::string(reinterpret_cast<const char*>(context)), " ", m_fpsList, FPS_MAX_VALUE, "fpsList");
@@ -133,21 +130,21 @@ void ParaConfig::SplitString(const std::string& context, const std::string& char
 
     while (pos != toSplitStr.npos) {
         int curVal = atoi(toSplitStr.substr(0, pos).c_str());
-	if (curVal <= 0 && curVal > maxVal) {
+    if (curVal <= 0 && curVal > maxVal) {
             RME_LOGI("[SplitString]:get data error! attr name:%{public}s", attrName.c_str());
-	    return;
-	}
-	mList.push_back(curVal);
+        return;
+    }
+    mList.push_back(curVal);
 
-	toSplitStr = toSplitStr.substr(pos + 1,toSplitStr.size());
-	pos = toSplitStr.find(character);
+    toSplitStr = toSplitStr.substr(pos + 1,toSplitStr.size());
+    pos = toSplitStr.find(character);
     }
     RME_LOGI("[SplitString]:get data success!attr name:%{public}s", attrName.c_str());
 }
 
 void ParaConfig::ReadFrameConfig(const xmlNodePtr& root)
 {
-    // TODO: need abnormal process!  what if the xml has problem when traversal?
+    // to need abnormal process!  what if the xml has problem when traversal?
     for (xmlNodePtr curNode = root->xmlChildrenNode; curNode != nullptr; curNode = curNode->next) {
         if (IsValidNode(*curNode)) {
             RME_LOGE("[IsXmlPrepared]: invalid node!");
@@ -208,6 +205,5 @@ std::vector<int> ParaConfig::GetRenderTypeList()
 {
     return m_renderTypeList;
 }
-
 } // namespace RME
 } // namespace OHOS

@@ -96,9 +96,6 @@ void RmeCoreSched::ProcessCommandsStart() {}
 
 void RmeCoreSched::AnimateStart()
 {
-    if (isRenderAdd) {
-        return;
-    }
     if (m_currentRtg <= 0) {
         RME_LOGE("[AnimateStart]: search rtg error! Rtg:%{public}d, Pid:%{public}d", m_currentRtg, m_currentPid);
         return;
@@ -109,7 +106,6 @@ void RmeCoreSched::AnimateStart()
         RME_LOGE("[AnimateStart]:add rtg failed! rtGrp: %{public}d, rendertid: %{public}d, m_currentPid:%{public}d",
             m_currentRtg, rendertid, m_currentPid);
     } else {
-        isRenderAdd = true;
         RME_LOGI("[AnimateStart]:add rtg SUCESS! rendertid:%{public}d, rtGrp:%{public}d", rendertid, m_currentRtg);
     }
 }

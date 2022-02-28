@@ -49,7 +49,6 @@ public:
 private:
     int m_currentPid = -1;
     int m_currentRtg = -1;
-    bool isRenderAdd = false;
 };
 } // namespace RME
 } // namespace OHOS

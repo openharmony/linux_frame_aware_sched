@@ -89,8 +89,8 @@ extern "C"{
     int EnableRtg(bool flag);
     //-----for frame rtg-----//
     int CreateNewRtgGrp(int prioType = 0, int rtNum = 0); // Return GrpId if success
-    int AddThreadToRtg(int tid, int grpId);
-    int AddThreadsToRtg(vector<int> tids, int grpId);
+    int AddThreadToRtg(int tid, int grpId, int prioType = 0);
+    int AddThreadsToRtg(vector<int> tids, int grpId, int prioType = 0);
     int RemoveRtgThread(int tid);
     int ClearRtgGrp(int grpId);
     int DestroyRtgGrp(int grpId);

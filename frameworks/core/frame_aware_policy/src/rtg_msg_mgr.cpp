@@ -40,7 +40,7 @@ int RtgMsgMgr::OnForeground(const std::string appName, const int pid)
         RME_LOGE("[OnForeground]: createNewRtgGroup failed! rtGrp:%{public}d, pid: %{public}d", rtGrp, pid);
         return rtGrp;
     }
-    int ret = AddThreadToRtg(pid, rtGrp); // add ui thread
+    int ret = AddThreadToRtg(pid, rtGrp, 2); // add main thread, 2 means NORMAL_TASK
     if (ret != 0) {
         RME_LOGE("[OnFore]:add thread fail! pid:%{public}d,rtg:%{public}d!ret:%{publid}d", pid, rtGrp, ret);
     }

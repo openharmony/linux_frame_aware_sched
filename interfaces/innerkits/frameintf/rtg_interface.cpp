@@ -138,11 +138,6 @@ int AddThreadToRtg(int tid, int grpId, int prioType)
     grp_data.rtg_cmd = CMD_ADD_RTG_THREAD;
     grp_data.prio_type = prioType;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
-    if (ret == 0) {
-        RME_LOGI("add rtg grp success");
-    } else {
-        RME_LOGE("add tid %{public}d to grp %{public}d fail with ret %{public}d", tid, grpId, ret);
-    }
     close(fd);
     return ret;
 }
@@ -241,7 +236,7 @@ int DestroyRtgGrp(int GrpId)
     if (ret < 0) {
         RME_LOGE("destroy rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
-        RME_LOGI("destroy rtg grp success, get rtg id %{public}d.", ret);
+        RME_LOGI("destroy rtg grp success, get rtg id:%{public}d, ret:%{public}d.", GrpId, ret);
     }
     close(fd);
     return ret;
@@ -275,7 +270,7 @@ int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
 {
     int ret = 0;
     char str_data[MAX_LENGTH] = {};
-    snprintf(str_data, MAX_LENGTH, "rtgId:%d;rate:%d;type:%d", rtgId, rate, rtgType);
+    (void)sprintf_s(str_data, sizeof(str_data), "rtgId:%d;rate:%d;type:%d", rtgId, rate, rtgType);
     struct rtg_str_data strData;
     strData.len = strlen(str_data);
     strData.data = str_data;
@@ -306,11 +301,6 @@ int BeginFrameFreq(int grpId, int stateParam)
         return fd;
     }
     ret = ioctl(fd, CMD_ID_BEGIN_FRAME_FREQ, &state_data);
-    if (ret < 0) {
-        RME_LOGE("set BeginFrameFreq failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
-        RME_LOGI("set BeginFrameFreq success, get ret %{public}d.", ret);
-    }
     close(fd);
     return ret;
 }
@@ -327,13 +317,7 @@ int EndFrameFreq(int grpId)
         return fd;
     }
     ret = ioctl(fd, CMD_ID_END_FRAME_FREQ, &state_data);
-    if (ret < 0) {
-        RME_LOGE("set EndFrameFreq failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
-        RME_LOGI("set EndFrameFreq success, get ret %{public}d.", ret);
-    }
     close(fd);
-
     return ret;
 }
 
@@ -376,7 +360,6 @@ int SetMinUtil(int grpId, int stateParam)
         RME_LOGI("set min util success, get ret %{public}d.", ret);
     }
     close(fd);
-
     return ret;
 }
 
@@ -392,13 +375,7 @@ int SetMargin(int grpId, int stateParam)
         return fd;
     }
     ret = ioctl(fd, CMD_ID_SET_MARGIN, &state_data);
-    if (ret < 0) {
-        RME_LOGE("set margin failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
-        RME_LOGI("set margin success, get ret %{public}d.", ret);
-    }
     close(fd);
-
     return ret;
 }
 

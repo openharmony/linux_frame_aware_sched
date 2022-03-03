@@ -30,6 +30,7 @@ config("frame_ui_intf_config") {
 
 ohos_shared_library("frame_ui_intf") {
   sources = [
+    "${frame_aware_path}/common/src/rme_scoped_trace.cpp",
     "${frame_aware_path}/interfaces/innerkits/frameintf/rtg_interface.cpp",
     "${framework_path}/frame_aware_collector/src/frame_msg_mgr.cpp",
     "${framework_path}/frame_aware_collector/src/frame_window_mgr.cpp",
@@ -73,6 +74,7 @@ config("frame_msg_intf_config") {
 
 ohos_shared_library("frame_msg_intf") {
   sources = [
+    "${frame_aware_path}/common/src/rme_scoped_trace.cpp",
     "${frame_aware_path}/interfaces/innerkits/frameintf/rtg_interface.cpp",
     "${framework_path}/frame_aware_policy/src/app_info.cpp",
     "${framework_path}/frame_aware_policy/src/app_info_mgr.cpp",

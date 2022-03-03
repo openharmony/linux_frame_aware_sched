@@ -14,12 +14,14 @@
  */
 
 #include "rtg_msg_mgr.h"
+#include "rme_scoped_trace.h"
 
 namespace OHOS {
 namespace RME {
 namespace {
     constexpr int PRIO_TYPE = 0;
     constexpr int RT_NUM = 0;
+    constexpr int PID_PRIO_TYPE = 2;
 }
 DEFINE_RMELOG_INTELLISENSE("ueaServer-RtgMsgMgr");
 IMPLEMENT_SINGLE_INSTANCE(RtgMsgMgr);
@@ -35,25 +37,31 @@ void RtgMsgMgr::Init()
 int RtgMsgMgr::OnForeground(const std::string appName, const int pid)
 {
     // for multiwindow
+    RmeTraceBegin(("FrameC-createRtgGrp-pid"+ to_string(pid)).c_str());
     int rtGrp = CreateNewRtgGrp(PRIO_TYPE, RT_NUM);
     if (rtGrp <= 0) {
         RME_LOGE("[OnForeground]: createNewRtgGroup failed! rtGrp:%{public}d, pid: %{public}d", rtGrp, pid);
         return rtGrp;
     }
-    int ret = AddThreadToRtg(pid, rtGrp, 2); // add main thread, 2 means NORMAL_TASK
+    RmeTraceEnd();
+    RmeTraceBegin(("FrameC-addThread-pid:" + to_string(pid), +" rtgrp:" + to_string(rtGrp)).c_str());
+    int ret = AddThreadToRtg(pid, rtGrp, PID_PRIO_TYPE); // add ui thread
     if (ret != 0) {
         RME_LOGE("[OnFore]:add thread fail! pid:%{public}d,rtg:%{public}d!ret:%{publid}d", pid, rtGrp, ret);
     }
+    RmeTraceEnd();
     return rtGrp;
 }
 
 void RtgMsgMgr::OnBackground(const std::string appName, const int pid, const int grpId)
 {
+    RmeTraceBegin(("FrameC-destroyRtgGrp-grpId" + to_string(grpId)).c_str());
     if (grpId <= 0) {
         RME_LOGE("[OnBackground]:do not find grpid, pid:%{public}d, grpId:%{public}d", pid, grpId);
         return;
     }
     DestroyRtgGrp(grpId);
+    RmeTraceEnd();
 }
 
 void RtgMsgMgr::ProcessStart(const int tid, const int grpId)

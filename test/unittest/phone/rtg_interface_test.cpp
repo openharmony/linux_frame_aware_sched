@@ -480,5 +480,60 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetLargeMaxVips, TestSize.Level1)
     EXPECT_NE(ret, 0);
 }
 
+/**
+ * @tc.name: RtgInterfaceAddMultipleThreads
+ * @tc.desc: Verify rtg multiple add function.
+ * @tc.type: FUNC
+ */
+HWTEST_F(RtgInterfaceTest, RtgInterfaceAddMultipleThreads, TestSize.Level1)
+{
+    int ret = 0;
+    int pid[3];
+    vector<int> threads;
+    int grpId;
+    for (int i = 0; i < 3; i++) {
+        pid[i] = fork();
+        ASSERT_TRUE(pid[i] >= 0) << "> parent: fork errno = " << errno;
+        if (pid[i] == 0) {
+            usleep(3000);
+            _Exit(0);
+        }
+        threads.push_back(pid[i]);
+    }
+    grpId = CreateNewRtgGrp(NORMAL_TASK, 0);
+    EXPECT_GT(grpId, 0);
+    ret = AddThreadsToRtg(threads, grpId);
+    EXPECT_EQ(ret, 0);
+    ret = DestroyRtgGrp(grpId);
+    EXPECT_EQ(ret, 0);
+}
+
+/**
+ * @tc.name: RtgInterfaceAddMultipleThreadsOutOfLimit
+ * @tc.desc: Verify rtg multiple add function with out of limit threads.
+ * @tc.type: FUNC
+ */
+HWTEST_F(RtgInterfaceTest, RtgInterfaceAddMultipleThreadsOutOfLimit, TestSize.Level1)
+{
+    int ret = 0;
+    int pid[8];
+    vector<int> threads;
+    int grpId;
+    for (int i = 0; i < 8; i++) {
+        pid[i] = fork();
+        ASSERT_TRUE(pid[i] >= 0) << "> parent: fork errno = " << errno;
+        if (pid[i] == 0) {
+            usleep(3000);
+            _Exit(0);
+        }
+        threads.push_back(pid[i]);
+    }
+    grpId = CreateNewRtgGrp(NORMAL_TASK, 0);
+    EXPECT_GT(grpId, 0);
+    ret = AddThreadsToRtg(threads, grpId);
+    EXPECT_NE(ret, 0);
+    ret = DestroyRtgGrp(grpId);
+    EXPECT_EQ(ret, 0);
+}
 } // namespace RME
 } // namespace OHOS

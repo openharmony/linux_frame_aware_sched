@@ -21,6 +21,7 @@
 #include "rtg_msg_mgr.h"
 #include "rme_log_domain.h"
 #include "app_info_mgr.h"
+#include "rme_scoped_trace.h"
 
 namespace OHOS {
 namespace RME {
@@ -59,8 +60,10 @@ bool IntelliSenseServer::ReadXml()
     return false;
 }
 
-void IntelliSenseServer::ReportMessage(std::string appName, std::string processName, int pid, AppStateUpdateReason reason)
+void IntelliSenseServer::ReportMessage(std::string appName, std::string processName,
+    int pid, AppStateUpdateReason reason)
 {
+    RME_FUNCTION_TRACE();
     int rtGrp = AppInfoMgr::GetInstance().GetAppRtgrp(pid);
     switch (reason) {
         case AppStateUpdateReason::APP_FOREGROUND:
@@ -93,6 +96,7 @@ void IntelliSenseServer::ReportMessage(std::string appName, std::string processN
 
 void IntelliSenseServer::ReportWindowFocus(const int pid, int isFocus)
 {
+    RME_FUNCTION_TRACE();
     int rtGrp = AppInfoMgr::GetInstance().GetAppRtgrp(pid);
     switch (isFocus) {
         case static_cast<int>(WindowState::FOCUS_YES): // isFocus: 0
@@ -119,17 +123,19 @@ void IntelliSenseServer::ReportWindowFocus(const int pid, int isFocus)
 
 void IntelliSenseServer::ReportProcessInfo(const int pid, const int tid, ThreadState state)
 {
+    RME_FUNCTION_TRACE();
     switch (state) {
         case ThreadState::DIED:
             {
                 int ret = AppInfoMgr::GetInstance().OnProcessDied(pid, tid);
                 if (ret) {
                     RtgMsgMgr::GetInstance().ProcessDied(pid, tid);
-                    RME_LOGI("process died, need to delete the rtgrp:pid:%{public}d, tid: %{public}d, \
-                        threadstate: %{public}d", pid, tid, static_cast<int>(state));
+                    RME_LOGI("process died, pid:%{public}d, tid: %{public}d, threadstate: %{public}d",
+                        pid, tid, static_cast<int>(state));
+                } else {
+                    RME_LOGI("process died, do not need to delete the rtgrp:pid:%{public}d, tid: %{public}d",
+                        pid, tid);
                 }
-                RME_LOGI("process died, do not need to delete the rtgrp:pid:%{public}d, tid: %{public}d",
-                    pid, tid);
             }
             break;
         case ThreadState::CREATE:

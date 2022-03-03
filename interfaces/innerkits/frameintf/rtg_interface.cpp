@@ -113,7 +113,7 @@ int CreateNewRtgGrp(int prioType, int rtNum)
     }
     grp_data.rtg_cmd = CMD_CREATE_RTG_GRP;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
-    if ( ret < 0) {
+    if (ret < 0) {
         RME_LOGE("create rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
         RME_LOGI("create rtg grp success, get rtg id %{public}d.", ret);
@@ -122,7 +122,7 @@ int CreateNewRtgGrp(int prioType, int rtNum)
     return ret;
 }
 
-int AddThreadToRtg(int tid, int grpId)
+int AddThreadToRtg(int tid, int grpId, int prioType)
 {
     struct rtg_grp_data grp_data;
     int ret;
@@ -136,17 +136,13 @@ int AddThreadToRtg(int tid, int grpId)
     grp_data.tids[0] = tid;
     grp_data.grp_id = grpId;
     grp_data.rtg_cmd = CMD_ADD_RTG_THREAD;
+    grp_data.prio_type = prioType;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
-    if (ret == 0) {
-        RME_LOGI("add rtg grp success");
-    } else {
-        RME_LOGE("add tid %d to grp %d fail with ret %d", tid, grpId, ret);
-    }
     close(fd);
     return ret;
 }
 
-int AddThreadsToRtg(vector<int> tids, int grpId)
+int AddThreadsToRtg(vector<int> tids, int grpId, int prioType)
 {
     struct rtg_grp_data grp_data;
     int ret;
@@ -162,6 +158,7 @@ int AddThreadsToRtg(vector<int> tids, int grpId)
     grp_data.tid_num = num;
     grp_data.grp_id = grpId;
     grp_data.rtg_cmd = CMD_ADD_RTG_THREAD;
+    grp_data.prio_type = prioType;
     for (int i = 0; i < num; i++) {
         if (tids[i] < 0) {
             return -1;
@@ -170,7 +167,7 @@ int AddThreadsToRtg(vector<int> tids, int grpId)
     }
 
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
-    if ( ret < 0) {
+    if (ret < 0) {
         RME_LOGE("add rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else if (ret == 0) {
         RME_LOGI("add rtg grp success");
@@ -194,7 +191,7 @@ int RemoveRtgThread(int tid)
     grp_data.tids[0] = tid;
     grp_data.rtg_cmd = CMD_REMOVE_RTG_THREAD;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
-    if ( ret < 0) {
+    if (ret < 0) {
         RME_LOGE("remove grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
         RME_LOGI("remove grp success, get rtg id %{public}d.", ret);
@@ -215,7 +212,7 @@ int ClearRtgGrp(int GrpId)
     grp_data.rtg_cmd = CMD_CLEAR_RTG_GRP;
     grp_data.grp_id = GrpId;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
-    if ( ret < 0) {
+    if (ret < 0) {
         RME_LOGE("clear rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
         RME_LOGI("clear rtg grp success, get rtg id %{public}d.", ret);
@@ -236,10 +233,10 @@ int DestroyRtgGrp(int GrpId)
     grp_data.rtg_cmd = CMD_DESTROY_RTG_GRP;
     grp_data.grp_id = GrpId;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
-    if ( ret < 0) {
-        RME_LOGE("create rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
+    if (ret < 0) {
+        RME_LOGE("destroy rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
-        RME_LOGI("create rtg grp success, get rtg id %{public}d.", ret);
+        RME_LOGI("destroy rtg grp success, get rtg id:%{public}d, ret:%{public}d.", GrpId, ret);
     }
     close(fd);
     return ret;
@@ -250,7 +247,7 @@ int SetMaxVipRtgs(int rtframe)
 {
     int ret = 0;
     char str_data[MAX_STR_LEN] = {};
-    snprintf(str_data, MAX_STR_LEN, "rtframe:%d", rtframe);
+    (void)sprintf_s(str_data, sizeof(str_data), "rtframe:%d", rtframe);
     struct rtg_str_data strData;
     strData.len = strlen(str_data);
     strData.data = str_data;
@@ -260,7 +257,7 @@ int SetMaxVipRtgs(int rtframe)
         return fd;
     }
     ret = ioctl(fd, CMD_ID_SET_CONFIG, &strData);
-    if ( ret < 0) {
+    if (ret < 0) {
         RME_LOGE("set single config failed, ret = %{public}d", ret);
     } else {
         RME_LOGI("set single config success, get rtg id %{public}d.", ret);
@@ -273,7 +270,7 @@ int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
 {
     int ret = 0;
     char str_data[MAX_LENGTH] = {};
-    snprintf(str_data, MAX_LENGTH, "rtgId:%d;rate:%d;type:%d", rtgId, rate, rtgType);
+    (void)sprintf_s(str_data, sizeof(str_data), "rtgId:%d;rate:%d;type:%d", rtgId, rate, rtgType);
     struct rtg_str_data strData;
     strData.len = strlen(str_data);
     strData.data = str_data;
@@ -283,7 +280,7 @@ int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
         return fd;
     }
     ret = ioctl(fd, CMD_ID_SET_RTG_ATTR, &strData);
-    if ( ret < 0) {
+    if (ret < 0) {
         RME_LOGE("set rtg attr failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
         RME_LOGI("set rtg attr success, get rtg id %{public}d.", ret);
@@ -297,18 +294,13 @@ int BeginFrameFreq(int grpId, int stateParam)
     int ret = 0;
     struct proc_state_data state_data;	
     state_data.grp_id = grpId;
-	state_data.state_param = stateParam;
+    state_data.state_param = stateParam;
 
     int fd = BasicOpenRtgNode();
     if (fd < 0) {
         return fd;
     }
     ret = ioctl(fd, CMD_ID_BEGIN_FRAME_FREQ, &state_data);
-    if ( ret < 0) {
-        RME_LOGE("set BeginFrameFreq failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
-        RME_LOGI("set BeginFrameFreq success, get ret %{public}d.", ret);
-    }
     close(fd);
     return ret;
 }
@@ -325,13 +317,7 @@ int EndFrameFreq(int grpId)
         return fd;
     }
     ret = ioctl(fd, CMD_ID_END_FRAME_FREQ, &state_data);
-    if ( ret < 0) {
-        RME_LOGE("set EndFrameFreq failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
-        RME_LOGI("set EndFrameFreq success, get ret %{public}d.", ret);
-    }
     close(fd);
-
     return ret;
 }
 
@@ -346,7 +332,7 @@ int EndScene(int grpId)
         return fd;
     }
     ret = ioctl(fd, CMD_ID_END_SCENE, &state_data);
-    if ( ret < 0) {
+    if (ret < 0) {
         RME_LOGE("set EndScene failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
         RME_LOGI("set EndScene success, get ret %{public}d.", ret);
@@ -368,13 +354,12 @@ int SetMinUtil(int grpId, int stateParam)
         return fd;
     }
     ret = ioctl(fd, CMD_ID_SET_MIN_UTIL, &state_data);
-    if ( ret < 0) {
+    if (ret < 0) {
         RME_LOGE("set min util failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
         RME_LOGI("set min util success, get ret %{public}d.", ret);
     }
     close(fd);
-
     return ret;
 }
 
@@ -390,13 +375,7 @@ int SetMargin(int grpId, int stateParam)
         return fd;
     }
     ret = ioctl(fd, CMD_ID_SET_MARGIN, &state_data);
-    if ( ret < 0) {
-        RME_LOGE("set margin failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
-        RME_LOGI("set margin success, get ret %{public}d.", ret);
-    }
     close(fd);
-
     return ret;
 }
 
@@ -413,7 +392,7 @@ int ListRtgGroup(vector<int> *rs)
     }
     memset_s(&rtg_info, sizeof(struct rtg_info), 0, sizeof(struct rtg_info));
     ret = ioctl(fd, CMD_ID_LIST_RTG, &rtg_info);
-    if ( ret < 0) {
+    if (ret < 0) {
         RME_LOGE("list rtg group failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
         RME_LOGI("list rtg group success with num %{public}d", rtg_info.rtg_num);
@@ -440,7 +419,7 @@ int ListRtgThread(int grpId, vector<int> *rs)
     memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     grp_data.grp_id = grpId;
     ret = ioctl(fd, CMD_ID_LIST_RTG_THREAD, &grp_data);
-    if ( ret < 0) {
+    if (ret < 0) {
         RME_LOGE("list rtg thread failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
         RME_LOGI("list rtg thread success with tid num %{public}d", grp_data.tid_num);
@@ -468,7 +447,7 @@ int SearchRtgForTid(int tid)
     memset_s(&search_data, sizeof(struct proc_state_data), 0, sizeof(struct proc_state_data));
     search_data.state_param = tid;
     ret = ioctl(fd, CMD_ID_SEARCH_RTG, &search_data);
-    if ( ret < 0) {
+    if (ret < 0) {
         RME_LOGE("Search tid fail, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
         RME_LOGI("Search tid %{public}d success with rtg_grp %{public}d", tid, ret);

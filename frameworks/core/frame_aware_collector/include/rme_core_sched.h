@@ -18,6 +18,7 @@
 
 #include <unistd.h>
 #include "rme_log_domain.h"
+#include "rme_scoped_trace.h"
 
 namespace OHOS {
 namespace RME {
@@ -47,8 +48,10 @@ public:
     RmeCoreSched(const RmeCoreSched &) = delete;
     RmeCoreSched &operator=(const RmeCoreSched &) = delete;
 private:
-    int m_currentPid = -1;
-    int m_currentRtg = -1;
+    int m_pid = -1;
+    int m_rtg = -1;
+    int m_renderTid = -1;
+    int m_uiTid = -1;
 };
 } // namespace RME
 } // namespace OHOS

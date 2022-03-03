@@ -17,8 +17,6 @@
 
 namespace OHOS {
 namespace RME {
-DEFINE_RMELOG_INTELLISENSE("ueaClient-RmeSceneSched");
-
 RmeSceneSched::RmeSceneSched()
     :curWorkingStatus(0), rmeCoreSched(nullptr)
 {}
@@ -51,7 +49,6 @@ void RmeSceneSched::BeginFlushAnimation()
     }
     if (curWorkingStatus == 1) {
         rmeCoreSched->BeginFlushAnimation();
-        RME_LOGI("[BeginFlushAnimation]:RmeSceneSched send msg success!");
     }
 }
 
@@ -150,7 +147,6 @@ void RmeSceneSched::SendCommandsStart()
 {
     if (curWorkingStatus == 1) {
         rmeCoreSched->SendCommandsStart();
-        RME_LOGI("[SendCommandsStart]:RmeSceneSched send msg success!");
     }
 }
 } // namespace RME

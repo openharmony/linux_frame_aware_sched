@@ -19,7 +19,6 @@
 #include "frame_scene_sched.h"
 #include "frame_window_mgr.h"
 #include "rme_core_sched.h"
-#include "rme_log_domain.h"
 
 namespace OHOS {
 namespace RME {

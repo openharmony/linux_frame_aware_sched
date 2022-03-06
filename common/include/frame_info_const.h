@@ -32,6 +32,8 @@ enum class FrameEvent {
     EVENT_SET_PARAM,
     EVENT_RTG_ENABLE,
     EVENT_BUFFER_COUNT,
+    EVENT_BEGIN_FRAME,
+    EVENT_END_FRAME,
     UNKNOWN,
 };
 

@@ -166,12 +166,26 @@ void FrameUiIntf::RenderStart() const
 
 void FrameUiIntf::SendCommandsStart() const
 {
-    RME_LOGI("[SendCommandsStart]:start");
     if (!inited) {
         return;
     }
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::SEND_COMMANDS, EventState::EVENT_ENTER);
-    RME_LOGI("[SendCommandsStart]:success");
+}
+
+void FrameUiIntf::BeginListFling() const
+{
+    if (!inited) {
+        return;
+    }
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_BEGIN_FRAME, EventState::EVENT_ENTER);
+}
+
+void FrameUiIntf::EndListFling() const
+{
+    if (!inited) {
+        return;
+    }
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_END_FRAME, EventState::EVENT_ENTER);
 }
 
 extern "C" void Init()
@@ -257,6 +271,16 @@ extern "C" void RenderStart()
 extern "C" void SendCommandsStart()
 {
     FrameUiIntf::GetInstance().SendCommandsStart();
+}
+
+extern "C" void BeginListFling()
+{
+    FrameUiIntf::GetInstance().BeginListFling();
+}
+
+extern "C" void EndListFling()
+{
+    FrameUiIntf::GetInstance().EndListFling();
 }
 } // namespace RME
 } // namespace OHOS

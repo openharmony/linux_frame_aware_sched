@@ -20,6 +20,8 @@
 #include "frame_window_mgr.h"
 #include "rme_core_sched.h"
 
+#include <string>
+
 namespace OHOS {
 namespace RME {
 class RmeSceneSched : public FrameSceneSched {
@@ -28,6 +30,9 @@ public:
     ~RmeSceneSched() override;
 
     bool Init();
+    void HandleBeginFrame() override;
+    void HandleEndFrame() override;
+
     void BeginFlushAnimation() override;
     void EndFlushAnimation() override;
 

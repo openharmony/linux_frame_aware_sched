@@ -122,6 +122,12 @@ void FrameMsgMgr::HandleDefaultEvent(FrameEvent event, EventState value)
         case FrameEvent::SEND_COMMANDS:
             scene->SendCommandsStart();
             break;
+        case FrameEvent::EVENT_END_FRAME:
+            scene->HandleEndFrame();
+            break;
+        case FrameEvent::EVENT_BEGIN_FRAME:
+            scene->HandleBeginFrame();
+            break;
         default:
             RME_LOGE("[HandleDefaultEvent]: unknown event id: %{public}d, event state:%{public}d\n",
                 static_cast<int>(event), static_cast<int>(value));

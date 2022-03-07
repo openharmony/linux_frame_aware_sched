@@ -57,7 +57,7 @@ void FrameUiIntf::BeginFlushAnimation() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_ANIMATION, EventState::EVENT_ENTER);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_FLUSH_ANIMATION_START);
 }
 
 void FrameUiIntf::EndFlushAnimation() const
@@ -65,7 +65,7 @@ void FrameUiIntf::EndFlushAnimation() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_BUILD, EventState::EVENT_EXIT);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_FLUSH_ANIMATION_END);
 }
 
 void FrameUiIntf::BeginFlushBuild() const
@@ -73,7 +73,7 @@ void FrameUiIntf::BeginFlushBuild() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_BUILD, EventState::EVENT_ENTER);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_FLUSH_BUILD_START);
 }
 
 void FrameUiIntf::EndFlushBuild() const
@@ -81,7 +81,7 @@ void FrameUiIntf::EndFlushBuild() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_BUILD, EventState::EVENT_EXIT);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_FLUSH_BUILD_END);
 }
 
 void FrameUiIntf::BeginFlushLayout() const
@@ -89,7 +89,7 @@ void FrameUiIntf::BeginFlushLayout() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_LAYOUT, EventState::EVENT_ENTER);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_FLUSH_LAYOUT_START);
 }
 
 void FrameUiIntf::EndFlushLayout() const
@@ -97,7 +97,7 @@ void FrameUiIntf::EndFlushLayout() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_LAYOUT, EventState::EVENT_EXIT);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_FLUSH_LAYOUT_END);
 }
 
 void FrameUiIntf::BeginFlushRender() const
@@ -105,7 +105,7 @@ void FrameUiIntf::BeginFlushRender() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER, EventState::EVENT_ENTER);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_FLUSH_RENDER_START);
 }
 
 void FrameUiIntf::EndFlushRender() const
@@ -113,7 +113,7 @@ void FrameUiIntf::EndFlushRender() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER, EventState::EVENT_EXIT);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_FLUSH_RENDER_END);
 }
 
 void FrameUiIntf::BeginFlushRenderFinish() const
@@ -121,7 +121,7 @@ void FrameUiIntf::BeginFlushRenderFinish() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER_FINISH, EventState::EVENT_ENTER);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_FLUSH_RENDER_FINISH_START);
 }
 
 void FrameUiIntf::EndFlushRenderFinish() const
@@ -129,7 +129,7 @@ void FrameUiIntf::EndFlushRenderFinish() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::FLUSH_RENDER_FINISH, EventState::EVENT_EXIT);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_FLUSH_RENDER_FINISH_END);
 }
 
 void FrameUiIntf::BeginProcessPostFlush() const
@@ -137,7 +137,7 @@ void FrameUiIntf::BeginProcessPostFlush() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::PROCESS_POST_FLUSH, EventState::EVENT_ENTER);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_PROCESS_POST_FLUSH_START);
 }
 
 void FrameUiIntf::ProcessCommandsStart() const
@@ -145,7 +145,7 @@ void FrameUiIntf::ProcessCommandsStart() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::PROCESS_COMMANDS, EventState::EVENT_ENTER);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_PROCESS_COMMANDS_START);
 }
 
 void FrameUiIntf::AnimateStart() const
@@ -153,7 +153,7 @@ void FrameUiIntf::AnimateStart() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::ANIMATE, EventState::EVENT_ENTER);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_ANIMATE_START);
 }
 
 void FrameUiIntf::RenderStart() const
@@ -161,7 +161,7 @@ void FrameUiIntf::RenderStart() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::RENDER, EventState::EVENT_ENTER);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_RENDER_START);
 }
 
 void FrameUiIntf::SendCommandsStart() const
@@ -169,7 +169,7 @@ void FrameUiIntf::SendCommandsStart() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::SEND_COMMANDS, EventState::EVENT_ENTER);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_SEND_COMMANDS_START);
 }
 
 void FrameUiIntf::BeginListFling() const
@@ -177,7 +177,7 @@ void FrameUiIntf::BeginListFling() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_BEGIN_FRAME, EventState::EVENT_ENTER);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_BEGIN_FRAME);
 }
 
 void FrameUiIntf::EndListFling() const
@@ -185,7 +185,7 @@ void FrameUiIntf::EndListFling() const
     if (!inited) {
         return;
     }
-    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_END_FRAME, EventState::EVENT_ENTER);
+    FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_END_FRAME);
 }
 
 extern "C" void Init()

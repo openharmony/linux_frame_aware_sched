@@ -22,7 +22,9 @@ IMPLEMENT_SINGLE_INSTANCE(FrameMsgMgr);
 
 FrameMsgMgr::FrameMsgMgr()
     : sceneType(SceneEvent::SLIDE), rmeScene(nullptr)
-{}
+{
+    FrameMapKeyToFunc();
+}
 
 FrameMsgMgr::~FrameMsgMgr()
 {
@@ -44,17 +46,59 @@ bool FrameMsgMgr::Init()
     return true;
 }
 
-void FrameMsgMgr::EventUpdate(FrameEvent event, EventState value)
+void FrameMsgMgr::EventUpdate(FrameEvent event)
 {
     switch (event) {
         case FrameEvent::EVENT_SET_PARAM:
             SetSchedParam();
             break;
         default:
-            HandleDefaultEvent(event, value);
-            break;    
+            HandleFrameMsgKey(event);
+            break;
     }
-    return;
+}
+
+bool FrameMsgMgr::HandleFrameMsgKey(FrameEvent event)
+{
+    std::map<FrameEvent, PHandle>::iterator iter = m_frameMsgKeyToFunc.find(event);
+    if (m_frameMsgKeyToFunc.end() == iter) {
+        RME_LOGE("[HandleFrameMsgKey]: search frameEvent:%{public}d failed!",
+            static_cast<int>(event));
+        return false;
+    }
+    PHandle pFunction = iter->second;
+    (this->*pFunction)();
+    return true;
+}
+
+void FrameMsgMgr::FrameMapKeyToFunc()
+{
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_BEGIN_FRAME] = &FrameMsgMgr::HandleBeginFrame;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_FLUSH_ANIMATION_START] = &FrameMsgMgr::BeginFlushAnimation;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_FLUSH_ANIMATION_END] = &FrameMsgMgr::EndFlushAnimation;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_FLUSH_BUILD_START] = &FrameMsgMgr::BeginFlushBuild;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_FLUSH_BUILD_END] = &FrameMsgMgr::EndFlushBuild;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_FLUSH_LAYOUT_START] = &FrameMsgMgr::BeginFlushLayout;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_FLUSH_LAYOUT_END] = &FrameMsgMgr::EndFlushLayout;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_FLUSH_RENDER_START] = &FrameMsgMgr::BeginFlushRender;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_FLUSH_RENDER_END] = &FrameMsgMgr::EndFlushRender;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_FLUSH_RENDER_FINISH_START] = &FrameMsgMgr::BeginFlushRenderFinish;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_FLUSH_RENDER_FINISH_END] = &FrameMsgMgr::EndFlushRenderFinish;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_PROCESS_POST_FLUSH_START] = &FrameMsgMgr::BeginProcessPostFlush;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_PROCESS_COMMANDS_START] = &FrameMsgMgr::ProcessCommandsStart;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_ANIMATE_START] = &FrameMsgMgr::AnimateStart;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_RENDER_START] = &FrameMsgMgr::RenderStart;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_SEND_COMMANDS_START] = &FrameMsgMgr::SendCommandsStart;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_END_FRAME] = &FrameMsgMgr::HandleEndFrame;
+}
+
+FrameSceneSched *FrameMsgMgr::GetSceneHandler() const
+{
+    if (sceneType == SceneEvent::SCENE_INVALID) {
+        RME_LOGE("[GetSceneHandler]:get nullptr sceneType %{public}d,", static_cast<int>(sceneType));
+        return nullptr;
+    }
+    return rmeScene;
 }
 
 void FrameMsgMgr::UpdateScene(SceneEvent scene)
@@ -65,88 +109,180 @@ void FrameMsgMgr::UpdateScene(SceneEvent scene)
     sceneType = scene;
 }
 
-void FrameMsgMgr::HandleDefaultEvent(FrameEvent event, EventState value)
+void FrameMsgMgr::HandleBeginFrame()
+{
+    RME_LOGI("[HandleBeginFrame]:start");
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[HandleBeginFrame]:scene nullptr");
+        return;
+    }
+    scene->HandleBeginFrame();
+}
+
+void FrameMsgMgr::BeginFlushAnimation()
 {
     FrameSceneSched *scene = GetSceneHandler();
     if (scene == nullptr) {
-        RME_LOGE("[HandleDefaultEvent]:scene nullptr");
+        RME_LOGE("[BeginFlushAnimation]:scene nullptr");
         return;
     }
-    switch (event) {
-        case FrameEvent::FLUSH_ANIMATION:
-            if (value == EventState::EVENT_ENTER) {
-                scene->BeginFlushAnimation();
-            } else {
-                scene->EndFlushAnimation();
-            }
-            break;
-        case FrameEvent::FLUSH_BUILD:
-            if (value == EventState::EVENT_ENTER) {
-                scene->BeginFlushBuild();
-            } else {
-                scene->EndFlushBuild();
-            }
-            break;
-        case FrameEvent::FLUSH_LAYOUT:
-            if (value == EventState::EVENT_ENTER) {
-                scene->BeginFlushLayout();
-            } else {
-                scene->EndFlushLayout();
-            }
-            break;
-        case FrameEvent::FLUSH_RENDER:
-            if (value == EventState::EVENT_ENTER) {
-                scene->BeginFlushRender();
-            } else {
-                scene->EndFlushRender();
-            }
-            break;
-        case FrameEvent::FLUSH_RENDER_FINISH:
-            if (value == EventState::EVENT_ENTER) {
-                scene->BeginFlushRenderFinish();
-            } else {
-                scene->EndFlushRenderFinish();
-            }
-        case FrameEvent::PROCESS_POST_FLUSH:
-            scene->BeginProcessPostFlush();
-            break;
-        case FrameEvent::PROCESS_COMMANDS:
-            scene->ProcessCommandsStart();
-            break;
-        case FrameEvent::ANIMATE:
-            scene->AnimateStart();
-            break;
-        case FrameEvent::RENDER:
-            scene->RenderStart();
-            break;
-        case FrameEvent::SEND_COMMANDS:
-            scene->SendCommandsStart();
-            break;
-        case FrameEvent::EVENT_END_FRAME:
-            scene->HandleEndFrame();
-            break;
-        case FrameEvent::EVENT_BEGIN_FRAME:
-            scene->HandleBeginFrame();
-            break;
-        default:
-            RME_LOGE("[HandleDefaultEvent]: unknown event id: %{public}d, event state:%{public}d\n",
-                static_cast<int>(event), static_cast<int>(value));
-            return;
+    scene->BeginFlushAnimation();
+}
+
+void FrameMsgMgr::EndFlushAnimation()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[EndFlushAnimation]:scene nullptr");
+        return;
     }
+    scene->EndFlushAnimation();
+}
+
+void FrameMsgMgr::BeginFlushBuild()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[BeginFlushBuild]:scene nullptr");
+        return;
+    }
+    scene->BeginFlushBuild();
+}
+
+void FrameMsgMgr::EndFlushBuild()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[EndFlushBuild]:scene nullptr");
+        return;
+    }
+    scene->EndFlushBuild();
+}
+
+void FrameMsgMgr::BeginFlushLayout()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[BeginFlushLayout]:scene nullptr");
+        return;
+    }
+    scene->BeginFlushLayout();
+}
+
+void FrameMsgMgr::EndFlushLayout()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[EndFlushLayout]:scene nullptr");
+        return;
+    }
+    scene->EndFlushLayout();
+}
+
+void FrameMsgMgr::BeginFlushRender()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[BeginFlushRender]:scene nullptr");
+        return;
+    }
+    scene->BeginFlushRender();
+}
+
+void FrameMsgMgr::EndFlushRender()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[EndFlushRender]:scene nullptr");
+        return;
+    }
+    scene->EndFlushRender();
+}
+
+void FrameMsgMgr::BeginFlushRenderFinish()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[BeginFlushRenderFinish]:scene nullptr");
+        return;
+    }
+    scene->BeginFlushRenderFinish();
+}
+
+void FrameMsgMgr::EndFlushRenderFinish()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[EndFlushRenderFinish]:scene nullptr");
+        return;
+    }
+    scene->EndFlushRenderFinish();
+}
+
+void FrameMsgMgr::BeginProcessPostFlush()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[BeginProcessPostFlush]:scene nullptr");
+        return;
+    }
+    scene->BeginProcessPostFlush();
+}
+
+void FrameMsgMgr::ProcessCommandsStart()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[ProcessCommandsStart]:scene nullptr");
+        return;
+    }
+    scene->ProcessCommandsStart();
+}
+
+void FrameMsgMgr::AnimateStart()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[AnimateStart]:scene nullptr");
+        return;
+    }
+    scene->AnimateStart();
+}
+
+void FrameMsgMgr::RenderStart()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[RenderStart]:scene nullptr");
+        return;
+    }
+    scene->RenderStart();
+}
+
+void FrameMsgMgr::SendCommandsStart()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[SendCommandsStart]:scene nullptr");
+        return;
+    }
+    scene->SendCommandsStart();
+}
+
+void FrameMsgMgr::HandleEndFrame()
+{
+    FrameSceneSched *scene = GetSceneHandler();
+    if (scene == nullptr) {
+        RME_LOGE("[HandleEndFrame]:scene nullptr");
+        return;
+    }
+    scene->HandleEndFrame();
 }
 
 void FrameMsgMgr::SetSchedParam()
 {
     RME_LOGI("[SetSchedParam]: set default sched param!");
-}
-
-FrameSceneSched *FrameMsgMgr::GetSceneHandler() const
-{
-    if (sceneType == SceneEvent::SCENE_INVALID) {
-        RME_LOGE("[GetSceneHandler]:get nullptr sceneType %{public}d,", static_cast<int>(sceneType));
-        return nullptr;
-    }
-    return rmeScene;
 }
 } // namespace RME
 } // namespace OHOS

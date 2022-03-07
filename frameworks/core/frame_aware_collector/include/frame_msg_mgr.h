@@ -17,6 +17,7 @@
 #define FRAME_MSG_MGR_H
 
 #include <hilog/log.h>
+#include <map>
 
 #include "rme_log_domain.h"
 #include "frame_info_const.h"
@@ -32,12 +33,36 @@ public:
     FrameMsgMgr();
     ~FrameMsgMgr();
     bool Init();
-    void EventUpdate(FrameEvent eventType, EventState state);
+    void EventUpdate(FrameEvent eventType);
 private:
+    bool HandleFrameMsgKey(FrameEvent event);
+    void FrameMapKeyToFunc();
     void UpdateScene(SceneEvent scene);
-    void HandleDefaultEvent(FrameEvent event, EventState state);
     void SetSchedParam();
+
+    void HandleBeginFrame();
+    void BeginFlushAnimation();
+    void EndFlushAnimation();
+    void BeginFlushBuild();
+    void EndFlushBuild();
+    void BeginFlushLayout();
+    void EndFlushLayout();
+    void BeginFlushRender();
+    void EndFlushRender();
+    void BeginFlushRenderFinish();
+    void EndFlushRenderFinish();
+
+    void BeginProcessPostFlush();
+    void ProcessCommandsStart();
+    void AnimateStart();
+    void RenderStart();
+    void SendCommandsStart();
+    void HandleEndFrame();
+
     FrameSceneSched *GetSceneHandler() const;
+    typedef void (FrameMsgMgr:: *PHandle)(void);
+    std::map<FrameEvent, PHandle> m_frameMsgKeyToFunc;
+
     SceneEvent sceneType;
     RmeSceneSched *rmeScene;
 };

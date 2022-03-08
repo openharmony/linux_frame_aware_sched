@@ -25,8 +25,6 @@
 
 namespace OHOS {
 namespace RME {
-class RmeSceneSched;
-
 class FrameMsgMgr {
     DECLARE_SINGLE_INSTANCE_BASE(FrameMsgMgr);
 public:

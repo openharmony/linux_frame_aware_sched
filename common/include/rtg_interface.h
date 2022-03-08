@@ -27,8 +27,6 @@ using namespace std;
 #define MAX_SUBPROCESS_NUM 8
 #define MULTI_FRAME_NUM 5
 
-typedef int pid_t;
-
 struct rtg_enable_data {
     int enable;
     int len;
@@ -85,9 +83,8 @@ enum rtg_sched_cmdid {
     RTG_CTRL_MAX_NR,
 };
 
-extern "C"{
+extern "C" {
     int EnableRtg(bool flag);
-    //-----for frame rtg-----//
     int CreateNewRtgGrp(int prioType = 0, int rtNum = 0); // Return GrpId if success
     int AddThreadToRtg(int tid, int grpId, int prioType = 0);
     int AddThreadsToRtg(vector<int> tids, int grpId, int prioType = 0);

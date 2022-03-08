@@ -198,6 +198,5 @@ HWTEST_F(FrameMsgIntfTest, FrameMsgIntfReportProcessInfoRenderDiedFore, TestSize
     std::map<int, std::shared_ptr<AppInfo>> mapList2 = AppInfoMgr::GetInstance().GetForegroundApp();
     EXPECT_EQ(mapList2.count(pid_2), 1);
 }
-
 } // namespace RME
 } // namespace OHOS

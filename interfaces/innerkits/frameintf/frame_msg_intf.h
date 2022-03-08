@@ -22,7 +22,6 @@
 
 namespace OHOS {
 namespace RME {
-
 class FrameMsgIntf {
 public:
     static FrameMsgIntf& GetInstance();
@@ -32,17 +31,13 @@ public:
     void ReportWindowFocus(const int pid, const int isFocus);
     void ReportProcessInfo(const int pid, const int tid, ThreadState state);
     void Stop();
-
 protected:
     FrameMsgIntf() = default;
     virtual ~FrameMsgIntf() = default;
     std::shared_ptr<AppExecFwk::EventHandler> threadHandler_;
-
 private:
     DISALLOW_COPY_AND_MOVE(FrameMsgIntf);
-
 };
-
 } // namespace RME
 } // namespace OHOS
 #endif

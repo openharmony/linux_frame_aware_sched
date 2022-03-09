@@ -28,6 +28,8 @@ public:
     ~RmeCoreSched();
 
     bool Init();
+    void HandleBeginFrame();
+    void HandleEndFrame();
     void BeginFlushAnimation();
     void EndFlushAnimation();
     void BeginFlushBuild();

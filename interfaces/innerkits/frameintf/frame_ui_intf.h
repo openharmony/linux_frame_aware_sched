@@ -42,6 +42,9 @@ public:
     void AnimateStart() const;
     void RenderStart() const;
     void SendCommandsStart() const;
+
+    void BeginListFling() const;
+    void EndListFling() const;
 private:
     bool inited = false;
 };

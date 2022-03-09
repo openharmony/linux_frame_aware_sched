@@ -36,7 +36,7 @@ namespace {
 }
 DEFINE_RMELOG_INTELLISENSE("rtg_interface");
 
-#define RTG_SCHED_IPC_MAGIC 0xAB
+const char RTG_SCHED_IPC_MAGIC = 0xAB;
 
 #define CMD_ID_SET_ENABLE \
     _IOWR(RTG_SCHED_IPC_MAGIC, SET_ENABLE, struct rtg_enable_data)

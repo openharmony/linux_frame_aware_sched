@@ -51,7 +51,7 @@ bool ParaConfig::IsXmlPrepared(const std::string& filePath)
             continue;
         }
     auto nodeName = curNodePtr->name; // char* to string
-        if (!xmlStrcmp(nodeName, reinterpret_cast<const xmlChar*>("log_open")) || 
+        if (!xmlStrcmp(nodeName, reinterpret_cast<const xmlChar*>("log_open")) ||
             !xmlStrcmp(nodeName, reinterpret_cast<const xmlChar*>("enable")) ||
             !xmlStrcmp(nodeName, reinterpret_cast<const xmlChar*>("SOC")) ||
             !xmlStrcmp(nodeName, reinterpret_cast<const xmlChar*>("frame_sched_reset_count"))) {
@@ -114,11 +114,12 @@ void ParaConfig::ReadRenderType(const xmlNodePtr& root)
         RME_LOGE("[GetRenderType]: renderType read failed!");
         return;
     }
-    SplitString(std::string(reinterpret_cast<const char*>(context)), " ", m_renderTypeList, RENDER_TYPE_MAX_VALUE, "renderType");
+    SplitString(std::string(reinterpret_cast<const char*>(context)), " ",
+        m_renderTypeList, RENDER_TYPE_MAX_VALUE, "renderType");
     xmlFree(context);
 }
 
-void ParaConfig::SplitString(const std::string& context, const std::string& character,std::vector<int> &mList, 
+void ParaConfig::SplitString(const std::string& context, const std::string& character, std::vector<int> &mList,
     const int maxVal, const std::string& attrName)
 {
     if (context == "") {
@@ -136,7 +137,7 @@ void ParaConfig::SplitString(const std::string& context, const std::string& char
     }
     mList.push_back(curVal);
 
-    toSplitStr = toSplitStr.substr(pos + 1,toSplitStr.size());
+    toSplitStr = toSplitStr.substr(pos + 1, toSplitStr.size());
     pos = toSplitStr.find(character);
     }
     RME_LOGI("[SplitString]:get data success!attr name:%{public}s", attrName.c_str());
@@ -162,12 +163,14 @@ void ParaConfig::ReadFrameConfig(const xmlNodePtr& root)
             std::string nodeName = reinterpret_cast<const char*>(curSubNode->name); // char* to string
             xmlChar* context = xmlNodeGetContent(curSubNode);
             if (context == nullptr) { // if one config wrong then this config dilscard.
-                RME_LOGE("[GetFrameConfig]: frame config get error! nodeName:%{public}s, key:%{public}s", nodeName.c_str(), key.c_str());
+                RME_LOGE("[GetFrameConfig]: frame config get error! nodeName:%{public}s, key:%{public}s",
+                    nodeName.c_str(), key.c_str());
                 xmlFree(context);
                 break;
             }
             frameConfigTmp[nodeName] = atoi(reinterpret_cast<const char*>(context));
-            RME_LOGI("[GetFrameConfig]: nodeName:%{public}s, val:%{public}s", nodeName.c_str(), reinterpret_cast<const char*>(context));
+            RME_LOGI("[GetFrameConfig]: nodeName:%{public}s, val:%{public}s",
+                nodeName.c_str(), reinterpret_cast<const char*>(context));
             xmlFree(context);
         }
         m_subEventConfig[key] = frameConfigTmp;
@@ -191,7 +194,7 @@ std::map<std::string, std::string> ParaConfig::GetGeneralConfig()
     return m_generalConfig;
 }
 
-std::map<std::string,std::map<std::string, int>> ParaConfig::GetSubEventConfig()
+std::map<std::string, std::map<std::string, int>> ParaConfig::GetSubEventConfig()
 {
     return m_subEventConfig;
 }

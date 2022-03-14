@@ -34,8 +34,10 @@ public:
 protected:
     FrameMsgIntf() = default;
     virtual ~FrameMsgIntf() = default;
-    std::shared_ptr<AppExecFwk::EventHandler> threadHandler_;
 private:
+    std::mutex frameMsgIntfMutex_;
+    std::shared_ptr<AppExecFwk::EventRunner> runner_;
+    std::shared_ptr<AppExecFwk::EventHandler> threadHandler_;
     DISALLOW_COPY_AND_MOVE(FrameMsgIntf);
 };
 } // namespace RME

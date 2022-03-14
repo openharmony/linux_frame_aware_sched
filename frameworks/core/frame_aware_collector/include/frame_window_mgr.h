@@ -32,7 +32,6 @@ private:
     int m_enable = -1;
     bool m_startFlag;
 };
-
 } // namespace RME
 } // namespace OHOS
 #endif

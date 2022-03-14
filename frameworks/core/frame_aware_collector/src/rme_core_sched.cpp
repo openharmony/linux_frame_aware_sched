@@ -45,13 +45,18 @@ bool RmeCoreSched::Init()
     return ret;
 }
 
+void RmeCoreSched::HandleBeginFrame()
+{
+    RME_FUNCTION_TRACE();
+}
+
 void RmeCoreSched::BeginFlushAnimation()
 {
     m_pid = getpid();
     if (m_rtg == -1) {
         m_rtg = SearchRtgForTid(m_pid);
         if (m_rtg <= 0) {
-            RME_LOGE("[BeginFlushAnimation]:Search rtg empty!pid %{public}d,Rtg: %{public}d",
+            RME_LOGW("[BeginFlushAnimation]:Search rtg empty!pid %{public}d,Rtg: %{public}d",
                 m_pid, m_rtg);
             return;
         } else {
@@ -106,7 +111,7 @@ void RmeCoreSched::ProcessCommandsStart() {}
 void RmeCoreSched::AnimateStart()
 {
     if (m_rtg <= 0) {
-        RME_LOGE("[AnimateStart]: search rtg empty! Rtg:%{public}d, Pid:%{public}d", m_rtg, m_pid);
+        RME_LOGW("[AnimateStart]: search rtg empty! Rtg:%{public}d, Pid:%{public}d", m_rtg, m_pid);
         return;
     }
     m_renderTid = gettid();
@@ -124,13 +129,21 @@ void RmeCoreSched::RenderStart()
 
 void RmeCoreSched::SendCommandsStart()
 {
+    RmeTraceBegin(("FrameS-SetMargin:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_THREE)).c_str());
+    SetMargin(m_rtg, MARGIN_THREE);
+    RmeTraceEnd();
+}
+
+void RmeCoreSched::HandleEndFrame()
+{
+    RME_FUNCTION_TRACE();
     if (m_rtg <= 0) {
-        RME_LOGW("[SendCommandStart]: search rtg empty! rtGrp:%{public}d, m_pid:%{public}d!",
+        RME_LOGW("[HandleEndFrame]: search rtg empty! rtGrp:%{public}d, m_pid:%{public}d!",
             m_rtg, m_pid);
         return;
     }
     int ret = EndFrameFreq(m_rtg);
-    RmeTraceBegin(("FrameS-EndFrameFreq-rtg:" + to_string(m_rtg)+" ret:" + to_string(ret)).c_str());
+    RmeTraceBegin(("FrameS-EndFrameFreq-rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
     RmeTraceEnd();
 }
 } // namespace RME

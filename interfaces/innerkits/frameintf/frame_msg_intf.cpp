@@ -30,6 +30,7 @@ FrameMsgIntf& FrameMsgIntf::GetInstance()
 
 bool FrameMsgIntf::Init()
 {
+    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
     RME_LOGI("init begin!");
     if (!GetThreadHandler()) {
         return false;
@@ -43,9 +44,14 @@ bool FrameMsgIntf::Init()
 bool FrameMsgIntf::GetThreadHandler()
 {
     if (threadHandler_ == nullptr) {
-        threadHandler_ = std::make_shared<AppExecFwk::EventHandler>(AppExecFwk::EventRunner::Create());
+        runner_ = AppExecFwk::EventRunner::Create("frame_aware_sched_msg");
+        if (runner_ == nullptr) {
+            RME_LOGE("failed to create eventRunner!");
+            return false;
+        }
+        threadHandler_ = std::make_shared<AppExecFwk::EventHandler>(runner_);
         if (threadHandler_ == nullptr) {
-            RME_LOGI("failed to create thread handler!");
+            RME_LOGE("failed to create thread handler!");
             return false;
         }
     }
@@ -56,6 +62,7 @@ bool FrameMsgIntf::GetThreadHandler()
 
 void FrameMsgIntf::ReportAppInfo(std::string appName, std::string processName, int pid, AppStateUpdateReason reason)
 {
+    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
     if (threadHandler_ == nullptr) {
         RME_LOGI("[ReportAppInfo]:threandHandler none!");
         return;
@@ -67,8 +74,9 @@ void FrameMsgIntf::ReportAppInfo(std::string appName, std::string processName, i
 
 void FrameMsgIntf::ReportWindowFocus(const int pid, const int isFocus)
 {
+    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
     if (threadHandler_ == nullptr) {
-        RME_LOGI("[ReportWindowFocus]:threandHandler none!");
+        RME_LOGE("[ReportWindowFocus]:threandHandler none!");
         return;
     }
     threadHandler_->PostTask([pid, isFocus] {
@@ -78,8 +86,9 @@ void FrameMsgIntf::ReportWindowFocus(const int pid, const int isFocus)
 
 void FrameMsgIntf::ReportProcessInfo(const int pid, const int tid, ThreadState state)
 {
+    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
     if (threadHandler_ == nullptr) {
-        RME_LOGI("[ReportWindowFocus]:threandHandler none!");
+        RME_LOGI("[ReportProcessInfo]:threandHandler none!");
         return;
     }
     threadHandler_->PostTask([pid, tid, state] {
@@ -89,9 +98,14 @@ void FrameMsgIntf::ReportProcessInfo(const int pid, const int tid, ThreadState s
 
 void FrameMsgIntf::Stop()
 {
+    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
     if (threadHandler_ != nullptr) {
         threadHandler_->RemoveAllEvents();
         threadHandler_ = nullptr;
+    }
+    if (runner_ != nullptr) {
+        runner_->Stop();
+        runner_ = nullptr;
     }
     RME_LOGI("stop eventRunner success!");
 }

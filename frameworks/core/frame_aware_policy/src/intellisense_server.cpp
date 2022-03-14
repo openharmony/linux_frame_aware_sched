@@ -35,6 +35,15 @@ IMPLEMENT_SINGLE_INSTANCE(IntelliSenseServer);
 
 void IntelliSenseServer::Init()
 {
+    if (!ReadXml()) {
+        RME_LOGI("[Init]: readXml failed!");
+        return;
+    }
+    m_switch = std::stoi(m_generalPara["enable"]);
+    if (!m_switch) {
+        RME_LOGI("[Init]:xml switch close!");
+        return;
+    }
     RtgMsgMgr::GetInstance().Init();
     RME_LOGI("[Init]:Init rtg and readXml finish!");
 }
@@ -51,9 +60,9 @@ bool IntelliSenseServer::ReadXml()
         m_fpsList = ParaConfig::GetFpsList();
         m_renderTypeList = ParaConfig::GetRenderTypeList();
         if (!m_generalPara.empty() && !m_subEventPara.empty() && !m_fpsList.empty() && !m_renderTypeList.empty()) {
-        m_readXmlSuc = true;
-        RME_LOGI("[ReadXml]: read slide scene xml success!");
-        return true;
+            m_readXmlSuc = true;
+            RME_LOGI("[ReadXml]: read slide scene xml success!");
+            return true;
         }
     }
     RME_LOGE("[ReadXml]: read slide scene xml not success!");
@@ -63,6 +72,9 @@ bool IntelliSenseServer::ReadXml()
 void IntelliSenseServer::ReportMessage(std::string appName, std::string processName,
     int pid, AppStateUpdateReason reason)
 {
+    if (!m_switch) {
+        return;
+    }
     RME_FUNCTION_TRACE();
     int rtGrp = AppInfoMgr::GetInstance().GetAppRtgrp(pid);
     switch (reason) {
@@ -96,6 +108,9 @@ void IntelliSenseServer::ReportMessage(std::string appName, std::string processN
 
 void IntelliSenseServer::ReportWindowFocus(const int pid, int isFocus)
 {
+    if (!m_switch) {
+        return;
+    }
     RME_FUNCTION_TRACE();
     int rtGrp = AppInfoMgr::GetInstance().GetAppRtgrp(pid);
     switch (isFocus) {
@@ -123,6 +138,9 @@ void IntelliSenseServer::ReportWindowFocus(const int pid, int isFocus)
 
 void IntelliSenseServer::ReportProcessInfo(const int pid, const int tid, ThreadState state)
 {
+    if (!m_switch) {
+        return;
+    }
     RME_FUNCTION_TRACE();
     switch (state) {
         case ThreadState::DIED:
@@ -151,6 +169,9 @@ void IntelliSenseServer::ReportProcessInfo(const int pid, const int tid, ThreadS
 
 void IntelliSenseServer::SetPara(const int32_t currentFps, const int32_t currentRenderType)
 {
+    if (!m_switch) {
+        return;
+    }
     RME_LOGI("[SetPara]:ioctl SetPara!\n");
     std::string key = std::to_string(currentRenderType) + " " + std::to_string(currentFps);
     map<std::string, int> tempMap = m_subEventPara[key];

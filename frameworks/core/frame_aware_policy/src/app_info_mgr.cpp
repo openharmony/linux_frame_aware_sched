@@ -49,7 +49,9 @@ void AppInfoMgr::OnBackgroundChanged(const int pid, const std::string appName)
         mBackgroundAppList[pid] = mForegroundAppList[pid];
         mForegroundAppList.erase(pid);
     } else {
-        RME_LOGE("[OnBackgroundChanged]:unfind app in foreground app when go to background! pid:%{public}d", pid);
+        RME_LOGI("[OnBackgroundChanged]: fore No! pid:%{public}d", pid);
+        auto appInfo = std::make_shared<AppInfo>(appName, pid, INIT_VAL, INIT_VAL, INIT_VAL, AppState::APP_BACKGROUND);
+        mBackgroundAppList[pid] = appInfo;
     }
     mBackgroundAppList[pid]->SetRtgrp(INIT_VAL);
     RME_LOGI("[OnBackgroundChanged]:pid:%{public}d, appName:%{public}s", pid, appName.c_str());

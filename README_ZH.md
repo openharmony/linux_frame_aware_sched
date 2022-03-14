@@ -11,7 +11,7 @@
 ## 目录<a name="section_catalogue"></a>
 
 ```
-//foundation/resourceschedule/plugins/frame_aware_sched
+//foundation/resourceschedule/frame_aware_sched
 ├── common           						# 部件通用工具类
 │   └── include
 │       ├── frame_info_const.h				# 绘帧过程信息

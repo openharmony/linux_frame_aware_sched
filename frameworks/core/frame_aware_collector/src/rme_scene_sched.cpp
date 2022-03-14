@@ -34,7 +34,6 @@ bool RmeSceneSched::Init()
         rmeCoreSched = new RmeCoreSched();
     }
 
-    curWorkingStatus = 1;
     if (rmeCoreSched == nullptr) {
         return false;
     }
@@ -42,11 +41,17 @@ bool RmeSceneSched::Init()
     return ret;
 }
 
+void RmeSceneSched::HandleBeginFrame()
+{
+    curWorkingStatus = 1;
+    FrameWindowMgr::GetInstance().SetStartFlag(true);
+    rmeCoreSched->HandleBeginFrame();
+    RmeTraceBegin(("FrameS-curWorkingStatus" + std::to_string(curWorkingStatus)).c_str());
+    RmeTraceEnd();
+}
+
 void RmeSceneSched::BeginFlushAnimation()
 {
-    if (!FrameWindowMgr::GetInstance().GetEnable()) {
-        return;
-    }
     if (curWorkingStatus == 1) {
         rmeCoreSched->BeginFlushAnimation();
     }
@@ -54,7 +59,7 @@ void RmeSceneSched::BeginFlushAnimation()
 
 void RmeSceneSched::EndFlushAnimation()
 {
-    if (curWorkingStatus ==  1) {
+    if (curWorkingStatus == 1) {
         rmeCoreSched->EndFlushAnimation();
     }
 }
@@ -148,6 +153,20 @@ void RmeSceneSched::SendCommandsStart()
     if (curWorkingStatus == 1) {
         rmeCoreSched->SendCommandsStart();
     }
+}
+
+void RmeSceneSched::HandleEndFrame()
+{
+    if (curWorkingStatus == 0) {
+        return;
+    }
+    rmeCoreSched->HandleEndFrame();
+    if (FrameWindowMgr::GetInstance().GetStartFlag()) {
+        FrameWindowMgr::GetInstance().SetStartFlag(false);
+    }
+    curWorkingStatus = 0;
+    RmeTraceBegin(("FrameS-curWorkingStatus" + std::to_string(curWorkingStatus)).c_str());
+    RmeTraceEnd();
 }
 } // namespace RME
 } // namespace OHOS

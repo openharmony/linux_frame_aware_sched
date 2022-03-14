@@ -26,7 +26,6 @@
 
 namespace OHOS {
 namespace RME {
-
 class RtgMsgMgr {
     DECLARE_SINGLE_INSTANCE(RtgMsgMgr);
 public:
@@ -38,7 +37,6 @@ public:
     void FpsChanged();
     void FocusChanged(const int pid, bool isFocus); // for multiwindow
 };
-
 } // RME
 } // OHOS
 #endif

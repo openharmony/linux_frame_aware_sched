@@ -21,7 +21,7 @@
     <fps_list>60 90</fps_list>
     <render_type>0 1 2</render_type>
     <framedetect>
-        <frameconfig render_type ="0" fps_list="60" size="24">
+        <frameconfig render_type="0" fps_list="60" size="24">
 	    <default_util>600</default_util>
 	</frameconfig>
     </framedetect>

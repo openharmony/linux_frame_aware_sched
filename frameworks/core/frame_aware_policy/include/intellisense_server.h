@@ -48,6 +48,7 @@ private:
     std::vector<int> m_renderTypeList {};
     bool m_readXmlSuc = false;
     bool m_needReadXml = true;
+    bool m_switch = false;
 };
 } // namespace RME
 } // namesapce OHOS

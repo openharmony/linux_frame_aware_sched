@@ -96,7 +96,9 @@ void RtgMsgMgr::FpsChanged()
 
 void RtgMsgMgr::FocusChanged(const int pid, bool isFocus)
 {
+    (void)pid;
+    (void)isFocus;
     RME_LOGI("[FocusChanged]: need to change prio for rtggrp");
 }
-} // RME
-} // OHOS
+} // namespace RME
+} // namespace OHOS

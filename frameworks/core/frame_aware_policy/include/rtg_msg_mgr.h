@@ -37,6 +37,6 @@ public:
     void FpsChanged();
     void FocusChanged(const int pid, bool isFocus); // for multiwindow
 };
-} // RME
-} // OHOS
+} // namespace RME
+} // namespace OHOS
 #endif

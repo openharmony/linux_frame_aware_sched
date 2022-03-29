@@ -72,8 +72,8 @@ void RtgInterfaceTest::TearDown()
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceCreateAndDestroy, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     grpId = CreateNewRtgGrp(NORMAL_TASK, 0);
     EXPECT_GT(grpId, 0);
     ret = DestroyRtgGrp(grpId);
@@ -87,7 +87,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceCreateAndDestroy, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceDestroyErrorGroup, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     ret = DestroyRtgGrp(-1);
     EXPECT_NE(ret, 0);
 }
@@ -99,8 +99,8 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceDestroyErrorGroup, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceAddRtg, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     int pid = getpid();
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
@@ -117,8 +117,8 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceAddRtg, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceAddErrorThread, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = AddThreadToRtg(-1, grpId);
@@ -134,7 +134,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceAddErrorThread, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceAddErrorGroup, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     int pid = getpid();
     ret = AddThreadToRtg(pid, -1);
     EXPECT_NE(ret, 0);
@@ -147,8 +147,8 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceAddErrorGroup, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceAddRtgs, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     int pid = getpid();
     vector<int> pids = {};
     pids.push_back(pid);
@@ -167,8 +167,8 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceAddRtgs, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceClearRtg, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     int pid = getpid();
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
@@ -187,7 +187,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceClearRtg, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceClearErrorGroup, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     ret = ClearRtgGrp(-1);
     EXPECT_NE(ret, 0);
 }
@@ -199,8 +199,8 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceClearErrorGroup, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceBeginFrameFreq, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = BeginFrameFreq(grpId, 0);
@@ -216,7 +216,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceBeginFrameFreq, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceBeginFrameFreqWithErrorGrp, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     ret = BeginFrameFreq(-1, 0);
     EXPECT_NE(ret, 0);
 }
@@ -228,8 +228,8 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceBeginFrameFreqWithErrorGrp, TestSize.Leve
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceEndFrameFreq, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = EndFrameFreq(grpId);
@@ -245,7 +245,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceEndFrameFreq, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceEndFrameFreqWithErrorGrp, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     ret = EndFrameFreq(-1);
     EXPECT_NE(ret, 0);
 }
@@ -257,8 +257,8 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceEndFrameFreqWithErrorGrp, TestSize.Level1
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceEndScene, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = EndScene(grpId);
@@ -274,7 +274,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceEndScene, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceEndSceneWithErrorGrp, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     ret = EndScene(-1);
     EXPECT_NE(ret, 0);
 }
@@ -286,8 +286,8 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceEndSceneWithErrorGrp, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMinUtil, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = SetMinUtil(grpId, 0);
@@ -303,7 +303,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMinUtil, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMinUtilWithErrorGrp, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     ret = SetMinUtil(-1, 0);
     EXPECT_NE(ret, 0);
 }
@@ -315,8 +315,8 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMinUtilWithErrorGrp, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMargin, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = SetMargin(grpId, 0);
@@ -332,7 +332,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMargin, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMarginWithErrorGrp, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     ret = SetMargin(-1, 0);
     EXPECT_NE(ret, 0);
 }
@@ -344,8 +344,8 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMarginWithErrorGrp, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceListRtgThread, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     vector<int> rs;
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
@@ -362,8 +362,8 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceListRtgThread, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceListRtgThreadWithNullRes, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = ListRtgThread(grpId, nullptr);
@@ -379,7 +379,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceListRtgThreadWithNullRes, TestSize.Level1
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceListRtgThreadWithErrorGrp, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     vector<int> rs;
     ret = ListRtgThread(-1, &rs);
     EXPECT_NE(ret, 0);
@@ -392,7 +392,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceListRtgThreadWithErrorGrp, TestSize.Level
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceListRtgGroup, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     vector<int> rs;
     ret = ListRtgGroup(&rs);
     EXPECT_EQ(ret, 0);
@@ -405,7 +405,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceListRtgGroup, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceListRtgGroupWithNullRes, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     ret = ListRtgGroup(nullptr);
     EXPECT_NE(ret, 0);
 }
@@ -417,8 +417,8 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceListRtgGroupWithNullRes, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetAttr, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = SetFrameRateAndPrioType(grpId, 60, VIP);
@@ -434,8 +434,8 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetAttr, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetErrorAttr, TestSize.Level1)
 {
-    int ret = 0;
-    int grpId = 0;
+    int ret;
+    int grpId;
     grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = SetFrameRateAndPrioType(grpId, 90, -1);
@@ -451,7 +451,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetErrorAttr, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMaxVips, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     ret = SetMaxVipRtgs(2);
     EXPECT_EQ(ret, 0);
 }
@@ -463,7 +463,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMaxVips, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetErrorMaxVips, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     ret = SetMaxVipRtgs(0);
     EXPECT_NE(ret, 0);
 }
@@ -475,7 +475,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetErrorMaxVips, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetLargeMaxVips, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     ret = SetMaxVipRtgs(50000);
     EXPECT_NE(ret, 0);
 }
@@ -487,7 +487,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetLargeMaxVips, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceAddMultipleThreads, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     int pid[3];
     vector<int> threads;
     int grpId;
@@ -515,7 +515,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceAddMultipleThreads, TestSize.Level1)
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceAddMultipleThreadsOutOfLimit, TestSize.Level1)
 {
-    int ret = 0;
+    int ret;
     int pid[8];
     vector<int> threads;
     int grpId;

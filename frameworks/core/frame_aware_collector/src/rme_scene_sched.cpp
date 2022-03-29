@@ -25,6 +25,7 @@ RmeSceneSched::~RmeSceneSched()
 {
     if (rmeCoreSched != nullptr) {
         delete rmeCoreSched;
+        rmeCoreSched = nullptr;
     }
 }
 

@@ -54,6 +54,6 @@ private:
     int m_rtGrp;
     AppState m_appState;
 };
-} // RME
-} // OHOS
+} // namespace RME
+} // namespace OHOS
 #endif

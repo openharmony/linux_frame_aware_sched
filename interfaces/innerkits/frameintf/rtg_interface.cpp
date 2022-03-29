@@ -104,7 +104,7 @@ int CreateNewRtgGrp(int prioType, int rtNum)
     if (fd < 0) {
         return fd;
     }
-    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
+    (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     if ((prioType > 0) && (prioType < RTG_TYPE_MAX)) {
         grp_data.prio_type = prioType;
     }
@@ -131,7 +131,7 @@ int AddThreadToRtg(int tid, int grpId, int prioType)
         RME_LOGE("open node failed.");
         return fd;
     }
-    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
+    (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     grp_data.tid_num = 1;
     grp_data.tids[0] = tid;
     grp_data.grp_id = grpId;
@@ -150,7 +150,7 @@ int AddThreadsToRtg(vector<int> tids, int grpId, int prioType)
     if (fd < 0) {
         return fd;
     }
-    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
+    (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     int num = tids.size();
     if (num > MAX_TID_NUM) {
         return -1;
@@ -186,7 +186,7 @@ int RemoveRtgThread(int tid)
     if (fd < 0) {
         return fd;
     }
-    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
+    (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     grp_data.tid_num = 1;
     grp_data.tids[0] = tid;
     grp_data.rtg_cmd = CMD_REMOVE_RTG_THREAD;
@@ -208,7 +208,7 @@ int ClearRtgGrp(int GrpId)
     if (fd < 0) {
         return fd;
     }
-    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
+    (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     grp_data.rtg_cmd = CMD_CLEAR_RTG_GRP;
     grp_data.grp_id = GrpId;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
@@ -229,7 +229,7 @@ int DestroyRtgGrp(int GrpId)
     if (fd < 0) {
         return fd;
     }
-    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
+    (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     grp_data.rtg_cmd = CMD_DESTROY_RTG_GRP;
     grp_data.grp_id = GrpId;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
@@ -390,7 +390,7 @@ int ListRtgGroup(vector<int> *rs)
     if (!rs) {
         return -1;
     }
-    memset_s(&rtg_info, sizeof(struct rtg_info), 0, sizeof(struct rtg_info));
+    (void)memset_s(&rtg_info, sizeof(struct rtg_info), 0, sizeof(struct rtg_info));
     ret = ioctl(fd, CMD_ID_LIST_RTG, &rtg_info);
     if (ret < 0) {
         RME_LOGE("list rtg group failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
@@ -416,7 +416,7 @@ int ListRtgThread(int grpId, vector<int> *rs)
     if (!rs) {
         return -1;
     }
-    memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
+    (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     grp_data.grp_id = grpId;
     ret = ioctl(fd, CMD_ID_LIST_RTG_THREAD, &grp_data);
     if (ret < 0) {
@@ -444,7 +444,7 @@ int SearchRtgForTid(int tid)
         RME_LOGI("Search tid err: invalid tid.");
         return -1;
     }
-    memset_s(&search_data, sizeof(struct proc_state_data), 0, sizeof(struct proc_state_data));
+    (void)memset_s(&search_data, sizeof(struct proc_state_data), 0, sizeof(struct proc_state_data));
     search_data.state_param = tid;
     ret = ioctl(fd, CMD_ID_SEARCH_RTG, &search_data);
     if (ret < 0) {

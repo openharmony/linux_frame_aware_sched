@@ -30,6 +30,7 @@ FrameMsgMgr::~FrameMsgMgr()
 {
     if (rmeScene != nullptr) {
         delete rmeScene;
+        rmeScene = nullptr;
     }
 }
 

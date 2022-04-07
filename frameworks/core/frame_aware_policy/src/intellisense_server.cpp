@@ -175,7 +175,7 @@ void IntelliSenseServer::SetPara(const int32_t currentFps, const int32_t current
     RME_LOGI("[SetPara]:ioctl SetPara!\n");
     std::string key = std::to_string(currentRenderType) + " " + std::to_string(currentFps);
     map<std::string, int> tempMap = m_subEventPara[key];
-    RME_LOGI("[SetPara]:subEventPara map size: %{public}d", tempMap.size());
+    RME_LOGI("[SetPara]:subEventPara map size: %{public}zu", tempMap.size());
 }
 } // namespace RME
 } // namesapce OHOS

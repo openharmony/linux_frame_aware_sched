@@ -87,7 +87,6 @@ ohos_shared_library("frame_msg_intf") {
   configs = [ ":frame_msg_intf_config" ]
 
   deps = [
-    "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
     "//third_party/libxml2:xml2",
     "//utils/native/base:utils",
   ]
@@ -95,6 +94,7 @@ ohos_shared_library("frame_msg_intf") {
   external_deps = [
     "bytrace_standard:bytrace_core",
     "dsoftbus_standard:softbus_client",
+    "eventhandler:libeventhandler",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
   ]

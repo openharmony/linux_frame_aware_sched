@@ -16,7 +16,7 @@
 #ifndef RME_SCOPED_TRACE_H
 #define RME_SCOPED_TRACE_H
 
-#include "bytrace.h"
+#include "hitrace_meter.h"
 
 #include <cstdarg>
 #include <cstdio>

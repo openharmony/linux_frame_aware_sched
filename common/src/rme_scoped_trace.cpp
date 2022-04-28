@@ -15,7 +15,7 @@
 
 #include "rme_scoped_trace.h"
 
-#include <bytrace.h>
+#include <hitrace_meter.h>
 #include <securec.h>
 
 namespace OHOS {

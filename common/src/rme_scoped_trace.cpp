@@ -35,13 +35,13 @@ void RmeTraceBegin(const char* name)
         return;
     }
     std::string nameStr(name);
-    StartTrace(BYTRACE_TAG_ACE, nameStr);
+    StartTrace(HITRACE_TAG_ACE, nameStr);
 }
 
 void RmeTraceEnd()
 {
     if (RmeTraceEnable()) {
-        FinishTrace(BYTRACE_TAG_ACE);
+        FinishTrace(HITRACE_TAG_ACE);
     }
 }
 

@@ -495,7 +495,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceAddMultipleThreads, TestSize.Level1)
         pid[i] = fork();
         ASSERT_TRUE(pid[i] >= 0) << "> parent: fork errno = " << errno;
         if (pid[i] == 0) {
-            usleep(3000);
+            usleep(50000);
             _Exit(0);
         }
         threads.push_back(pid[i]);
@@ -523,7 +523,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceAddMultipleThreadsOutOfLimit, TestSize.Le
         pid[i] = fork();
         ASSERT_TRUE(pid[i] >= 0) << "> parent: fork errno = " << errno;
         if (pid[i] == 0) {
-            usleep(3000);
+            usleep(50000);
             _Exit(0);
         }
         threads.push_back(pid[i]);

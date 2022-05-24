@@ -108,10 +108,10 @@ ohos_shared_library("rtg_interface") {
 
   include_dirs = [
     "${frame_aware_path}/common/include",
-    "//utils/native/base/include",
+    "//third_party/bounds_checking_function/include",
   ]
 
-  deps = [ "//utils/native/base:utilsecurec" ]
+  deps = [ "//third_party/bounds_checking_function:libsec_static" ]
 
   external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
 

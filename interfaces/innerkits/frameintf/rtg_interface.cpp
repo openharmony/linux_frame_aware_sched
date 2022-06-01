@@ -67,7 +67,7 @@ const char RTG_SCHED_IPC_MAGIC = 0xAB;
 
 int BasicOpenRtgNode()
 {
-    char fileName[] = "/dev/sched_rtg_ctrl";
+    char fileName[] = "/proc/self/sched_rtg_ctrl";
     int fd = open(fileName, O_RDWR);
     if (fd < 0) {
         RME_LOGE("Open fail, errno = %{public}d(%{public}s), dev = %{public}s", errno, strerror(errno), fileName);

@@ -30,8 +30,8 @@ public:
     ~RmeSceneSched() override;
 
     bool Init();
-    void HandleBeginFrame() override;
-    void HandleEndFrame() override;
+    void HandleBeginScene() override;
+    void HandleEndScene() override;
 
     void BeginFlushAnimation() override;
     void EndFlushAnimation() override;

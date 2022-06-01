@@ -35,6 +35,11 @@ int FrameWindowMgr::GetEnable()
 
 void FrameWindowMgr::SetStartFlag(bool flag)
 {
+    if (flag) {
+        RME_LOGI("fling start");
+    } else {
+        RME_LOGI("fling end");
+    }
     m_startFlag = flag;
 }
 

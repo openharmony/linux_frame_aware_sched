@@ -74,7 +74,7 @@ bool FrameMsgMgr::HandleFrameMsgKey(FrameEvent event)
 
 void FrameMsgMgr::FrameMapKeyToFunc()
 {
-    m_frameMsgKeyToFunc[FrameEvent::EVENT_BEGIN_FRAME] = &FrameMsgMgr::HandleBeginFrame;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_BEGIN_FRAME] = &FrameMsgMgr::HandleBeginScene;
     m_frameMsgKeyToFunc[FrameEvent::EVENT_FLUSH_ANIMATION_START] = &FrameMsgMgr::BeginFlushAnimation;
     m_frameMsgKeyToFunc[FrameEvent::EVENT_FLUSH_ANIMATION_END] = &FrameMsgMgr::EndFlushAnimation;
     m_frameMsgKeyToFunc[FrameEvent::EVENT_FLUSH_BUILD_START] = &FrameMsgMgr::BeginFlushBuild;
@@ -90,7 +90,7 @@ void FrameMsgMgr::FrameMapKeyToFunc()
     m_frameMsgKeyToFunc[FrameEvent::EVENT_ANIMATE_START] = &FrameMsgMgr::AnimateStart;
     m_frameMsgKeyToFunc[FrameEvent::EVENT_RENDER_START] = &FrameMsgMgr::RenderStart;
     m_frameMsgKeyToFunc[FrameEvent::EVENT_SEND_COMMANDS_START] = &FrameMsgMgr::SendCommandsStart;
-    m_frameMsgKeyToFunc[FrameEvent::EVENT_END_FRAME] = &FrameMsgMgr::HandleEndFrame;
+    m_frameMsgKeyToFunc[FrameEvent::EVENT_END_FRAME] = &FrameMsgMgr::HandleEndScene;
 }
 
 FrameSceneSched *FrameMsgMgr::GetSceneHandler() const
@@ -110,15 +110,15 @@ void FrameMsgMgr::UpdateScene(SceneEvent scene)
     sceneType = scene;
 }
 
-void FrameMsgMgr::HandleBeginFrame()
+void FrameMsgMgr::HandleBeginScene()
 {
-    RME_LOGI("[HandleBeginFrame]:start");
+    RME_LOGI("[HandleBeginScene]:start");
     FrameSceneSched *scene = GetSceneHandler();
     if (scene == nullptr) {
-        RME_LOGE("[HandleBeginFrame]:scene nullptr");
+        RME_LOGE("[HandleBeginScene]:scene nullptr");
         return;
     }
-    scene->HandleBeginFrame();
+    scene->HandleBeginScene();
 }
 
 void FrameMsgMgr::BeginFlushAnimation()
@@ -271,14 +271,14 @@ void FrameMsgMgr::SendCommandsStart()
     scene->SendCommandsStart();
 }
 
-void FrameMsgMgr::HandleEndFrame()
+void FrameMsgMgr::HandleEndScene()
 {
     FrameSceneSched *scene = GetSceneHandler();
     if (scene == nullptr) {
-        RME_LOGE("[HandleEndFrame]:scene nullptr");
+        RME_LOGE("[HandleEndScene]:scene nullptr");
         return;
     }
-    scene->HandleEndFrame();
+    scene->HandleEndScene();
 }
 
 void FrameMsgMgr::SetSchedParam()

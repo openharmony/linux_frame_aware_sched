@@ -25,8 +25,8 @@ public:
     FrameSceneSched() {};
     virtual ~FrameSceneSched() = default;
 
-    virtual void HandleBeginFrame() = 0;
-    virtual void HandleEndFrame() = 0;
+    virtual void HandleBeginScene() = 0;
+    virtual void HandleEndScene() = 0;
     virtual void BeginFlushAnimation() = 0;
     virtual void EndFlushAnimation() = 0;
     virtual void BeginFlushBuild() = 0;

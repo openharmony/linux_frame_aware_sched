@@ -19,9 +19,9 @@
 namespace OHOS {
 namespace RME {
 namespace {
-    constexpr int MARGIN_THREE = -3;
-    constexpr int MARGIN_FIVE = -5;
-    constexpr int MARGIN_SEVEN = -7;
+    constexpr int MARGIN_BEGIN = -3;
+    constexpr int MARGIN_MIDDLE = -5;
+    constexpr int MARGIN_END = -13;
 }
 DEFINE_RMELOG_INTELLISENSE("ueaClient-RmeCoreSched");
 RmeCoreSched::RmeCoreSched() {}
@@ -45,7 +45,7 @@ bool RmeCoreSched::Init()
     return ret;
 }
 
-void RmeCoreSched::HandleBeginFrame()
+void RmeCoreSched::HandleBeginScene()
 {
     RME_FUNCTION_TRACE();
 }
@@ -53,7 +53,7 @@ void RmeCoreSched::HandleBeginFrame()
 void RmeCoreSched::BeginFlushAnimation()
 {
     m_pid = getpid();
-    if (m_rtg == -1) {
+    if (m_rtg <= 0) {
         m_rtg = SearchRtgForTid(m_pid);
         if (m_rtg <= 0) {
             RME_LOGW("[BeginFlushAnimation]:Search rtg empty!pid %{public}d,Rtg: %{public}d",
@@ -66,7 +66,10 @@ void RmeCoreSched::BeginFlushAnimation()
     int ret = BeginFrameFreq(m_rtg, 0);
     RmeTraceBegin(("FrameS-Begin&AddThread-rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
     m_uiTid = gettid();
-    AddThreadToRtg(m_uiTid, m_rtg);
+    if (!m_uiHasSend) {
+        AddThreadToRtg(m_uiTid, m_rtg);
+        m_uiHasSend = true;
+    }
     RmeTraceEnd();
     return;
 }
@@ -75,8 +78,8 @@ void RmeCoreSched::EndFlushAnimation() {}
 
 void RmeCoreSched::BeginFlushBuild()
 {
-    RmeTraceBegin(("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_THREE)).c_str());
-    SetMargin(m_rtg, MARGIN_THREE);
+    RmeTraceBegin(("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_BEGIN)).c_str());
+    SetMargin(m_rtg, MARGIN_BEGIN);
     RmeTraceEnd();
 }
 
@@ -88,19 +91,14 @@ void RmeCoreSched::EndFlushLayout() {}
 
 void RmeCoreSched::BeginFlushRender()
 {
-    RmeTraceBegin(("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_FIVE)).c_str());
-    SetMargin(m_rtg, MARGIN_FIVE);
+    RmeTraceBegin(("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_MIDDLE)).c_str());
+    SetMargin(m_rtg, MARGIN_MIDDLE);
     RmeTraceEnd();
 }
 
 void RmeCoreSched::EndFlushRender() {}
 
-void RmeCoreSched::BeginFlushRenderFinish()
-{
-    RmeTraceBegin(("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_SEVEN)).c_str());
-    SetMargin(m_rtg, MARGIN_SEVEN);
-    RmeTraceEnd();
-}
+void RmeCoreSched::BeginFlushRenderFinish() {}
 
 void RmeCoreSched::EndFlushRenderFinish() {}
 
@@ -114,35 +112,43 @@ void RmeCoreSched::AnimateStart()
         RME_LOGW("[AnimateStart]: search rtg empty! Rtg:%{public}d, Pid:%{public}d", m_rtg, m_pid);
         return;
     }
-    m_renderTid = gettid();
-    int ret = AddThreadToRtg(m_renderTid, m_rtg);
-    RmeTraceBegin(("FrameS-Add rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
-    RmeTraceEnd();
+    if (!m_renderHasSend) {
+        m_renderTid = gettid();
+        int ret = AddThreadToRtg(m_renderTid, m_rtg);
+        RmeTraceBegin(("FrameS-Add rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
+        m_renderHasSend = true;
+        RmeTraceEnd();
+    }
 }
 
 void RmeCoreSched::RenderStart()
 {
-    RmeTraceBegin(("FrameS-SetMargin:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_THREE)).c_str());
-    SetMargin(m_rtg, MARGIN_THREE);
+    RmeTraceBegin(("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_END)).c_str());
+    SetMargin(m_rtg, MARGIN_END);
     RmeTraceEnd();
 }
 
 void RmeCoreSched::SendCommandsStart()
 {
-    RmeTraceBegin(("FrameS-SetMargin:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_THREE)).c_str());
-    SetMargin(m_rtg, MARGIN_THREE);
+    if (m_rtg <= 0) {
+        return;
+    }
+    RmeTraceBegin("SendCommandsStart-EndFreq");
+    EndFrameFreq(m_rtg);
     RmeTraceEnd();
 }
 
-void RmeCoreSched::HandleEndFrame()
+void RmeCoreSched::HandleEndScene()
 {
     RME_FUNCTION_TRACE();
     if (m_rtg <= 0) {
-        RME_LOGW("[HandleEndFrame]: search rtg empty! rtGrp:%{public}d, m_pid:%{public}d!",
+        RME_LOGW("[HandleEndScene]: search rtg empty! rtGrp:%{public}d, m_pid:%{public}d!",
             m_rtg, m_pid);
         return;
     }
-    int ret = EndFrameFreq(m_rtg);
+    int ret = EndScene(m_rtg);
+    m_renderHasSend = false;
+    m_uiHasSend = false;
     RmeTraceBegin(("FrameS-EndFrameFreq-rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
     RmeTraceEnd();
 }

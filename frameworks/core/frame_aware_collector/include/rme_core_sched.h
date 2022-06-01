@@ -28,8 +28,8 @@ public:
     ~RmeCoreSched();
 
     bool Init();
-    void HandleBeginFrame();
-    void HandleEndFrame();
+    void HandleBeginScene();
+    void HandleEndScene();
     void BeginFlushAnimation();
     void EndFlushAnimation();
     void BeginFlushBuild();
@@ -54,6 +54,8 @@ private:
     int m_rtg = -1;
     int m_renderTid = -1;
     int m_uiTid = -1;
+    bool m_renderHasSend = false;
+    bool m_uiHasSend = false;
 };
 } // namespace RME
 } // namespace OHOS

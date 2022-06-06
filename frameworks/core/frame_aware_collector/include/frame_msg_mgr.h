@@ -38,7 +38,7 @@ private:
     void UpdateScene(SceneEvent scene);
     void SetSchedParam();
 
-    void HandleBeginFrame();
+    void HandleBeginScene();
     void BeginFlushAnimation();
     void EndFlushAnimation();
     void BeginFlushBuild();
@@ -55,7 +55,7 @@ private:
     void AnimateStart();
     void RenderStart();
     void SendCommandsStart();
-    void HandleEndFrame();
+    void HandleEndScene();
 
     FrameSceneSched *GetSceneHandler() const;
     typedef void (FrameMsgMgr:: *PHandle)(void);

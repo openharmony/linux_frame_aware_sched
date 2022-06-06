@@ -42,11 +42,11 @@ bool RmeSceneSched::Init()
     return ret;
 }
 
-void RmeSceneSched::HandleBeginFrame()
+void RmeSceneSched::HandleBeginScene()
 {
     curWorkingStatus = 1;
     FrameWindowMgr::GetInstance().SetStartFlag(true);
-    rmeCoreSched->HandleBeginFrame();
+    rmeCoreSched->HandleBeginScene();
     RmeTraceBegin(("FrameS-curWorkingStatus" + std::to_string(curWorkingStatus)).c_str());
     RmeTraceEnd();
 }
@@ -156,15 +156,13 @@ void RmeSceneSched::SendCommandsStart()
     }
 }
 
-void RmeSceneSched::HandleEndFrame()
+void RmeSceneSched::HandleEndScene()
 {
+    FrameWindowMgr::GetInstance().SetStartFlag(false);
     if (curWorkingStatus == 0) {
         return;
     }
-    rmeCoreSched->HandleEndFrame();
-    if (FrameWindowMgr::GetInstance().GetStartFlag()) {
-        FrameWindowMgr::GetInstance().SetStartFlag(false);
-    }
+    rmeCoreSched->HandleEndScene();
     curWorkingStatus = 0;
     RmeTraceBegin(("FrameS-curWorkingStatus" + std::to_string(curWorkingStatus)).c_str());
     RmeTraceEnd();

@@ -20,7 +20,7 @@ namespace OHOS {
 namespace RME {
 namespace {
     constexpr int PRIO_TYPE = 0;
-    constexpr int RT_NUM = 0;
+    constexpr int RT_NUM = 4;
     constexpr int PID_PRIO_TYPE = 2;
 }
 DEFINE_RMELOG_INTELLISENSE("ueaServer-RtgMsgMgr");

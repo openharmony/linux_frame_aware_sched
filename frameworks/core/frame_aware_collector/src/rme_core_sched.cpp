@@ -56,19 +56,17 @@ void RmeCoreSched::BeginFlushAnimation()
     if (m_rtg <= 0) {
         m_rtg = SearchRtgForTid(m_pid);
         if (m_rtg <= 0) {
-            RME_LOGW("[BeginFlushAnimation]:Search rtg empty!pid %{public}d,Rtg: %{public}d",
-                m_pid, m_rtg);
             return;
-        } else {
-            RME_LOGI("[BeginFlushAnimation]:Search rtg sucess Rtg, val:%{public}d", m_rtg);
         }
     }
     int ret = BeginFrameFreq(m_rtg, 0);
-    RmeTraceBegin(("FrameS-Begin&AddThread-rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
     m_uiTid = gettid();
     if (!m_uiHasSend) {
+        RmeTraceBegin(("FrameS-Begin&AddThread-rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
         AddThreadToRtg(m_uiTid, m_rtg);
         m_uiHasSend = true;
+    } else {
+        RmeTraceBegin("FrameS-Begin");
     }
     RmeTraceEnd();
     return;
@@ -142,8 +140,6 @@ void RmeCoreSched::HandleEndScene()
 {
     RME_FUNCTION_TRACE();
     if (m_rtg <= 0) {
-        RME_LOGW("[HandleEndScene]: search rtg empty! rtGrp:%{public}d, m_pid:%{public}d!",
-            m_rtg, m_pid);
         return;
     }
     int ret = EndScene(m_rtg);

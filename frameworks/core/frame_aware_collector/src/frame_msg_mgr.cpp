@@ -112,7 +112,6 @@ void FrameMsgMgr::UpdateScene(SceneEvent scene)
 
 void FrameMsgMgr::HandleBeginScene()
 {
-    RME_LOGI("[HandleBeginScene]:start");
     FrameSceneSched *scene = GetSceneHandler();
     if (scene == nullptr) {
         RME_LOGE("[HandleBeginScene]:scene nullptr");

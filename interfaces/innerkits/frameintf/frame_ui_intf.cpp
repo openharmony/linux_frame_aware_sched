@@ -21,7 +21,7 @@
 
 namespace OHOS {
 namespace RME {
-DEFINE_RMELOG_INTELLISENSE("ueaCleint-FrameUiIntf");
+DEFINE_RMELOG_INTELLISENSE("ueaClient-FrameUiIntf");
 
 FrameUiIntf& FrameUiIntf::GetInstance()
 {
@@ -53,7 +53,6 @@ int FrameUiIntf::GetSenseSchedEnable()
 
 void FrameUiIntf::BeginFlushAnimation() const
 {
-    RME_LOGI("[BeginFlushAnimation]:start");
     if (!inited) {
         return;
     }

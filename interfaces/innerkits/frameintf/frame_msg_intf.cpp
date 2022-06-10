@@ -59,40 +59,64 @@ bool FrameMsgIntf::GetThreadHandler()
     return true;
 }
 
-
-void FrameMsgIntf::ReportAppInfo(std::string appName, std::string processName, int pid, AppStateUpdateReason reason)
-{
-    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
-    if (threadHandler_ == nullptr) {
-        RME_LOGI("[ReportAppInfo]:threandHandler none!");
-        return;
-    }
-    threadHandler_->PostTask([appName, processName, pid, reason] {
-        IntelliSenseServer::GetInstance().ReportMessage(appName, processName, pid, reason);
-    });
-}
-
-void FrameMsgIntf::ReportWindowFocus(const int pid, const int isFocus)
+void FrameMsgIntf::ReportWindowFocus(const int pid, const int uid, const int isFocus)
 {
     std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
     if (threadHandler_ == nullptr) {
         RME_LOGE("[ReportWindowFocus]:threandHandler none!");
         return;
     }
-    threadHandler_->PostTask([pid, isFocus] {
-        IntelliSenseServer::GetInstance().ReportWindowFocus(pid, isFocus);
+    threadHandler_->PostTask([pid, uid, isFocus] {
+        IntelliSenseServer::GetInstance().ReportWindowFocus(pid, uid, isFocus);
     });
 }
 
-void FrameMsgIntf::ReportProcessInfo(const int pid, const int tid, ThreadState state)
+void FrameMsgIntf::ReportRenderThread(const int pid, const int uid, const int renderTid)
+{
+    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
+    RME_LOGI("[ReportRenderThread]:render get %{public}d with render %{pubilc}d", pid, renderTid);
+    if (threadHandler_ == nullptr) {
+        RME_LOGE("[ReportRenderThread]:threandHandler none!");
+        return;
+    }
+    threadHandler_->PostTask([pid, uid, renderTid] {
+        IntelliSenseServer::GetInstance().ReportRenderThread(pid, uid, renderTid);
+    });
+}
+
+void FrameMsgIntf::ReportAppInfo(const int pid, const int uid, const std::string bundleName, ThreadState state)
+{
+    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
+    if (threadHandler_ == nullptr) {
+        RME_LOGI("[ReportAppInfo]:threandHandler none!");
+        return;
+    }
+    threadHandler_->PostTask([pid, uid, bundleName, state] {
+        IntelliSenseServer::GetInstance().ReportAppInfo(pid, uid, bundleName, state);
+    });
+}
+
+void FrameMsgIntf::ReportProcessInfo(const int pid, const int uid, const std::string bundleName, ThreadState state)
 {
     std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
     if (threadHandler_ == nullptr) {
         RME_LOGI("[ReportProcessInfo]:threandHandler none!");
         return;
     }
-    threadHandler_->PostTask([pid, tid, state] {
-        IntelliSenseServer::GetInstance().ReportProcessInfo(pid, tid, state);
+    threadHandler_->PostTask([pid, uid, bundleName, state] {
+        IntelliSenseServer::GetInstance().ReportProcessInfo(pid, uid, bundleName, state);
+    });
+}
+
+void FrameMsgIntf::ReportCgroupChange(const int pid, const int uid, const int oldGroup, const int newGroup)
+{
+    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
+    if (threadHandler_ == nullptr) {
+        RME_LOGI("[ReportProcessInfo]:threandHandler none!");
+        return;
+    }
+    threadHandler_->PostTask([pid, uid, oldGroup, newGroup] {
+        IntelliSenseServer::GetInstance().ReportCgroupChange(pid, uid, oldGroup, newGroup);
     });
 }
 

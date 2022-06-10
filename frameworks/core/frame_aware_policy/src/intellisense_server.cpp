@@ -18,9 +18,8 @@
 #include <hilog/log.h>
 
 #include "para_config.h"
-#include "rtg_msg_mgr.h"
+#include "rtg_interface.h"
 #include "rme_log_domain.h"
-#include "app_info_mgr.h"
 #include "rme_scoped_trace.h"
 
 namespace OHOS {
@@ -44,13 +43,22 @@ void IntelliSenseServer::Init()
         RME_LOGI("[Init]:xml switch close!");
         return;
     }
-    RtgMsgMgr::GetInstance().Init();
+    int ret = EnableRtg(true);
+    if (ret < 0) {
+        RME_LOGE("[Init]: enable rtg failed!");
+        return;
+    }
+    m_unsupportApp = {
+        "com.ohos.launcher",
+        "com.ohos.systemui",
+        "com.ohos.screenlock"
+    };
     RME_LOGI("[Init]:Init rtg and readXml finish!");
 }
 
 bool IntelliSenseServer::ReadXml()
 {
-    if (!m_needReadXml) { // do this value really need?
+    if (!m_needReadXml) {
         return false;
     }
     m_needReadXml = false;
@@ -69,96 +77,197 @@ bool IntelliSenseServer::ReadXml()
     return false;
 }
 
-void IntelliSenseServer::ReportMessage(std::string appName, std::string processName,
-    int pid, AppStateUpdateReason reason)
+void IntelliSenseServer::NewForeground(int pid)
 {
-    if (!m_switch) {
-        return;
-    }
     RME_FUNCTION_TRACE();
-    int rtGrp = AppInfoMgr::GetInstance().GetAppRtgrp(pid);
-    switch (reason) {
-        case AppStateUpdateReason::APP_FOREGROUND:
-            {
-                rtGrp = RtgMsgMgr::GetInstance().OnForeground(appName, pid);
-                AppInfoMgr::GetInstance().OnForegroundChanged(pid, appName, rtGrp);
-                RME_LOGI("[ReportMessage]: App_foreground! rtGrp: %{public}d", rtGrp);
+    bool found = false;
+    int newCreatedRtg = 0;
+    for (auto iter = m_historyApp.begin(); iter != m_historyApp.end(); iter++) {
+        if (iter->GetAppPid() == pid) {
+            found = true;
+            RME_LOGI("[ReportMessage]pid %{public}d change to foreground.", pid);
+            if (iter->GetAppState() != AppState::APP_FOREGROUND) {
+                iter->SetUiTid(pid);
+                newCreatedRtg = TryCreateRtgForApp(&*iter);
+            }
+            if (newCreatedRtg) {
+                iter->SetAppState(AppState::APP_FOREGROUND);
+            } else {
+                iter->SetAppState(AppState::APP_FOREGROUND_WITHOUT_RTG);
             }
             break;
-        case AppStateUpdateReason::APP_BACKGROUND:
-            {
-                RtgMsgMgr::GetInstance().OnBackground(appName, pid, rtGrp);
-                AppInfoMgr::GetInstance().OnBackgroundChanged(pid, appName);
-                RME_LOGI("[ReportMessage]: App_background! rtGrp: %{public}d", rtGrp);
-            }
-            break;
-        case AppStateUpdateReason::APP_TERMINATED:
-            {
-                RtgMsgMgr::GetInstance().ProcessDied(pid, -1);
-                AppInfoMgr::GetInstance().OnAppTerminateChanged(pid, appName);
-                RME_LOGI("[ReportMessage]: App terminated! rtGrp: %{public}d", rtGrp);
-            }
-            break;
-        default:
-            RME_LOGI("[ReportMessage]: get unuse app state msg!");
-            break;
+        }
     }
-    return;
 }
 
-void IntelliSenseServer::ReportWindowFocus(const int pid, int isFocus)
+int IntelliSenseServer::TryCreateRtgForApp(AppInfo *app)
+{
+    if (!app) {
+        RME_LOGE("[TryCreateRtg]: null app!");
+        return 0;
+    }
+    int grpId = CreateNewRtgGrp(RT_PRIO, RT_NUM);
+    if (grpId <= 0) {
+        RME_LOGE("[TryCreateRtg]: createNewRtgGroup failed! grpId:%{public}d", grpId);
+        app->SetRtgrp(0);
+        return grpId;
+    }
+    app->SetRtgrp(grpId);
+    int uiTid = app->GetUiTid();
+    int renderTid = app->GetRenderTid();
+    if (uiTid > 0) {
+        AddThreadToRtg(uiTid, grpId, 0); // add ui thread
+    }
+    if (renderTid > 0) {
+        AddThreadToRtg(renderTid, grpId, 0); // add render thread
+    }
+    return grpId;
+}
+
+void IntelliSenseServer::NewBackground(int pid)
+{
+    RME_FUNCTION_TRACE();
+    RME_LOGI("[ReportMessage]pid %{public}d change to background.", pid);
+    for (auto iter = m_historyApp.begin(); iter != m_historyApp.end(); iter++) {
+        if (iter->GetAppPid() != pid) {
+            continue;
+        }
+        iter->SetAppState(AppState::APP_BACKGROUND);
+        int grpId = iter->GetRtgrp();
+        if (grpId > 0) {
+            DestroyRtgGrp(grpId);
+        }
+    }
+}
+
+void IntelliSenseServer::NewAppRecord(int pid)
+{
+    for (auto iter = m_historyApp.begin(); iter != m_historyApp.end(); iter++) {
+        if (iter->GetAppPid() == pid) {
+            RME_LOGI("[NewAppRecord]pid %{public}d already exist.", pid);
+            return;
+        }
+    }
+    AppInfo *tempRecord = new AppInfo(pid);
+    m_historyApp.push_back(*tempRecord);
+    tempRecord->SetAppState(AppState::APP_FOREGROUND);
+}
+
+void IntelliSenseServer::NewDiedProcess(int pid)
+{
+    RME_FUNCTION_TRACE();
+    RME_LOGI("[ReportMessage]pid %{public}d died.", pid);
+    for (auto iter = m_historyApp.begin(); iter != m_historyApp.end(); iter++) {
+        if (iter->GetAppPid() == pid) {
+            int grpId = iter->GetRtgrp();
+            if (grpId > 0) {
+                DestroyRtgGrp(grpId);
+            }
+            m_historyApp.erase(iter++);
+        }
+    }
+}
+
+std::list<AppInfo>::iterator IntelliSenseServer::GetRecordOfPid(int pid)
+{
+    for (auto iter = m_historyApp.begin(); iter != m_historyApp.end(); iter++) {
+        if (iter->GetAppPid() == pid) {
+            return iter;
+        }
+    }
+    return m_historyApp.end();
+}
+
+void IntelliSenseServer::ReportRenderThread(const int pid, const int uid, int renderTid)
 {
     if (!m_switch) {
         return;
     }
     RME_FUNCTION_TRACE();
-    int rtGrp = AppInfoMgr::GetInstance().GetAppRtgrp(pid);
+    auto record = GetRecordOfPid(pid);
+    if (record == m_historyApp.end()) {
+        RME_LOGE("Didn't find render in history app %{public}d with render %{public}d", pid, renderTid);
+        return;
+    }
+    record->SetRenderTid(renderTid);
+    int grpId = record->GetRtgrp();
+    if (grpId >= 0 && record->GetAppState() == AppState::APP_FOREGROUND) {
+        int ret = AddThreadToRtg(renderTid, grpId, 0); // add render thread
+        if (ret != 0) {
+            RME_LOGE("[OnFore]:add render thread fail! pid:%{public}d,rtg:%{public}d!ret:%{publid}d",
+                renderTid, grpId, ret);
+        }
+    }
+}
+
+void IntelliSenseServer::ReportWindowFocus(const int pid, const int uid, int isFocus)
+{
+    if (!m_switch) {
+        return;
+    }
+    RME_FUNCTION_TRACE();
     switch (isFocus) {
         case static_cast<int>(WindowState::FOCUS_YES): // isFocus: 0
-            {
-                rtGrp = RtgMsgMgr::GetInstance().OnForeground("", pid);
-                AppInfoMgr::GetInstance().OnForegroundChanged(pid, "", rtGrp);
-                RME_LOGI("[ReportWindowFocus]: Focus yes!rtGrp: %{public}d", rtGrp);
-            }
+            RME_LOGI("[ReportWindowFocus]:%{public}d get focus", pid);
             break;
         case static_cast<int>(WindowState::FOCUS_NO): // isFocus: 1
-            {
-                RtgMsgMgr::GetInstance().OnBackground("", pid, rtGrp);
-                AppInfoMgr::GetInstance().OnBackgroundChanged(pid, "");
-                RME_LOGI("[ReportWindowFocus]: Focus No!rtGrp: %{public}d", rtGrp);
-            }
+            RME_LOGI("[ReportWindowFocus]:%{public}d lost focus", pid);
             break;
         default:
             RME_LOGI("[ReportWindowFocus]:unknown msg!");
             break;
     }
-    AppInfoMgr::GetInstance().OnWindowFocus(pid, isFocus);
-    RtgMsgMgr::GetInstance().FocusChanged(pid, isFocus);
 }
 
-void IntelliSenseServer::ReportProcessInfo(const int pid, const int tid, ThreadState state)
+inline CgroupPolicy IntelliSenseServer::CheckCgroupState(CgroupPolicy cgroup)
+{
+    return ((cgroup == CgroupPolicy::SP_FOREGROUND) || (cgroup == CgroupPolicy::SP_TOP_APP)) ?
+        CgroupPolicy::SP_FOREGROUND : CgroupPolicy::SP_BACKGROUND;
+}
+
+void IntelliSenseServer::ReportCgroupChange(const int pid, const int uid, const int oldGroup, const int newGroup)
 {
     if (!m_switch) {
         return;
     }
     RME_FUNCTION_TRACE();
+    CgroupPolicy oldState = CheckCgroupState(static_cast<CgroupPolicy>(oldGroup));
+    CgroupPolicy newState = CheckCgroupState(static_cast<CgroupPolicy>(newGroup));
+    if (oldState == newState) {
+        return;
+    }
+    if (newState == CgroupPolicy::SP_BACKGROUND) {
+        NewBackground(pid);
+    } else if (newState == CgroupPolicy::SP_FOREGROUND) {
+        NewForeground(pid);
+    }
+}
+
+void IntelliSenseServer::ReportAppInfo(const int pid, const int uid, const std::string bundleName, ThreadState state)
+{
+    if (!m_switch) {
+        return;
+    }
+    RME_LOGI("Get app info:%{public}d %{public}d %{public}s %{public}d",
+        pid, uid, bundleName.c_str(), static_cast<int>(state));
+}
+
+void IntelliSenseServer::ReportProcessInfo(const int pid,
+    const int uid, const std::string bundleName, ThreadState state)
+{
+    if (!m_switch) {
+        return;
+    }
+    RME_FUNCTION_TRACE();
+    if (m_unsupportApp.find(bundleName) != m_unsupportApp.end()) {
+        return;
+    }
     switch (state) {
         case ThreadState::DIED:
-            {
-                int ret = AppInfoMgr::GetInstance().OnProcessDied(pid, tid);
-                if (ret) {
-                    RtgMsgMgr::GetInstance().ProcessDied(pid, tid);
-                    RME_LOGI("process died, pid:%{public}d, tid: %{public}d, threadstate: %{public}d",
-                        pid, tid, static_cast<int>(state));
-                } else {
-                    RME_LOGI("process died, do not need to delete the rtgrp:pid:%{public}d, tid: %{public}d",
-                        pid, tid);
-                }
-            }
+            NewDiedProcess(pid);
             break;
         case ThreadState::CREATE:
-            RME_LOGI("process create, pid: %{public}d, tid: %{public}d, threadstate: %{public}d",
-                pid, tid, static_cast<int>(state));
+            NewAppRecord(pid);
             break;
         default:
             RME_LOGI("unknown state : %{public}d", static_cast<int>(state));

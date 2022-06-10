@@ -27,9 +27,11 @@ public:
     static FrameMsgIntf& GetInstance();
     bool Init();
     bool GetThreadHandler();
-    void ReportAppInfo(std::string appName, std::string processName, int pid, AppStateUpdateReason reason);
-    void ReportWindowFocus(const int pid, const int isFocus);
-    void ReportProcessInfo(const int pid, const int tid, ThreadState state);
+    void ReportAppInfo(const int pid, const int uid, const std::string bundleName, ThreadState state);
+    void ReportProcessInfo(const int pid, const int uid, const std::string bundleName, ThreadState state);
+    void ReportCgroupChange(const int pid, const int uid, const int oldGroup, const int newGroup);
+    void ReportWindowFocus(const int pid, const int uid, const int isFocus);
+    void ReportRenderThread(const int pid, const int uid, const int renderTid);
     void Stop();
 protected:
     FrameMsgIntf() = default;

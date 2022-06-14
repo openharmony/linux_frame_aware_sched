@@ -18,17 +18,6 @@
 
 namespace OHOS {
 namespace RME {
-enum class AppStateUpdateReason {
-    APP_FOREGROUND,
-    APP_BACKGROUND,
-    APP_TERMINATED,
-    PROCESS_CREATE,
-    PROCESS_READY,
-    PROCESS_SUSPEND,
-    PROCESS_DIED,
-    REASON_UNKNOWN,
-};
-
 enum class ThreadType {
     UI,
     RENDER,

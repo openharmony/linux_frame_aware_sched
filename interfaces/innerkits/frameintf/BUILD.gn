@@ -77,10 +77,8 @@ ohos_shared_library("frame_msg_intf") {
     "${frame_aware_path}/common/src/rme_scoped_trace.cpp",
     "${frame_aware_path}/interfaces/innerkits/frameintf/rtg_interface.cpp",
     "${framework_path}/frame_aware_policy/src/app_info.cpp",
-    "${framework_path}/frame_aware_policy/src/app_info_mgr.cpp",
     "${framework_path}/frame_aware_policy/src/intellisense_server.cpp",
     "${framework_path}/frame_aware_policy/src/para_config.cpp",
-    "${framework_path}/frame_aware_policy/src/rtg_msg_mgr.cpp",
     "frame_msg_intf.cpp",
   ]
 

@@ -20,16 +20,32 @@
 
 namespace OHOS {
 namespace RME {
+namespace {
+    constexpr int RT_PRIO = 0;
+    constexpr int RT_NUM = 4;
+}
+
 enum class AppState {
     APP_FOREGROUND,
+    APP_FOREGROUND_WITHOUT_RTG,
     APP_BACKGROUND,
     APP_TERMINATED,
     APP_UNKNOWN,
 };
 
+enum class CgroupPolicy {
+    SP_DEFAULT = 0,
+    SP_BACKGROUND = 1,
+    SP_FOREGROUND = 2,
+    SP_SYSTEM_BACKGROUND = 3,
+    SP_TOP_APP = 4,
+    SP_SYSTEM_DEFAULT = SP_DEFAULT
+};
+
 class AppInfo {
 public:
     AppInfo(std::string appName, int pid, int uiTid, int renderTid, int isFocus, AppState state);
+    AppInfo(int pid);
     ~AppInfo() = default;
 
     void SetRenderTid(const int tid);

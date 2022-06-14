@@ -52,9 +52,7 @@ public:
 private:
     int m_pid = -1;
     int m_rtg = -1;
-    int m_renderTid = -1;
     int m_uiTid = -1;
-    bool m_renderHasSend = false;
     bool m_uiHasSend = false;
 };
 } // namespace RME

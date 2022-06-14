@@ -110,13 +110,6 @@ void RmeCoreSched::AnimateStart()
         RME_LOGW("[AnimateStart]: search rtg empty! Rtg:%{public}d, Pid:%{public}d", m_rtg, m_pid);
         return;
     }
-    if (!m_renderHasSend) {
-        m_renderTid = gettid();
-        int ret = AddThreadToRtg(m_renderTid, m_rtg);
-        RmeTraceBegin(("FrameS-Add rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
-        m_renderHasSend = true;
-        RmeTraceEnd();
-    }
 }
 
 void RmeCoreSched::RenderStart()
@@ -143,7 +136,6 @@ void RmeCoreSched::HandleEndScene()
         return;
     }
     int ret = EndScene(m_rtg);
-    m_renderHasSend = false;
     m_uiHasSend = false;
     RmeTraceBegin(("FrameS-EndFrameFreq-rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
     RmeTraceEnd();

@@ -31,6 +31,16 @@ AppInfo::AppInfo(std::string appName, int pid, int uiTid, int renderTid, int isF
       m_appState(state)
 {}
 
+AppInfo::AppInfo(int pid)
+    : m_appName(""),
+      m_pid(pid),
+      m_uiTid(0),
+      m_renderTid(0),
+      m_isFocus(0),
+      m_rtGrp(0),
+      m_appState(AppState::APP_TERMINATED)
+{}
+
 void AppInfo::SetRenderTid(const int tid)
 {
     this->m_renderTid = tid;

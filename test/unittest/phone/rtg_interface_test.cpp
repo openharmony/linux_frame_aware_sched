@@ -412,7 +412,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceListRtgGroupWithNullRes, TestSize.Level1)
 
 /**
  * @tc.name: RtgInterfaceSetAttr
- * @tc.desc: Verify rtg attr set funtion.
+ * @tc.desc: Verify rtg attr set function.
  * @tc.type: FUNC
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetAttr, TestSize.Level1)
@@ -429,7 +429,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetAttr, TestSize.Level1)
 
 /**
  * @tc.name: RtgInterfaceSetErrorAttr
- * @tc.desc: Verify rtg attr set funtion with error attr param.
+ * @tc.desc: Verify rtg attr set function with error attr param.
  * @tc.type: FUNC
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetErrorAttr, TestSize.Level1)
@@ -446,7 +446,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetErrorAttr, TestSize.Level1)
 
 /**
  * @tc.name: RtgInterfaceSetMaxVips
- * @tc.desc: Verify rtg max vip num set funtion.
+ * @tc.desc: Verify rtg max vip num set function.
  * @tc.type: FUNC
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMaxVips, TestSize.Level1)
@@ -458,7 +458,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMaxVips, TestSize.Level1)
 
 /**
  * @tc.name: RtgInterfaceSetErrorMaxVips
- * @tc.desc: Verify rtg max vip num set funtion with 0 vip nums.
+ * @tc.desc: Verify rtg max vip num set function with 0 vip nums.
  * @tc.type: FUNC
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetErrorMaxVips, TestSize.Level1)
@@ -470,7 +470,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetErrorMaxVips, TestSize.Level1)
 
 /**
  * @tc.name: RtgInterfaceSetLargeMaxVips
- * @tc.desc: Verify rtg max vip num set funtion with too large vip nums.
+ * @tc.desc: Verify rtg max vip num set function with too large vip nums.
  * @tc.type: FUNC
  */
 HWTEST_F(RtgInterfaceTest, RtgInterfaceSetLargeMaxVips, TestSize.Level1)

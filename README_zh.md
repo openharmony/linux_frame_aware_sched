@@ -97,7 +97,7 @@
 
 - [resource_schedule_service](https://gitee.com/openharmony/resourceschedule_resource_schedule_service)
 - [ace_ace_engine]( https://gitee.com/openharmony/ace_ace_engine)
-- [graphic_standard](https://gitee.com/openharmony/graphic_standard)
+- [graphic_graphic_2d](https://gitee.com/openharmony/graphic_graphic_2d)
 - [aafwk_standard](https://gitee.com/openharmony/aafwk_standard ) 
 - **frame_aware_sched**
 

@@ -151,7 +151,7 @@ int AddThreadsToRtg(vector<int> tids, int grpId, int prioType)
         return fd;
     }
     (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
-    int num = tids.size();
+    int num = static_cast<int>(tids.size());
     if (num > MAX_TID_NUM) {
         return -1;
     }
@@ -167,12 +167,8 @@ int AddThreadsToRtg(vector<int> tids, int grpId, int prioType)
     }
 
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
-    if (ret < 0) {
-        RME_LOGE("add rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else if (ret == 0) {
+    if (!ret) {
         RME_LOGI("add rtg grp success");
-    } else {
-        RME_LOGI("add rtg grp failed with %d threads", ret);
     }
     close(fd);
     return ret;
@@ -332,9 +328,7 @@ int EndScene(int grpId)
         return fd;
     }
     ret = ioctl(fd, CMD_ID_END_SCENE, &state_data);
-    if (ret < 0) {
-        RME_LOGE("set EndScene failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
+    if (ret >= 0) {
         RME_LOGI("set EndScene success, get ret %{public}d.", ret);
     }
     close(fd);
@@ -447,9 +441,7 @@ int SearchRtgForTid(int tid)
     (void)memset_s(&search_data, sizeof(struct proc_state_data), 0, sizeof(struct proc_state_data));
     search_data.state_param = tid;
     ret = ioctl(fd, CMD_ID_SEARCH_RTG, &search_data);
-    if (ret < 0) {
-        RME_LOGE("Search tid fail, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
+    if (ret >= 0) {
         RME_LOGI("Search tid %{public}d success with rtg_grp %{public}d", tid, ret);
     }
     close(fd);

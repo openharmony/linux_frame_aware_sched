@@ -131,7 +131,6 @@ void FrameMsgIntf::Stop()
         runner_->Stop();
         runner_ = nullptr;
     }
-    RME_LOGI("stop eventRunner success!");
 }
 } // namespace RME
 } // namespace OHOS

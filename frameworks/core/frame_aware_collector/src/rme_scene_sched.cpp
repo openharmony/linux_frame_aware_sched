@@ -14,6 +14,8 @@
  */
 
 #include "rme_scene_sched.h"
+#include "frame_window_mgr.h"
+#include "rme_scoped_trace.h"
 
 namespace OHOS {
 namespace RME {

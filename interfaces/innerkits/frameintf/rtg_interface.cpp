@@ -18,13 +18,11 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <securec.h>
-#include <cstdlib>
 #include <cstdio>
-#include <cerrno>
 #include <string>
-#include <iostream>
-#include <linux/types.h>
-
+#include <vector>
+#include <cerrno>
+#include "bits/ioctl.h"
 #include "rme_log_domain.h"
 
 namespace OHOS {

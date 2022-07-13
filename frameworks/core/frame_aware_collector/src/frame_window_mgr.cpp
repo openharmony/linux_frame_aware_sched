@@ -14,6 +14,9 @@
  */
 
 #include "frame_window_mgr.h"
+#include <iosfwd>
+#include <string>
+#include "rme_log_domain.h"
 
 namespace OHOS {
 namespace RME {

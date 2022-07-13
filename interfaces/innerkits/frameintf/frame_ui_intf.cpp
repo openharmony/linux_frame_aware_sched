@@ -18,6 +18,7 @@
 #include "frame_info_const.h"
 #include "rme_constants.h"
 #include "frame_msg_mgr.h"
+#include "rme_log_domain.h"
 
 namespace OHOS {
 namespace RME {

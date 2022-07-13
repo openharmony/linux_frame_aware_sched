@@ -14,7 +14,12 @@
  */
 
 #include "rme_core_sched.h"
+#include <memory>
+#include <string>
+#include <unistd.h>
 #include "rtg_interface.h"
+#include "rme_log_domain.h"
+#include "rme_scoped_trace.h"
 
 namespace OHOS {
 namespace RME {

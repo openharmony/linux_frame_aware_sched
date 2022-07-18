@@ -14,6 +14,10 @@
  */
 
 #include "frame_msg_mgr.h"
+#include <map>
+#include <new>
+#include <utility>
+#include "rme_log_domain.h"
 
 namespace OHOS {
 namespace RME {

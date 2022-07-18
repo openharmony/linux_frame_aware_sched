@@ -14,9 +14,12 @@
  */
 
 #include "intellisense_server.h"
-
-#include <hilog/log.h>
-
+#include <list>
+#include <map>
+#include <new>
+#include <set>
+#include <string>
+#include <vector>
 #include "para_config.h"
 #include "rtg_interface.h"
 #include "rme_log_domain.h"

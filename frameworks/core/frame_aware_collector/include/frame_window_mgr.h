@@ -16,9 +16,7 @@
 #ifndef FRAME_WINDOW_MGR_H
 #define FRAME_WINDOW_MGR_H
 
-#include <string>
 #include "single_instance.h"
-#include "rme_log_domain.h"
 
 namespace OHOS {
 namespace RME {

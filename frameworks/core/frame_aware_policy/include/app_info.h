@@ -17,6 +17,7 @@
 #define APP_INFO_H
 
 #include <string>
+#include <iosfwd>
 
 namespace OHOS {
 namespace RME {

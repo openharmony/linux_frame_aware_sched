@@ -16,11 +16,8 @@
 #ifndef RME_SCENE_SCHED_H
 #define RME_SCENE_SCHED_H
 
-#include "frame_scene_sched.h"
-#include "frame_window_mgr.h"
 #include "rme_core_sched.h"
-
-#include <string>
+#include "frame_scene_sched.h"
 
 namespace OHOS {
 namespace RME {

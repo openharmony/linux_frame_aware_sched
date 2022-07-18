@@ -21,12 +21,10 @@
 #include <string>
 #include <vector>
 #include <set>
-#include <mutex>
-#include <thread>
-
+#include <cstdint>
+#include <iosfwd>
 #include "rme_constants.h"
 #include "single_instance.h"
-#include "event_handler.h"
 #include "app_info.h"
 
 namespace OHOS {

@@ -16,11 +16,10 @@
 #ifndef FRAME_MSG_MGR_H
 #define FRAME_MSG_MGR_H
 
-#include <hilog/log.h>
 #include <map>
-
-#include "rme_log_domain.h"
 #include "frame_info_const.h"
+#include "single_instance.h"
+#include "frame_scene_sched.h"
 #include "rme_scene_sched.h"
 
 namespace OHOS {

@@ -16,10 +16,6 @@
 #ifndef RME_CORE_SCHED_H
 #define RME_CORE_SCHED_H
 
-#include <unistd.h>
-#include "rme_log_domain.h"
-#include "rme_scoped_trace.h"
-
 namespace OHOS {
 namespace RME {
 class RmeCoreSched {

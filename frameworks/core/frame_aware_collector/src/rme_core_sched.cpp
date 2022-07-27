@@ -14,12 +14,12 @@
  */
 
 #include "rme_core_sched.h"
+#include <hitrace_meter.h>
 #include <memory>
 #include <string>
 #include <unistd.h>
 #include "rtg_interface.h"
 #include "rme_log_domain.h"
-#include "rme_scoped_trace.h"
 
 namespace OHOS {
 namespace RME {
@@ -39,20 +39,20 @@ RmeCoreSched::~RmeCoreSched()
 
 bool RmeCoreSched::Init()
 {
-    RmeTraceBegin("FrameS-Init");
+    StartTrace(HITRACE_TAG_ACE, "FrameS-Init");
     int ret = GetRtgEnable();
     if (ret > 0) {
         RME_LOGE("[Init]: rtgEnabled! scheme Open!ret: %{public}d", ret);
     } else {
         RME_LOGE("[Init]: do not enabled!ret: %{public}d", ret);
     }
-    RmeTraceEnd();
+    FinishTrace(HITRACE_TAG_ACE);
     return ret;
 }
 
 void RmeCoreSched::HandleBeginScene()
 {
-    RME_FUNCTION_TRACE();
+    HITRACE_METER(HITRACE_TAG_ACE);
 }
 
 void RmeCoreSched::BeginFlushAnimation()
@@ -67,13 +67,14 @@ void RmeCoreSched::BeginFlushAnimation()
     int ret = BeginFrameFreq(m_rtg, 0);
     m_uiTid = gettid();
     if (!m_uiHasSend) {
-        RmeTraceBegin(("FrameS-Begin&AddThread-rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
+        StartTrace(HITRACE_TAG_ACE,
+            ("FrameS-Begin&AddThread-rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
         AddThreadToRtg(m_uiTid, m_rtg);
         m_uiHasSend = true;
     } else {
-        RmeTraceBegin("FrameS-Begin");
+        StartTrace(HITRACE_TAG_ACE, "FrameS-Begin");
     }
-    RmeTraceEnd();
+    FinishTrace(HITRACE_TAG_ACE);
     return;
 }
 
@@ -81,9 +82,10 @@ void RmeCoreSched::EndFlushAnimation() {}
 
 void RmeCoreSched::BeginFlushBuild()
 {
-    RmeTraceBegin(("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_BEGIN)).c_str());
+    StartTrace(HITRACE_TAG_ACE,
+        ("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_BEGIN)).c_str());
     SetMargin(m_rtg, MARGIN_BEGIN);
-    RmeTraceEnd();
+    FinishTrace(HITRACE_TAG_ACE);
 }
 
 void RmeCoreSched::EndFlushBuild() {}
@@ -94,9 +96,10 @@ void RmeCoreSched::EndFlushLayout() {}
 
 void RmeCoreSched::BeginFlushRender()
 {
-    RmeTraceBegin(("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_MIDDLE)).c_str());
+    StartTrace(HITRACE_TAG_ACE,
+        ("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_MIDDLE)).c_str());
     SetMargin(m_rtg, MARGIN_MIDDLE);
-    RmeTraceEnd();
+    FinishTrace(HITRACE_TAG_ACE);
 }
 
 void RmeCoreSched::EndFlushRender() {}
@@ -119,9 +122,10 @@ void RmeCoreSched::AnimateStart()
 
 void RmeCoreSched::RenderStart()
 {
-    RmeTraceBegin(("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_END)).c_str());
+    StartTrace(HITRACE_TAG_ACE,
+        ("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_END)).c_str());
     SetMargin(m_rtg, MARGIN_END);
-    RmeTraceEnd();
+    FinishTrace(HITRACE_TAG_ACE);
 }
 
 void RmeCoreSched::SendCommandsStart()
@@ -129,21 +133,22 @@ void RmeCoreSched::SendCommandsStart()
     if (m_rtg <= 0) {
         return;
     }
-    RmeTraceBegin("SendCommandsStart-EndFreq");
+    StartTrace(HITRACE_TAG_ACE, "SendCommandsStart-EndFreq");
     EndFrameFreq(m_rtg);
-    RmeTraceEnd();
+    FinishTrace(HITRACE_TAG_ACE);
 }
 
 void RmeCoreSched::HandleEndScene()
 {
-    RME_FUNCTION_TRACE();
+    HITRACE_METER(HITRACE_TAG_ACE);
     if (m_rtg <= 0) {
         return;
     }
     int ret = EndScene(m_rtg);
     m_uiHasSend = false;
-    RmeTraceBegin(("FrameS-EndFrameFreq-rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
-    RmeTraceEnd();
+    StartTrace(HITRACE_TAG_ACE,
+        ("FrameS-EndFrameFreq-rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
+    FinishTrace(HITRACE_TAG_ACE);
 }
 } // namespace RME
 } // OHOS

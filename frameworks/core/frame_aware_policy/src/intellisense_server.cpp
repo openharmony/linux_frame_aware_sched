@@ -20,10 +20,10 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <hitrace_meter.h>
 #include "para_config.h"
 #include "rtg_interface.h"
 #include "rme_log_domain.h"
-#include "rme_scoped_trace.h"
 
 namespace OHOS {
 namespace RME {
@@ -82,7 +82,7 @@ bool IntelliSenseServer::ReadXml()
 
 void IntelliSenseServer::NewForeground(int pid)
 {
-    RME_FUNCTION_TRACE();
+    HITRACE_METER(HITRACE_TAG_ACE);
     bool found = false;
     int newCreatedRtg = 0;
     for (auto iter = m_historyApp.begin(); iter != m_historyApp.end(); iter++) {
@@ -129,7 +129,7 @@ int IntelliSenseServer::TryCreateRtgForApp(AppInfo *app)
 
 void IntelliSenseServer::NewBackground(int pid)
 {
-    RME_FUNCTION_TRACE();
+    HITRACE_METER(HITRACE_TAG_ACE);
     RME_LOGI("[ReportMessage]pid %{public}d change to background.", pid);
     for (auto iter = m_historyApp.begin(); iter != m_historyApp.end(); iter++) {
         if (iter->GetAppPid() != pid) {
@@ -158,7 +158,7 @@ void IntelliSenseServer::NewAppRecord(int pid)
 
 void IntelliSenseServer::NewDiedProcess(int pid)
 {
-    RME_FUNCTION_TRACE();
+    HITRACE_METER(HITRACE_TAG_ACE);
     RME_LOGI("[ReportMessage]pid %{public}d died.", pid);
     for (auto iter = m_historyApp.begin(); iter != m_historyApp.end(); iter++) {
         if (iter->GetAppPid() == pid) {
@@ -186,7 +186,7 @@ void IntelliSenseServer::ReportRenderThread(const int pid, const int uid, int re
     if (!m_switch) {
         return;
     }
-    RME_FUNCTION_TRACE();
+    HITRACE_METER(HITRACE_TAG_ACE);
     auto record = GetRecordOfPid(pid);
     if (record == m_historyApp.end()) {
         RME_LOGE("Didn't find render in history app %{public}d with render %{public}d", pid, renderTid);
@@ -208,7 +208,7 @@ void IntelliSenseServer::ReportWindowFocus(const int pid, const int uid, int isF
     if (!m_switch) {
         return;
     }
-    RME_FUNCTION_TRACE();
+    HITRACE_METER(HITRACE_TAG_ACE);
     switch (isFocus) {
         case static_cast<int>(WindowState::FOCUS_YES): // isFocus: 0
             RME_LOGI("[ReportWindowFocus]:%{public}d get focus", pid);
@@ -233,7 +233,7 @@ void IntelliSenseServer::ReportCgroupChange(const int pid, const int uid, const 
     if (!m_switch) {
         return;
     }
-    RME_FUNCTION_TRACE();
+    HITRACE_METER(HITRACE_TAG_ACE);
     CgroupPolicy oldState = CheckCgroupState(static_cast<CgroupPolicy>(oldGroup));
     CgroupPolicy newState = CheckCgroupState(static_cast<CgroupPolicy>(newGroup));
     if (oldState == newState) {
@@ -261,7 +261,7 @@ void IntelliSenseServer::ReportProcessInfo(const int pid,
     if (!m_switch) {
         return;
     }
-    RME_FUNCTION_TRACE();
+    HITRACE_METER(HITRACE_TAG_ACE);
     if (m_unsupportApp.find(bundleName) != m_unsupportApp.end()) {
         return;
     }

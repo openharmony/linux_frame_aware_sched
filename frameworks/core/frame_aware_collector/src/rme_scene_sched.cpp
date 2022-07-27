@@ -14,8 +14,8 @@
  */
 
 #include "rme_scene_sched.h"
+#include <hitrace_meter.h>
 #include "frame_window_mgr.h"
-#include "rme_scoped_trace.h"
 
 namespace OHOS {
 namespace RME {
@@ -49,8 +49,8 @@ void RmeSceneSched::HandleBeginScene()
     curWorkingStatus = 1;
     FrameWindowMgr::GetInstance().SetStartFlag(true);
     rmeCoreSched->HandleBeginScene();
-    RmeTraceBegin(("FrameS-curWorkingStatus" + std::to_string(curWorkingStatus)).c_str());
-    RmeTraceEnd();
+    StartTrace(HITRACE_TAG_ACE, ("FrameS-curWorkingStatus" + std::to_string(curWorkingStatus)).c_str());
+    FinishTrace(HITRACE_TAG_ACE);
 }
 
 void RmeSceneSched::BeginFlushAnimation()
@@ -166,8 +166,8 @@ void RmeSceneSched::HandleEndScene()
     }
     rmeCoreSched->HandleEndScene();
     curWorkingStatus = 0;
-    RmeTraceBegin(("FrameS-curWorkingStatus" + std::to_string(curWorkingStatus)).c_str());
-    RmeTraceEnd();
+    StartTrace(HITRACE_TAG_ACE, ("FrameS-curWorkingStatus" + std::to_string(curWorkingStatus)).c_str());
+    FinishTrace(HITRACE_TAG_ACE);
 }
 } // namespace RME
 } // namespace OHOS

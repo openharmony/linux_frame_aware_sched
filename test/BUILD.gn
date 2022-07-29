@@ -25,7 +25,7 @@ frame_aware_sched_deps = [
   "${innerkits_path}/frameintf:frame_msg_intf",
   "${innerkits_path}/frameintf:frame_ui_intf",
   "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
-  "//utils/native/base:utils",
+  "//commonlibrary/c_utils/base:utils",
 ]
 
 frame_aware_sched_external_deps = [

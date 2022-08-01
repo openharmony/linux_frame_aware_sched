@@ -21,7 +21,7 @@ config("frame_ui_intf_config") {
     "${innerkits_path}/frameintf",
     "${frame_aware_path}/common/include",
     "${framework_path}/frame_aware_collector/include",
-    "//utils/native/base/include",
+    "//commonlibrary/c_utils/base/include",
     "//utils/system/safwk/native/include",
     "//base/hiviewdfx/interfaces/innerkits/libhilog/include",
     "//base/hiviewdfx/interfaces/innerkits/libhitrace/include",
@@ -40,14 +40,12 @@ ohos_shared_library("frame_ui_intf") {
 
   configs = [ ":frame_ui_intf_config" ]
 
-  deps = [
-    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
-    "//utils/native/base:utils",
-  ]
+  deps = [ "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog" ]
 
-  public_deps = [ "//utils/native/base:utils" ]
+  public_deps = [ "//commonlibrary/c_utils/base:utils" ]
 
   external_deps = [
+    "c_utils:utils",
     "dsoftbus:softbus_client",
     "hitrace_native:hitrace_meter",
     "hiviewdfx_hilog_native:libhilog",
@@ -82,12 +80,10 @@ ohos_shared_library("frame_msg_intf") {
 
   configs = [ ":frame_msg_intf_config" ]
 
-  deps = [
-    "//third_party/libxml2:xml2",
-    "//utils/native/base:utils",
-  ]
+  deps = [ "//third_party/libxml2:xml2" ]
 
   external_deps = [
+    "c_utils:utils",
     "dsoftbus:softbus_client",
     "eventhandler:libeventhandler",
     "hitrace_native:hitrace_meter",

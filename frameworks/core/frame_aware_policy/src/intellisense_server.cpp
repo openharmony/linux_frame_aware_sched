@@ -54,7 +54,8 @@ void IntelliSenseServer::Init()
     m_unsupportApp = {
         "com.ohos.launcher",
         "com.ohos.systemui",
-        "com.ohos.screenlock"
+        "com.ohos.screenlock",
+        "com.ohos.wallpaper"
     };
     RME_LOGI("[Init]:Init rtg and readXml finish!");
 }

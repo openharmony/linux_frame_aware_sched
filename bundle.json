@@ -24,7 +24,6 @@
         "deps": {
             "components": [
                 "libeventhandler",
-                "ipc_core",
                 "samgr_proxy",
                 "system_ability_fwk"
             ],

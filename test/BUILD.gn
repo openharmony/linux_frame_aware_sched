@@ -21,18 +21,7 @@ module_output_path = "frameawareschedtest/"
 frame_aware_sched_configs =
     [ "${innerkits_path}/frameintf:frame_msg_intf_config" ]
 
-frame_aware_sched_deps = [
-  "${innerkits_path}/frameintf:frame_msg_intf",
-  "${innerkits_path}/frameintf:frame_ui_intf",
-  "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
-  "//commonlibrary/c_utils/base:utils",
-]
-
-frame_aware_sched_external_deps = [
-  "eventhandler:libeventhandler",
-  "hiviewdfx_hilog_native:libhilog",
-  "ipc:ipc_core",
-]
+frame_aware_sched_deps = [ "${innerkits_path}/frameintf:frame_msg_intf" ]
 
 frame_aware_sched_public_deps = [ "//third_party/googletest:gtest_main" ]
 
@@ -42,10 +31,7 @@ ohos_unittest("frame_ui_intf_test") {
 
   sources = [ "unittest/phone/frame_ui_intf_test.cpp" ]
 
-  deps = frame_aware_sched_deps
-
   if (is_standard_system) {
-    external_deps = frame_aware_sched_external_deps
     public_deps = frame_aware_sched_public_deps
   }
   part_name = "frame_aware_sched"
@@ -57,12 +43,14 @@ ohos_unittest("frame_msg_intf_test") {
 
   sources = [ "unittest/phone/frame_msg_intf_test.cpp" ]
 
+  include_dirs = [
+    "//base/hiviewdfx/hiview/adapter/utility/include/extra/",
+    "//base/notification/eventhandler/interfaces/inner_api/",
+  ]
+
   configs = frame_aware_sched_configs
 
-  deps = frame_aware_sched_deps
-
   if (is_standard_system) {
-    external_deps = frame_aware_sched_external_deps
     public_deps = frame_aware_sched_public_deps
   }
 
@@ -80,7 +68,6 @@ ohos_unittest("rtg_interface_test") {
   deps = frame_aware_sched_deps
 
   if (is_standard_system) {
-    external_deps = frame_aware_sched_external_deps
     public_deps = frame_aware_sched_public_deps
   }
 

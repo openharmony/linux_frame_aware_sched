@@ -46,10 +46,8 @@ ohos_shared_library("frame_ui_intf") {
 
   external_deps = [
     "c_utils:utils",
-    "dsoftbus:softbus_client",
     "hitrace_native:hitrace_meter",
     "hiviewdfx_hilog_native:libhilog",
-    "ipc:ipc_core",
   ]
 
   subsystem_name = "resourceschedule"
@@ -84,11 +82,9 @@ ohos_shared_library("frame_msg_intf") {
 
   external_deps = [
     "c_utils:utils",
-    "dsoftbus:softbus_client",
     "eventhandler:libeventhandler",
     "hitrace_native:hitrace_meter",
     "hiviewdfx_hilog_native:libhilog",
-    "ipc:ipc_core",
   ]
 
   subsystem_name = "resourceschedule"

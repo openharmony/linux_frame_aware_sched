@@ -77,8 +77,11 @@ ohos_unittest("rtg_interface_test") {
 
 group("frame_unittest") {
   testonly = true
-  deps = [
-    ":frame_msg_intf_test",
-    ":rtg_interface_test",
-  ]
+  deps = []
+  if (!is_asan) {
+    deps += [
+      ":frame_msg_intf_test",
+      ":rtg_interface_test",
+    ]
+  }
 }

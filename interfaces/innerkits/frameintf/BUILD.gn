@@ -38,6 +38,8 @@ ohos_shared_library("frame_ui_intf") {
     "frame_ui_intf.cpp",
   ]
 
+  cflags = [ "-Wno-shift-negative-value" ]
+
   configs = [ ":frame_ui_intf_config" ]
 
   deps = [ "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog" ]
@@ -76,6 +78,8 @@ ohos_shared_library("frame_msg_intf") {
     "frame_msg_intf.cpp",
   ]
 
+  cflags = [ "-Wno-shift-negative-value" ]
+
   configs = [ ":frame_msg_intf_config" ]
 
   deps = [ "//third_party/libxml2:xml2" ]
@@ -93,6 +97,8 @@ ohos_shared_library("frame_msg_intf") {
 
 ohos_shared_library("rtg_interface") {
   sources = [ "rtg_interface.cpp" ]
+
+  cflags = [ "-Wno-shift-negative-value" ]
 
   include_dirs = [
     "${frame_aware_path}/common/include",

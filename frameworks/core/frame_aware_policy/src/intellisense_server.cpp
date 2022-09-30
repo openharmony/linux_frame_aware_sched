@@ -84,11 +84,9 @@ bool IntelliSenseServer::ReadXml()
 void IntelliSenseServer::NewForeground(int pid)
 {
     HITRACE_METER(HITRACE_TAG_ACE);
-    bool found = false;
     int newCreatedRtg = 0;
     for (auto iter = m_historyApp.begin(); iter != m_historyApp.end(); iter++) {
         if (iter->GetAppPid() == pid) {
-            found = true;
             RME_LOGI("[ReportMessage]pid %{public}d change to foreground.", pid);
             if (iter->GetAppState() != AppState::APP_FOREGROUND) {
                 iter->SetUiTid(pid);

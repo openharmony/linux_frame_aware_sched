@@ -10,7 +10,7 @@
 
 ##  Introduction<a name="section_introduction"></a>
 
-The part of Frame Aware Sched belongs to subsystem named *Resource Schedule Subsystem*. 
+The part of Frame Aware Sched belongs to subsystem named *Resource Schedule Subsystem*.
 
 In order to ensure the cpu scheduling supply, it updates the process scheduling groups and adjust the kernel schedule parameters to influence the kernel scheduling behavior according to the information of the application frame drawing and the application life cycle status.
 
@@ -18,23 +18,23 @@ In order to ensure the cpu scheduling supply, it updates the process scheduling 
 
 ```
 //foundation/resourceschedule/frame_aware_sched
-├── common           						# 部件通用工具类
+├── common                                  # common tool class of the component
 │   └── include
-│       ├── frame_info_const.h				# 绘帧过程信息
-│       ├── frame_aware_constants.h	        # 通用参数配置
-│       ├── frame_aware_log_domain.h	    # 封装hilog，用于日志打印
-│       └── single_instance.h				# 封装了单例模式的类模板
+│       ├── frame_info_const.h              # frame drawing process information
+│       ├── frame_aware_constants.h         # general parameter configuration
+│       ├── frame_aware_log_domain.h        # encapsulates hilog for log printing
+│       └── single_instance.h               # class template encapslating singleton mode
 │
 ├── interfaces
-│   └── innerkits    						# 对内接口目录
+│   └── innerkits                           # directory of internal interfaces
 │
-├── frameworks                              
+├── frameworks
 │   └── core
-│	    ├── frame_aware_collector           # 应用绘帧信息收集组件
-│       └── frame_aware_policy              # 帧感知调度机制组件
-│		
-├── profiles       						    # 组件配置文件
-└── test 									# 自测试用例目录
+│       ├── frame_aware_collector           # frame information collector in apps
+│       └── frame_aware_policy              # components of the frame_aware_sched mechanism
+│
+├── profiles                                # component configuration file
+└── test                                    # directory for storing self-test cases.
 ```
 ## Framework<a name="section_framework"></a>
 

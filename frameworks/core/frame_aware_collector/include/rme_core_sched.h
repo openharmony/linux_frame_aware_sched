@@ -42,7 +42,7 @@ public:
     void AnimateStart();
     void RenderStart();
     void SendCommandsStart();
-    
+
     RmeCoreSched(const RmeCoreSched &) = delete;
     RmeCoreSched &operator=(const RmeCoreSched &) = delete;
 private:

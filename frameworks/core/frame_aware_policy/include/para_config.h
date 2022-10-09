@@ -39,7 +39,7 @@ public:
     ParaConfig(ParaConfig&&) = delete;
     ParaConfig& operator=(const ParaConfig&&) = delete;
 
-    static bool IsXmlPrepared(const std::string& filePath); // input  parameters need guarantee
+    static bool IsXmlPrepared(const std::string& filePath); // input  parameters need gaurantee
     static std::map<std::string, std::string> GetGeneralConfig();
     static std::map<std::string, std::map<std::string, int>> GetSubEventConfig();
     static std::vector<int> GetFpsList();

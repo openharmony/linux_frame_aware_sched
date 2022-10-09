@@ -12,23 +12,23 @@
 
 ```
 //foundation/resourceschedule/frame_aware_sched
-├── common           						# 部件通用工具类
+├── common                                  # 部件通用工具类
 │   └── include
-│       ├── frame_info_const.h				# 绘帧过程信息
-│       ├── frame_aware_constants.h	        # 通用参数配置
-│       ├── frame_aware_log_domain.h	    # 封装hilog，用于日志打印
-│       └── single_instance.h				# 封装了单例模式的类模板
+│       ├── frame_info_const.h              # 绘帧过程信息
+│       ├── frame_aware_constants.h         # 通用参数配置
+│       ├── frame_aware_log_domain.h        # 封装hilog，用于日志打印
+│       └── single_instance.h               # 封装了单例模式的类模板
 │
 ├── interfaces
-│   └── innerkits    						# 对内接口目录
+│   └── innerkits                           # 对内接口目录
 │
-├── frameworks                              
+├── frameworks
 │   └── core
-│	    ├── frame_aware_collector           # 应用绘帧信息收集组件
+│       ├── frame_aware_collector           # 应用绘帧信息收集组件
 │       └── frame_aware_policy              # 帧感知调度机制组件
-│		
-├── profiles       						    # 组件配置文件
-└── test 									# 自测试用例目录
+│
+├── profiles                                # 组件配置文件
+└── test                                    # 自测试用例目录
 ```
 
 
@@ -47,11 +47,11 @@
 - **帧感知调度机制组件**：主要分为事件处理模块、应用管控模块、调度参数管控模块和RTG（Related-Thread-Group）分组管理模块，四者构成应用线程调度机制。其中：
   
   事件处理模块，主要负责注册接收来自全局资源管控子系统的消息，诸如应用前后台切换、窗口焦点变化等，并分发消息给应用管控模块和RTG分组模块。
-  
+ 
   应用管控模块，主要负责统一管理事件处理模块的应用消息。
-  
+ 
   RTG分组管理模块，即调用内核接口设置，根据应用状态设置RTG分组实现线程调度管理。
-  
+ 
   调度参数管控模块，主要负责读取默认调度参数配置。
 
 两个组件中的事件处理模块，均统筹了智能感知调度部件所要对外相应的事件，而调度特性内核接口模块则负责将管控调度命令以帧的频率下发，两个组件相互合作，共同保障系统线程的性能供给。

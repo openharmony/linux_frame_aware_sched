@@ -124,7 +124,7 @@ void ParaConfig::SplitString(const std::string& context, const std::string& char
     if (context == "") {
         return;
     }
-    
+
     std::string toSplitStr = context + character;
     size_t pos = toSplitStr.find(character);
 

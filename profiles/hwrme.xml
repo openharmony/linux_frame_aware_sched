@@ -22,7 +22,7 @@
     <render_type>0 1 2</render_type>
     <framedetect>
         <frameconfig render_type="0" fps_list="60" size="24">
-	    <default_util>600</default_util>
-	</frameconfig>
+	        <default_util>600</default_util>
+        </frameconfig>
     </framedetect>
 </rme_intellisense>

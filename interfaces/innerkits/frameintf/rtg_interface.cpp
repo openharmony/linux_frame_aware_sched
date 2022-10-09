@@ -286,7 +286,7 @@ int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
 int BeginFrameFreq(int grpId, int stateParam)
 {
     int ret = 0;
-    struct proc_state_data state_data;	
+    struct proc_state_data state_data;
     state_data.grp_id = grpId;
     state_data.state_param = stateParam;
 
@@ -337,7 +337,7 @@ int EndScene(int grpId)
 int SetMinUtil(int grpId, int stateParam)
 {
     int ret = 0;
-    struct proc_state_data state_data;	
+    struct proc_state_data state_data;
     state_data.grp_id = grpId;
     state_data.state_param = stateParam;
 

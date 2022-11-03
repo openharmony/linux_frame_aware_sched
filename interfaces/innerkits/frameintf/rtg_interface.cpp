@@ -440,7 +440,7 @@ int SearchRtgForTid(int tid)
     search_data.state_param = tid;
     ret = ioctl(fd, CMD_ID_SEARCH_RTG, &search_data);
     if (ret >= 0) {
-        RME_LOGI("Search tid %{public}d success with rtg_grp %{public}d", tid, ret);
+        RME_LOGD("Search tid %{public}d success with rtg_grp %{public}d", tid, ret);
     }
     close(fd);
     return ret;

@@ -439,8 +439,8 @@ int SearchRtgForTid(int tid)
     (void)memset_s(&search_data, sizeof(struct proc_state_data), 0, sizeof(struct proc_state_data));
     search_data.state_param = tid;
     ret = ioctl(fd, CMD_ID_SEARCH_RTG, &search_data);
-    if (ret >= 0) {
-        RME_LOGI("Search tid %{public}d success with rtg_grp %{public}d", tid, ret);
+    if (ret > 0) {
+        RME_LOGD("Search tid %{public}d success with rtg_grp %{public}d", tid, ret);
     }
     close(fd);
     return ret;

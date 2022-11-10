@@ -28,6 +28,15 @@ config("frame_ui_intf_config") {
   ]
 }
 
+ohos_shared_library("frame_trace_intf") {
+  include_dirs = [ "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf" ]
+
+  sources = [ "frame_trace.cpp" ]
+
+  subsystem_name = "resourceschedule"
+  part_name = "frame_aware_sched"
+}
+
 ohos_shared_library("frame_ui_intf") {
   sources = [
     "${frame_aware_path}/interfaces/innerkits/frameintf/rtg_interface.cpp",

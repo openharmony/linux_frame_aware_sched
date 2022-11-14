@@ -21,6 +21,7 @@
 namespace FRAME_TRACE {
 
 struct TraceHandle;
+struct TidHandle;
 
 enum class TraceType {
     QUICK_TRACE,
@@ -32,7 +33,9 @@ void SetTraceLimit(struct TraceHandle* traceHandle, unsigned int traceLimit);
 void EnableTraceForThread(struct TraceHandle* traceHandle);
 void StartFrameTrace(struct TraceHandle* traceHandle);
 void StopFrameTrace(struct TraceHandle* traceHandle);
-void TraceAndExecute(std::function<void> && func, TraceType type);
+void TraceAndExecute(std::function<void()> && func, TraceType type);
+bool JudgeUnequalFrameTrace(struct TidHandle* tidHandle);
+void UpdateFrameTraceTid(struct TidHandle* tidHandle);
 bool FrameAwareTraceEnable(const std::string &traceTag);
 void QuickStartFrameTrace(const std::string &traceTag);
 void QuickEndFrameTrace(const std::string &traceTag);

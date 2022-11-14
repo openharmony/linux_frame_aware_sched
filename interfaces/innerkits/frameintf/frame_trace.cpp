@@ -42,7 +42,17 @@ void StopFrameTrace(struct TraceHandle* traceHandle)
     return;
 }
 
-void TraceAndExecute(std::function<void> && func, TraceType traceType)
+void TraceAndExecute(std::function<void()> && func, TraceType traceType)
+{
+    return;
+}
+
+bool JudgeUnequalFrameTrace(struct TidHandle* tidHandle)
+{
+    return false;
+}
+
+void UpdateFrameTraceTid(struct TidHandle* tidHandle)
 {
     return;
 }

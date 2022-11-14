@@ -16,6 +16,7 @@
 #ifndef FRAME_TRACE_HPP
 #define FRAME_TRACE_HPP
 
+#include <functional>
 #include <string>
 
 namespace FRAME_TRACE {

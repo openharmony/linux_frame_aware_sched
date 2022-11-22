@@ -21,10 +21,8 @@
 
 namespace OHOS {
 namespace RME {
-namespace {
-    constexpr int RT_PRIO = 0;
-    constexpr int RT_NUM = 4;
-}
+constexpr int RT_PRIO = 0;
+constexpr int RT_NUM = 4;
 
 enum class AppState {
     APP_FOREGROUND,
@@ -45,7 +43,6 @@ enum class CgroupPolicy {
 
 class AppInfo {
 public:
-    AppInfo(std::string appName, int pid, int uiTid, int renderTid, int isFocus, AppState state);
     AppInfo(int pid);
     ~AppInfo() = default;
 

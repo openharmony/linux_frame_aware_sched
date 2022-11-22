@@ -194,7 +194,7 @@ int RemoveRtgThread(int tid)
     return ret;
 };
 
-int ClearRtgGrp(int GrpId)
+int ClearRtgGrp(int grpId)
 {
     struct rtg_grp_data grp_data;
     int ret;
@@ -204,7 +204,7 @@ int ClearRtgGrp(int GrpId)
     }
     (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     grp_data.rtg_cmd = CMD_CLEAR_RTG_GRP;
-    grp_data.grp_id = GrpId;
+    grp_data.grp_id = grpId;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
     if (ret < 0) {
         RME_LOGE("clear rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
@@ -215,7 +215,7 @@ int ClearRtgGrp(int GrpId)
     return ret;
 };
 
-int DestroyRtgGrp(int GrpId)
+int DestroyRtgGrp(int grpId)
 {
     struct rtg_grp_data grp_data;
     int ret;
@@ -225,12 +225,12 @@ int DestroyRtgGrp(int GrpId)
     }
     (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     grp_data.rtg_cmd = CMD_DESTROY_RTG_GRP;
-    grp_data.grp_id = GrpId;
+    grp_data.grp_id = grpId;
     ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
     if (ret < 0) {
         RME_LOGE("destroy rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
-        RME_LOGI("destroy rtg grp success, get rtg id:%{public}d, ret:%{public}d.", GrpId, ret);
+        RME_LOGI("destroy rtg grp success, get rtg id:%{public}d, ret:%{public}d.", grpId, ret);
     }
     close(fd);
     return ret;

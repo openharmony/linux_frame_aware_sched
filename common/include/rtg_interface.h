@@ -100,7 +100,7 @@ extern "C" {
     int SetMargin(int grpId, int stateParam);
     int ListRtgThread(int grpId, vector<int> *rs); // list all tasks of grpId;
     int ListRtgGroup(vector<int> *rs);
-    int SearchRtgForTid(int stateParam);
+    int SearchRtgForTid(int tid);
     int GetRtgEnable();
 }
 } // namespace RME

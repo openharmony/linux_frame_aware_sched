@@ -17,7 +17,7 @@
 
 namespace FRAME_TRACE {
 
-struct TraceHandle* CreateTraceTag(std::string traceTag)
+struct TraceHandle* CreateTraceTag(const std::string traceTag)
 {
     return nullptr;
 }

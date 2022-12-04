@@ -40,6 +40,9 @@ void UpdateFrameTraceTid(struct TidHandle* tidHandle);
 bool FrameAwareTraceEnable(const std::string &traceTag);
 void QuickStartFrameTrace(const std::string &traceTag);
 void QuickEndFrameTrace(const std::string &traceTag);
+bool FrameAwareTraceIsOpen();
+bool FrameAwareTraceOpen();
+bool FrameAwareTraceClose();
 }
 
 #endif

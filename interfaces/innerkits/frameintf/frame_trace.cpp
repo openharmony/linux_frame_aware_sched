@@ -72,4 +72,19 @@ void QuickEndFrameTrace(const std::string &traceTag)
     return;
 }
 
+bool FrameAwareTraceIsOpen()
+{
+    return false;
+}
+
+bool FrameAwareTraceOpen()
+{
+    return false;
+}
+
+bool FrameAwareTraceClose()
+{
+    return false;
+}
+
 }

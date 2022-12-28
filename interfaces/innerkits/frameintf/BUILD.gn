@@ -29,6 +29,7 @@ config("frame_ui_intf_config") {
 }
 
 ohos_shared_library("frame_trace_intf") {
+  cflags = [ "-fstack-protector-strong" ]
   include_dirs = [ "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf" ]
 
   sources = [ "frame_trace.cpp" ]

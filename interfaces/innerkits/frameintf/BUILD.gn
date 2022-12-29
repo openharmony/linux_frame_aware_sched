@@ -32,7 +32,7 @@ ohos_shared_library("frame_trace_intf") {
   include_dirs = [ "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf" ]
 
   sources = [ "frame_trace.cpp" ]
-
+  cflags = [ "-fstack-protector-strong" ]
   subsystem_name = "resourceschedule"
   part_name = "frame_aware_sched"
 }

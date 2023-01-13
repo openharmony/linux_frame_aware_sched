@@ -115,7 +115,7 @@ ohos_shared_library("rtg_interface") {
     "//third_party/bounds_checking_function/include",
   ]
 
-  deps = [ "//third_party/bounds_checking_function:libsec_static" ]
+  deps = [ "//third_party/bounds_checking_function:libsec_shared" ]
 
   external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
 

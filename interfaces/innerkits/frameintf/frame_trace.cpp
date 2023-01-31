@@ -87,4 +87,8 @@ bool FrameAwareTraceClose()
     return false;
 }
 
+bool IsEnabled()
+{
+    return false;
+}
 }

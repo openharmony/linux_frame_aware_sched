@@ -43,6 +43,7 @@ void QuickEndFrameTrace(const std::string &traceTag);
 bool FrameAwareTraceIsOpen();
 bool FrameAwareTraceOpen();
 bool FrameAwareTraceClose();
+bool IsEnabled();
 }
 
 #endif

@@ -115,7 +115,6 @@ void RmeCoreSched::ProcessCommandsStart() {}
 void RmeCoreSched::AnimateStart()
 {
     if (m_rtg <= 0) {
-        RME_LOGW("[AnimateStart]: search rtg empty! Rtg:%{public}d, Pid:%{public}d", m_rtg, m_pid);
         return;
     }
 }

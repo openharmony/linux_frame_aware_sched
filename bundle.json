@@ -1,6 +1,6 @@
 {
-    "name": "@ohos/resource_schedule_service",
-    "description": "resource_schedule_service",
+    "name": "@ohos/frame_aware_sched",
+    "description": "frame_aware_sched",
     "version": "3.1",
     "license": "Apache License 2.0",
     "publishAs": "code-segment",

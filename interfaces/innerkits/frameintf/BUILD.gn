@@ -28,11 +28,17 @@ config("frame_ui_intf_config") {
   ]
 }
 
-ohos_shared_library("frame_trace_intf") {
-  cflags = [ "-fstack-protector-strong" ]
-  include_dirs = [ "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf" ]
+config("frame_trace_intf_config") {
+  visibility = [ ":*" ]
+  include_dirs = [ "${innerkits_path}/frameintf" ]
+}
 
+ohos_shared_library("frame_trace_intf") {
   sources = [ "frame_trace.cpp" ]
+
+  cflags = [ "-fstack-protector-strong" ]
+
+  public_configs = [ ":frame_trace_intf_config" ]
 
   subsystem_name = "resourceschedule"
   part_name = "frame_aware_sched"

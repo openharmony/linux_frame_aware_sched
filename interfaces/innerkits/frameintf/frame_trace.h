@@ -29,14 +29,14 @@ enum class TraceType {
     SLOW_TRACE
 };
 
-struct TraceHandle* CreateTraceTag(const std::string traceTag);
-void SetTraceLimit(struct TraceHandle* traceHandle, unsigned int traceLimit);
-void EnableTraceForThread(struct TraceHandle* traceHandle);
-void StartFrameTrace(struct TraceHandle* traceHandle);
-void StopFrameTrace(struct TraceHandle* traceHandle);
+struct TraceHandle *CreateTraceTag(const std::string traceTag);
+void SetTraceLimit(struct TraceHandle *traceHandle, unsigned int traceLimit);
+void EnableTraceForThread(struct TraceHandle *traceHandle);
+void StartFrameTrace(struct TraceHandle *traceHandle);
+void StopFrameTrace(struct TraceHandle *traceHandle);
 void TraceAndExecute(std::function<void()> &&func, TraceType traceType);
-bool JudgeUnequalFrameTrace(struct TidHandle* tidHandle);
-void UpdateFrameTraceTid(struct TidHandle* tidHandle);
+bool JudgeUnequalFrameTrace(struct TidHandle *tidHandle);
+void UpdateFrameTraceTid(struct TidHandle *tidHandle);
 bool FrameAwareTraceEnable(const std::string &traceTag);
 void QuickStartFrameTrace(const std::string &traceTag);
 void QuickEndFrameTrace(const std::string &traceTag);

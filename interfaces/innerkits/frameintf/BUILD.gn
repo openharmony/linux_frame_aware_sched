@@ -77,6 +77,7 @@ ohos_shared_library("frame_ui_intf") {
 
 config("frame_msg_intf_config") {
   visibility = [ ":*" ]
+  visibility += [ "//foundation/resourceschedule/frame_aware_sched/test/*" ]
 
   include_dirs = [
     "${innerkits_path}/frameintf",

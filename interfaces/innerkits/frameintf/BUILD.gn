@@ -12,25 +12,21 @@
 # limitations under the License.
 
 import("//build/ohos.gni")
-import("//foundation/resourceschedule/frame_aware_sched/frameaware.gni")
+import("../../../frameaware.gni")
 
 config("frame_ui_intf_config") {
   visibility = [ ":*" ]
 
   include_dirs = [
-    "${innerkits_path}/frameintf",
-    "${frame_aware_path}/common/include",
-    "${framework_path}/frame_aware_collector/include",
-    "//commonlibrary/c_utils/base/include",
-    "//utils/system/safwk/native/include",
-    "//base/hiviewdfx/interfaces/innerkits/libhilog/include",
-    "//base/hiviewdfx/interfaces/innerkits/libhitrace/include",
+    "./",
+    "../../../common/include",
+    "../../../frameworks/core/frame_aware_collector/include",
   ]
 }
 
 config("frame_trace_intf_config") {
   visibility = [ ":*" ]
-  include_dirs = [ "${innerkits_path}/frameintf" ]
+  include_dirs = [ "./" ]
 }
 
 ohos_shared_library("frame_trace_intf") {
@@ -46,12 +42,12 @@ ohos_shared_library("frame_trace_intf") {
 
 ohos_shared_library("frame_ui_intf") {
   sources = [
-    "${frame_aware_path}/interfaces/innerkits/frameintf/rtg_interface.cpp",
-    "${framework_path}/frame_aware_collector/src/frame_msg_mgr.cpp",
-    "${framework_path}/frame_aware_collector/src/frame_window_mgr.cpp",
-    "${framework_path}/frame_aware_collector/src/rme_core_sched.cpp",
-    "${framework_path}/frame_aware_collector/src/rme_scene_sched.cpp",
+    "../../../frameworks/core/frame_aware_collector/src/frame_msg_mgr.cpp",
+    "../../../frameworks/core/frame_aware_collector/src/frame_window_mgr.cpp",
+    "../../../frameworks/core/frame_aware_collector/src/rme_core_sched.cpp",
+    "../../../frameworks/core/frame_aware_collector/src/rme_scene_sched.cpp",
     "frame_ui_intf.cpp",
+    "rtg_interface.cpp",
   ]
 
   cflags = [
@@ -60,10 +56,6 @@ ohos_shared_library("frame_ui_intf") {
   ]
 
   configs = [ ":frame_ui_intf_config" ]
-
-  deps = [ "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog" ]
-
-  public_deps = [ "//commonlibrary/c_utils/base:utils" ]
 
   external_deps = [
     "c_utils:utils",
@@ -77,25 +69,23 @@ ohos_shared_library("frame_ui_intf") {
 
 config("frame_msg_intf_config") {
   visibility = [ ":*" ]
-  visibility += [ "//foundation/resourceschedule/frame_aware_sched/test/*" ]
+  visibility += [ "../../../test/*" ]
 
   include_dirs = [
-    "${innerkits_path}/frameintf",
+    "./",
+    "../../../frameworks/core/frame_aware_policy/include",
+    "../../../common/include",
     "//third_party/libxml2/include",
-    "${framework_path}/frame_aware_policy/include",
-    "${frame_aware_path}/common/include",
-    "//base/hiviewdfx/interfaces/innerkits/libhilog/include",
-    "//base/hiviewdfx/interfaces/innerkits/libhitrace/include",
   ]
 }
 
 ohos_shared_library("frame_msg_intf") {
   sources = [
-    "${frame_aware_path}/interfaces/innerkits/frameintf/rtg_interface.cpp",
-    "${framework_path}/frame_aware_policy/src/app_info.cpp",
-    "${framework_path}/frame_aware_policy/src/intellisense_server.cpp",
-    "${framework_path}/frame_aware_policy/src/para_config.cpp",
+    "../../../frameworks/core/frame_aware_policy/src/app_info.cpp",
+    "../../../frameworks/core/frame_aware_policy/src/intellisense_server.cpp",
+    "../../../frameworks/core/frame_aware_policy/src/para_config.cpp",
     "frame_msg_intf.cpp",
+    "rtg_interface.cpp",
   ]
 
   cflags = [
@@ -103,7 +93,7 @@ ohos_shared_library("frame_msg_intf") {
     "-fstack-protector-strong",
   ]
 
-  configs = [ ":frame_msg_intf_config" ]
+  public_configs = [ ":frame_msg_intf_config" ]
 
   deps = [ "//third_party/libxml2:xml2" ]
 
@@ -127,7 +117,7 @@ ohos_shared_library("rtg_interface") {
   ]
 
   include_dirs = [
-    "${frame_aware_path}/common/include",
+    "../../../common/include",
     "//third_party/bounds_checking_function/include",
   ]
 
@@ -136,5 +126,6 @@ ohos_shared_library("rtg_interface") {
   external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
 
   install_enable = true
+  subsystem_name = "resourceschedule"
   part_name = "frame_aware_sched"
 }

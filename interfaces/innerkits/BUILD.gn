@@ -12,7 +12,7 @@
 # limitations under the License.
 
 import("//build/ohos.gni")
-import("//foundation/resourceschedule/frame_aware_sched/frame_aware_sched.gni")
+import("../../frame_aware_sched.gni")
 
 group("innerkits_target") {
   deps = [

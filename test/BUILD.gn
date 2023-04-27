@@ -14,22 +14,25 @@
 import("//build/ohos.gni")
 import("//build/ohos_var.gni")
 import("//build/test.gni")
-import("//foundation/resourceschedule/frame_aware_sched/frameaware.gni")
+import("../frameaware.gni")
 
 module_output_path = "frameawareschedtest/"
 
 frame_aware_sched_configs =
-    [ "${innerkits_path}/frameintf:frame_msg_intf_config" ]
+    [ "../interfaces/innerkits/frameintf:frame_msg_intf_config" ]
 
-frame_aware_sched_deps = [ "${innerkits_path}/frameintf:frame_msg_intf" ]
+frame_aware_sched_deps = [ "../interfaces/innerkits/frameintf:frame_msg_intf" ]
 
 frame_aware_sched_public_deps = [ "//third_party/googletest:gtest_main" ]
 
 ohos_unittest("frame_ui_intf_test") {
   module_out_path = module_output_path
-  configs = frame_aware_sched_configs
 
   sources = [ "unittest/phone/frame_ui_intf_test.cpp" ]
+
+  configs = frame_aware_sched_configs
+
+  deps = [ "../interfaces/innerkits/frameintf:frame_ui_intf" ]
 
   if (is_standard_system) {
     public_deps = frame_aware_sched_public_deps
@@ -43,12 +46,9 @@ ohos_unittest("frame_msg_intf_test") {
 
   sources = [ "unittest/phone/frame_msg_intf_test.cpp" ]
 
-  include_dirs = [
-    "//base/hiviewdfx/hiview/adapter/utility/include/extra/",
-    "//base/notification/eventhandler/interfaces/inner_api/",
-  ]
-
   configs = frame_aware_sched_configs
+
+  deps = frame_aware_sched_deps
 
   if (is_standard_system) {
     public_deps = frame_aware_sched_public_deps
@@ -63,7 +63,7 @@ ohos_unittest("rtg_interface_test") {
 
   sources = [ "unittest/phone/rtg_interface_test.cpp" ]
 
-  include_dirs = [ "${frame_aware_path}/common/include" ]
+  include_dirs = [ "../common/include" ]
 
   deps = frame_aware_sched_deps
 

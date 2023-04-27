@@ -11,8 +11,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-frame_aware_path = "//foundation/resourceschedule/frame_aware_sched"
-service_path = "${frame_aware_path}/services"
-innerkits_path = "${frame_aware_path}/interfaces/innerkits"
-
-framework_path = "${frame_aware_path}/frameworks/core"

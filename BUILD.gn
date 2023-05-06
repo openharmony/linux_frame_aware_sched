@@ -12,11 +12,11 @@
 # limitations under the License.
 
 import("//build/ohos.gni")
-import("//foundation/resourceschedule/frame_aware_sched/frameaware.gni")
+import("frameaware.gni")
 
 group("libintellisensesched_intf") {
   public_deps = [
-    "${innerkits_path}/frameintf:frame_msg_intf",
-    "${innerkits_path}/frameintf:frame_ui_intf",
+    "interfaces/innerkits/frameintf:frame_msg_intf",
+    "interfaces/innerkits/frameintf:frame_ui_intf",
   ]
 }

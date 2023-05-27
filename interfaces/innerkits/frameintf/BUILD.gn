@@ -29,6 +29,14 @@ config("frame_trace_intf_config") {
   include_dirs = [ "./" ]
 }
 
+config("rtg_interface_config") {
+  visibility = [ ":*" ]
+  include_dirs = [
+    "./",
+    "../../../common/include",
+  ]
+}
+
 ohos_shared_library("frame_trace_intf") {
   sources = [ "frame_trace.cpp" ]
 
@@ -115,6 +123,8 @@ ohos_shared_library("rtg_interface") {
     "-Wno-shift-negative-value",
     "-fstack-protector-strong",
   ]
+
+  public_configs = [ ":rtg_interface_config" ]
 
   include_dirs = [
     "../../../common/include",

@@ -23,12 +23,16 @@
         "ram": "10240KB",
         "deps": {
             "components": [
-                "libeventhandler",
+                "c_utils",
+                "eventhandler",
+                "hitrace_native",
+                "hiviewdfx_hilog_native",
                 "samgr_proxy",
                 "system_ability_fwk"
             ],
             "third_party": [
-                "xml2"
+                "bounds_checking_function",
+                "libxml2"
             ]
         },
         "build": {
@@ -66,6 +70,15 @@
                         ]
                     },
                     "name": "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf:frame_trace_intf"
+                },
+                {
+                    "header": {
+                        "header_base": "//foundation/resourceschedule/frame_aware_sched/common/include",
+                        "header_files": [
+                            "rtg_interface.h"
+                        ]
+                    },
+                    "name": "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf:rtg_interface"
                 }
             ],
             "test": [

@@ -45,6 +45,7 @@ ohos_shared_library("frame_trace_intf") {
   public_configs = [ ":frame_trace_intf_config" ]
 
   subsystem_name = "resourceschedule"
+  innerapi_tags = [ "platformsdk_indirect" ]
   part_name = "frame_aware_sched"
 }
 

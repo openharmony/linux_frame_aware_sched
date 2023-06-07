@@ -48,6 +48,9 @@ private:
     void NewBackground(int pid);
     void NewDiedProcess(int pid);
     void NewAppRecord(int pid);
+    void AuthAppKilled(int uid);
+    void AuthForeground(int uid);
+    void AuthBackground(int uid);
     int TryCreateRtgForApp(AppInfo *app);
     inline CgroupPolicy CheckCgroupState(const CgroupPolicy cgroup);
     std::list<AppInfo>::iterator GetRecordOfPid(int pid);

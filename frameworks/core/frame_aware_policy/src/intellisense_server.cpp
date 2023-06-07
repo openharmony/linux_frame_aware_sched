@@ -21,6 +21,7 @@
 #include <string>
 #include <vector>
 #include <hitrace_meter.h>
+#include "qos_common.h"
 #include "para_config.h"
 #include "rtg_interface.h"
 #include "rme_log_domain.h"
@@ -240,8 +241,10 @@ void IntelliSenseServer::ReportCgroupChange(const int pid, const int uid, const 
     }
     if (newState == CgroupPolicy::SP_BACKGROUND) {
         NewBackground(pid);
+        AuthBackground(uid);
     } else if (newState == CgroupPolicy::SP_FOREGROUND) {
         NewForeground(pid);
+        AuthForeground(uid);
     }
 }
 
@@ -249,6 +252,9 @@ void IntelliSenseServer::ReportAppInfo(const int pid, const int uid, const std::
 {
     if (!m_switch) {
         return;
+    }
+    if (state == ThreadState::CREATE) {
+        AuthForeground(uid);
     }
     RME_LOGI("Get app info:%{public}d %{public}d %{public}s %{public}d",
         pid, uid, bundleName.c_str(), static_cast<int>(state));
@@ -266,6 +272,7 @@ void IntelliSenseServer::ReportProcessInfo(const int pid,
     }
     switch (state) {
         case ThreadState::DIED:
+            AuthAppKilled(uid);
             NewDiedProcess(pid);
             break;
         case ThreadState::CREATE:
@@ -288,5 +295,38 @@ void IntelliSenseServer::SetPara(const int32_t currentFps, const int32_t current
     map<std::string, int> tempMap = m_subEventPara[key];
     RME_LOGI("[SetPara]:subEventPara map size: %{public}zu", tempMap.size());
 }
+
+void IntelliSenseServer::AuthAppKilled(int uid)
+{
+    int ret = AuthDelete(uid);
+    if (ret == 0) {
+        RME_LOGI("auth_delete %{public}d success", uid);
+    } else {
+        RME_LOGE("auth_delete %{public}d failed", uid);
+    }
+}
+
+void IntelliSenseServer::AuthForeground(int uid)
+{
+    unsigned int flag = AF_RTG_ALL;
+    int status = AUTH_STATUS_FOREGROUND;
+    int ret = AuthEnable(uid, flag, status);
+    if (ret == 0) {
+        RME_LOGI("auth_enable %{public}d success", uid);
+    } else {
+        RME_LOGE("auth_enable %{public}d failed", uid);
+    }
+}
+
+void IntelliSenseServer::AuthBackground(int uid)
+{
+    int ret = AuthPause(uid);
+    if (ret == 0) {
+        RME_LOGI("auth_pause %{public}d success", uid);
+    } else {
+        RME_LOGE("auth_pause %{public}d failed", uid);
+    }
+}
+
 } // namespace RME
 } // namesapce OHOS

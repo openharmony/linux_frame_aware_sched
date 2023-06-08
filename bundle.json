@@ -15,7 +15,6 @@
         "syscap": [],
         "features": [],
         "adapted_system_type": [
-            "mini",
             "small",
             "standard"
         ],
@@ -41,7 +40,8 @@
                 "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf:frame_msg_intf",
                 "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf:frame_trace_intf",
                 "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf:rtg_interface",
-                "//foundation/resourceschedule/frame_aware_sched/profiles:frame_aware_sched_config"
+                "//foundation/resourceschedule/frame_aware_sched/profiles:frame_aware_sched_config",
+                "//foundation/resourceschedule/frame_aware_sched/qos_manager:qos_manager"
             ],
             "inner_kits": [
                 {
@@ -70,6 +70,15 @@
                         ]
                     },
                     "name": "//foundation/resourceschedule/frame_aware_sched/interfaces/innerkits/frameintf:frame_trace_intf"
+                },
+                {
+                    "header": {
+                        "header_base": "//foundation/resourceschedule/frame_aware_sched/interfaces/inner_api/",
+                        "header_files": [
+                            "qos.h"
+                        ]
+                    },
+                    "name": "//foundation/resourceschedule/frame_aware_sched/qos_manager:qos_manager"
                 },
                 {
                     "header": {

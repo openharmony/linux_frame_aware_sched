@@ -84,6 +84,7 @@ config("frame_msg_intf_config") {
     "./",
     "../../../frameworks/core/frame_aware_policy/include",
     "../../../common/include",
+    "../../../qos_manager/include",
     "//third_party/libxml2/include",
   ]
 }
@@ -93,6 +94,7 @@ ohos_shared_library("frame_msg_intf") {
     "../../../frameworks/core/frame_aware_policy/src/app_info.cpp",
     "../../../frameworks/core/frame_aware_policy/src/intellisense_server.cpp",
     "../../../frameworks/core/frame_aware_policy/src/para_config.cpp",
+    "../../../qos_manager/src/qos_common.cpp",
     "frame_msg_intf.cpp",
     "rtg_interface.cpp",
   ]

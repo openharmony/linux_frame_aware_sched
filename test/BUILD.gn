@@ -75,12 +75,33 @@ ohos_unittest("rtg_interface_test") {
   subsystem_name = "resourceschedule"
 }
 
+ohos_unittest("qos_manager_test") {
+  module_out_path = module_output_path
+
+  sources = [ "unittest/phone/qos_manager_test.cpp" ]
+
+  include_dirs = [
+    "../interfaces/inner_api",
+    "../qos_manager/include",
+  ]
+
+  deps = [ "../qos_manager:qos_manager" ]
+
+  if (is_standard_system) {
+    public_deps = frame_aware_sched_public_deps
+  }
+
+  part_name = "frame_aware_sched"
+  subsystem_name = "resourceschedule"
+}
+
 group("frame_unittest") {
   testonly = true
   deps = []
   if (!is_asan) {
     deps += [
       ":frame_msg_intf_test",
+      ":qos_manager_test",
       ":rtg_interface_test",
     ]
   }

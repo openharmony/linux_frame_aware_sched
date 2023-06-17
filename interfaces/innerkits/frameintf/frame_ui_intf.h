@@ -41,10 +41,13 @@ public:
     void ProcessCommandsStart() const;
     void AnimateStart() const;
     void RenderStart() const;
+    void RenderEnd() const;
     void SendCommandsStart() const;
 
     void BeginListFling() const;
     void EndListFling() const;
+    void FlushBegin() const;
+    void FlushEnd() const;
 private:
     bool inited = false;
 };

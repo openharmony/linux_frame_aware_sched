@@ -151,22 +151,24 @@ void IntelliSenseServer::NewAppRecord(int pid)
             return;
         }
     }
-    AppInfo *tempRecord = new AppInfo(pid);
-    m_historyApp.push_back(*tempRecord);
-    tempRecord->SetAppState(AppState::APP_FOREGROUND);
+    AppInfo tempRecord(pid);
+    tempRecord.SetAppState(AppState::APP_FOREGROUND);
+    m_historyApp.push_back(tempRecord);
 }
 
 void IntelliSenseServer::NewDiedProcess(int pid)
 {
     HITRACE_METER(HITRACE_TAG_ACE);
     RME_LOGI("[ReportMessage]pid %{public}d died.", pid);
-    for (auto iter = m_historyApp.begin(); iter != m_historyApp.end(); iter++) {
+    for (auto iter = m_historyApp.begin(); iter != m_historyApp.end();) {
         if (iter->GetAppPid() == pid) {
             int grpId = iter->GetRtgrp();
             if (grpId > 0) {
                 DestroyRtgGrp(grpId);
             }
-            m_historyApp.erase(iter++);
+            iter = m_historyApp.erase(iter);
+        } else {
+            iter++;
         }
     }
 }
@@ -240,9 +242,11 @@ void IntelliSenseServer::ReportCgroupChange(const int pid, const int uid, const 
         return;
     }
     if (newState == CgroupPolicy::SP_BACKGROUND) {
+        RME_LOGI("CgroupChange NewBackground");
         NewBackground(pid);
         AuthBackground(uid);
     } else if (newState == CgroupPolicy::SP_FOREGROUND) {
+        RME_LOGI("CgroupChange NewForeground");
         NewForeground(pid);
         AuthForeground(uid);
     }
@@ -272,10 +276,12 @@ void IntelliSenseServer::ReportProcessInfo(const int pid,
     }
     switch (state) {
         case ThreadState::DIED:
+            RME_LOGI("ProcessInfo NewDiedProcess");
             AuthAppKilled(uid);
             NewDiedProcess(pid);
             break;
         case ThreadState::CREATE:
+            RME_LOGI("ProcessInfo NewAppRecord");
             NewAppRecord(pid);
             break;
         default:

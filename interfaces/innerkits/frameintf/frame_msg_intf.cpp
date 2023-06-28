@@ -91,6 +91,7 @@ void FrameMsgIntf::ReportAppInfo(const int pid, const int uid, const std::string
         RME_LOGI("[ReportAppInfo]:threandHandler none!");
         return;
     }
+    RME_LOGI("ReportProcessInfo pid is %{public}d, uid is %{public}d", pid, uid);
     threadHandler_->PostTask([pid, uid, bundleName, state] {
         IntelliSenseServer::GetInstance().ReportAppInfo(pid, uid, bundleName, state);
     });
@@ -115,6 +116,8 @@ void FrameMsgIntf::ReportCgroupChange(const int pid, const int uid, const int ol
         RME_LOGI("[ReportProcessInfo]:threandHandler none!");
         return;
     }
+    RME_LOGI("CgroupChanged pid is %{public}d, uid is %{public}d, oldGroup is %{public}d, newGroup is %{public}d",
+        pid, uid, oldGroup, newGroup);
     threadHandler_->PostTask([pid, uid, oldGroup, newGroup] {
         IntelliSenseServer::GetInstance().ReportCgroupChange(pid, uid, oldGroup, newGroup);
     });

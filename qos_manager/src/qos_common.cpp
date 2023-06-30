@@ -22,6 +22,9 @@
 
 constexpr unsigned int AF_QOS_DELEGATED = 0x0001;
 
+namespace OHOS {
+namespace QosCommon {
+
 DEFINE_RMELOG_INTELLISENSE("qos_manager");
 
 static int TrivalOpenQosCtrlNode(void)
@@ -179,3 +182,6 @@ int QosPolicy(struct QosPolicyDatas *policyDatas)
     close(fd);
     return ret;
 }
+
+} // namespace QosCommon
+} // namespace OHOS

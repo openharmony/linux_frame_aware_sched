@@ -15,6 +15,9 @@
 #ifndef QOS_COMMON_H
 #define QOS_COMMON_H
 
+namespace OHOS {
+namespace QosCommon {
+
 constexpr int NR_QOS = 6;
 constexpr int QOS_NICE_FLAG = 0x01;
 constexpr int QOS_LATENCY_NICE_FLAG = 0x02;
@@ -98,4 +101,6 @@ int QosApplyForThread(int level, int tid);
 int QosLeaveForThread(int tid);
 int QosPolicy(struct QosPolicyDatas *policyDatas);
 
+} // namespace QosCommon
+} // namespace OHOS
 #endif // QOS_COMMON_H

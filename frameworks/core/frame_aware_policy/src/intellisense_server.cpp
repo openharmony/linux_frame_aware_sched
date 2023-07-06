@@ -32,6 +32,7 @@ namespace {
     static std::string configFilePath = "/system/etc/frame_aware_sched/hwrme.xml"; // need To check the exact file path.
 }
 using namespace std;
+using namespace QosCommon;
 
 DEFINE_RMELOG_INTELLISENSE("ueaServer-IntelliSenseServer");
 IMPLEMENT_SINGLE_INSTANCE(IntelliSenseServer);

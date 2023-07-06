@@ -23,7 +23,7 @@ constexpr int ERROR_NUM = -1;
 
 namespace OHOS {
 namespace QOS {
-
+using namespace QosCommon;
 DEFINE_RMELOG_INTELLISENSE("qos_manager");
 
 static struct QosPolicyDatas g_defaultPolicy = {

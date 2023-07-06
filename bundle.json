@@ -24,8 +24,8 @@
             "components": [
                 "c_utils",
                 "eventhandler",
-                "hitrace_native",
-                "hiviewdfx_hilog_native",
+                "hitrace",
+                "hilog",
                 "samgr_proxy",
                 "system_ability_fwk"
             ],

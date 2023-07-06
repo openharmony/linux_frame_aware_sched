@@ -29,7 +29,7 @@ ohos_shared_library("qos_manager") {
     "src/qos_manager.cpp",
   ]
 
-  external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
+  external_deps = [ "hilog:libhilog" ]
 
   subsystem_name = "resourceschedule"
   part_name = "frame_aware_sched"

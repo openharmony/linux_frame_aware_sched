@@ -26,8 +26,8 @@
                 "eventhandler",
                 "hitrace",
                 "hilog",
-                "samgr_proxy",
-                "system_ability_fwk"
+                "samgr",
+                "safwk"
             ],
             "third_party": [
                 "bounds_checking_function",

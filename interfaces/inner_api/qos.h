@@ -22,7 +22,9 @@ enum class QosLevel {
     qos_background = 1,
     qos_utility,
     qos_default,
-    qos_user_initiated = 4,
+    qos_user_initiated,
+    qos_deadline_request,
+    qos_user_interactive,
 };
 
 class QosController {

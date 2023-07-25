@@ -127,13 +127,13 @@ int QosController::SetPolicy()
 int QosController::SetThreadQosForOtherThread(enum QosLevel level, int tid)
 {
     int qos = static_cast<int>(level);
-    if (level < QosLevel::qos_background || level > QosLevel::qos_user_initiated) {
+    if (level < QosLevel::qos_background || level > QosLevel::qos_user_interactive) {
         RME_LOGE("invalid qos level %{public}d", qos);
         return ERROR_NUM;
     }
     int ret = QosApplyForThread(qos, tid);
     if (ret == 0) {
-        RME_LOGI("qoslevel %{public}d apply for tid %{public}d success", qos, tid);
+        RME_LOGD("qoslevel %{public}d apply for tid %{public}d success", qos, tid);
     } else {
         RME_LOGE("qoslevel %{public}d apply for tid %{public}d failure", qos, tid);
     }
@@ -145,7 +145,7 @@ int QosController::ResetThreadQosForOtherThread(int tid)
 {
     int ret = QosLeaveForThread(tid);
     if (ret == 0) {
-        RME_LOGI("qoslevel reset for tid %{public}d success", tid);
+        RME_LOGD("qoslevel reset for tid %{public}d success", tid);
     } else {
         RME_LOGE("qoslevel reset for tid %{public}d failure", tid);
     }

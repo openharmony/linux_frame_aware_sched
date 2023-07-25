@@ -61,6 +61,10 @@ HWTEST_F(QosManagerTest, SetThreadQosTest1, TestSize.Level1)
     EXPECT_EQ(ret, 0);
     ret = SetThreadQos(QosLevel::qos_background);
     EXPECT_EQ(ret, 0);
+    ret = SetThreadQos(QosLevel::qos_deadline_request);
+    EXPECT_EQ(ret, 0);
+    ret = SetThreadQos(QosLevel::qos_user_interactive);
+    EXPECT_EQ(ret, 0);
 }
 
 HWTEST_F(QosManagerTest, SetThreadQosTest3, TestSize.Level1)
@@ -72,6 +76,10 @@ HWTEST_F(QosManagerTest, SetThreadQosTest3, TestSize.Level1)
     ret = SetQosForOtherThread(QosLevel::qos_utility, gettid());
     EXPECT_EQ(ret, 0);
     ret = SetQosForOtherThread(QosLevel::qos_background, gettid());
+    EXPECT_EQ(ret, 0);
+    ret = SetQosForOtherThread(QosLevel::qos_deadline_request, gettid());
+    EXPECT_EQ(ret, 0);
+    ret = SetQosForOtherThread(QosLevel::qos_user_interactive, gettid());
     EXPECT_EQ(ret, 0);
 }
 

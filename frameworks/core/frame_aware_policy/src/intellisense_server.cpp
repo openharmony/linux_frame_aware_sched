@@ -153,7 +153,7 @@ void IntelliSenseServer::NewAppRecord(int pid)
         }
     }
     AppInfo tempRecord(pid);
-    tempRecord.SetAppState(AppState::APP_FOREGROUND);
+    tempRecord.SetAppState(AppState::APP_FOREGROUND_WITHOUT_RTG);
     m_historyApp.push_back(tempRecord);
 }
 

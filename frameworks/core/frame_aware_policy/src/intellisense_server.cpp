@@ -139,6 +139,7 @@ void IntelliSenseServer::NewBackground(int pid)
         iter->SetAppState(AppState::APP_BACKGROUND);
         int grpId = iter->GetRtgrp();
         if (grpId > 0) {
+            EndScene(grpId);
             DestroyRtgGrp(grpId);
         }
     }
@@ -165,6 +166,7 @@ void IntelliSenseServer::NewDiedProcess(int pid)
         if (iter->GetAppPid() == pid) {
             int grpId = iter->GetRtgrp();
             if (grpId > 0) {
+                EndScene(grpId);
                 DestroyRtgGrp(grpId);
             }
             iter = m_historyApp.erase(iter);

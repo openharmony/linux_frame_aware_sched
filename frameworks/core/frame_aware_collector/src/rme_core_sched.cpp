@@ -69,7 +69,6 @@ void RmeCoreSched::BeginFlushAnimation()
     if (!m_uiHasSend) {
         StartTrace(HITRACE_TAG_ACE,
             ("FrameS-Begin&AddThread-rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());
-        AddThreadToRtg(m_uiTid, m_rtg);
         m_uiHasSend = true;
     } else {
         StartTrace(HITRACE_TAG_ACE, "FrameS-Begin");
@@ -143,7 +142,7 @@ void RmeCoreSched::HandleEndScene()
     if (m_rtg <= 0) {
         return;
     }
-    int ret = EndScene(m_rtg);
+    int ret = 0;
     m_uiHasSend = false;
     StartTrace(HITRACE_TAG_ACE,
         ("FrameS-EndFrameFreq-rtg:" + to_string(m_rtg) + " ret:" + to_string(ret)).c_str());

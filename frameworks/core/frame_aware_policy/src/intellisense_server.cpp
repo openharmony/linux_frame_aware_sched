@@ -30,6 +30,8 @@ namespace OHOS {
 namespace RME {
 namespace {
     static std::string configFilePath = "/system/etc/frame_aware_sched/hwrme.xml"; // need To check the exact file path.
+    constexpr int WEB_BASE_UID = 1000001;
+    constexpr int WEB_END_UID = 1099999;
 }
 using namespace std;
 using namespace QosCommon;
@@ -83,12 +85,12 @@ bool IntelliSenseServer::ReadXml()
     return false;
 }
 
-void IntelliSenseServer::NewForeground(int pid)
+void IntelliSenseServer::NewForeground(int pid, int uid)
 {
     HITRACE_METER(HITRACE_TAG_ACE);
     int newCreatedRtg = 0;
     for (auto iter = m_historyApp.begin(); iter != m_historyApp.end(); iter++) {
-        if (iter->GetAppPid() == pid) {
+        if (iter->GetAppUid() == uid) {
             RME_LOGI("[ReportMessage]pid %{public}d change to foreground.", pid);
             if (iter->GetAppState() != AppState::APP_FOREGROUND) {
                 iter->SetUiTid(pid);
@@ -145,15 +147,15 @@ void IntelliSenseServer::NewBackground(int pid)
     }
 }
 
-void IntelliSenseServer::NewAppRecord(int pid)
+void IntelliSenseServer::NewAppRecord(int pid, int uid)
 {
     for (auto iter = m_historyApp.begin(); iter != m_historyApp.end(); iter++) {
-        if (iter->GetAppPid() == pid) {
+        if (iter->GetAppUid() == uid) {
             RME_LOGI("[NewAppRecord]pid %{public}d already exist.", pid);
             return;
         }
     }
-    AppInfo tempRecord(pid);
+    AppInfo tempRecord(pid, uid);
     tempRecord.SetAppState(AppState::APP_FOREGROUND_WITHOUT_RTG);
     m_historyApp.push_back(tempRecord);
 }
@@ -188,6 +190,9 @@ std::list<AppInfo>::iterator IntelliSenseServer::GetRecordOfPid(int pid)
 
 void IntelliSenseServer::ReportRenderThread(const int pid, const int uid, int renderTid)
 {
+    if (uid >= WEB_BASE_UID && uid <= WEB_END_UID) {
+        return;
+    }
     if (!m_switch) {
         return;
     }
@@ -201,6 +206,7 @@ void IntelliSenseServer::ReportRenderThread(const int pid, const int uid, int re
     int grpId = record->GetRtgrp();
     if (grpId >= 0 && record->GetAppState() == AppState::APP_FOREGROUND) {
         int ret = AddThreadToRtg(renderTid, grpId, 0); // add render thread
+        RME_LOGE("web test ReportRenderThread uid is %{public}d", uid);
         if (ret != 0) {
             RME_LOGE("[OnFore]:add render thread fail! pid:%{public}d,rtg:%{public}d!ret:%{publid}d",
                 renderTid, grpId, ret);
@@ -235,6 +241,9 @@ inline CgroupPolicy IntelliSenseServer::CheckCgroupState(CgroupPolicy cgroup)
 
 void IntelliSenseServer::ReportCgroupChange(const int pid, const int uid, const int oldGroup, const int newGroup)
 {
+    if (uid >= WEB_BASE_UID && uid <= WEB_END_UID) {
+        return;
+    }
     if (!m_switch) {
         return;
     }
@@ -249,8 +258,8 @@ void IntelliSenseServer::ReportCgroupChange(const int pid, const int uid, const 
         NewBackground(pid);
         AuthBackground(uid);
     } else if (newState == CgroupPolicy::SP_FOREGROUND) {
-        RME_LOGI("CgroupChange NewForeground");
-        NewForeground(pid);
+        RME_LOGI("web test CgroupChange NewForeground uid is %{public}d", uid);
+        NewForeground(pid, uid);
         AuthForeground(uid);
     }
 }
@@ -270,6 +279,9 @@ void IntelliSenseServer::ReportAppInfo(const int pid, const int uid, const std::
 void IntelliSenseServer::ReportProcessInfo(const int pid,
     const int uid, const std::string bundleName, ThreadState state)
 {
+    if (uid >= WEB_BASE_UID && uid <= WEB_END_UID) {
+        return;
+    }
     if (!m_switch) {
         return;
     }
@@ -285,7 +297,7 @@ void IntelliSenseServer::ReportProcessInfo(const int pid,
             break;
         case ThreadState::CREATE:
             RME_LOGI("ProcessInfo NewAppRecord");
-            NewAppRecord(pid);
+            NewAppRecord(pid, uid);
             break;
         default:
             RME_LOGI("unknown state : %{public}d", static_cast<int>(state));

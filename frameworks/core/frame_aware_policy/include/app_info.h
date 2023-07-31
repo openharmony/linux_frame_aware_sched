@@ -43,7 +43,7 @@ enum class CgroupPolicy {
 
 class AppInfo {
 public:
-    AppInfo(int pid);
+    AppInfo(int pid, int uid);
     ~AppInfo() = default;
 
     void SetRenderTid(const int tid);
@@ -57,11 +57,13 @@ public:
     int GetFocusState();
     void SetAppPid(const int pid);
     int GetAppPid();
+    int GetAppUid();
     void SetRtgrp(const int grpNum);
     int GetRtgrp();
 private:
     std::string m_appName;
     int m_pid;
+    int m_uid;
     int m_uiTid;
     int m_renderTid;
     int m_isFocus;

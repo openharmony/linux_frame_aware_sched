@@ -127,7 +127,7 @@ int QosController::SetPolicy()
 int QosController::SetThreadQosForOtherThread(enum QosLevel level, int tid)
 {
     int qos = static_cast<int>(level);
-    if (level < QosLevel::qos_background || level > QosLevel::qos_user_initiated) {
+    if (level < QosLevel::qos_background || level > QosLevel::qos_user_interactive) {
         RME_LOGE("invalid qos level %{public}d", qos);
         return ERROR_NUM;
     }

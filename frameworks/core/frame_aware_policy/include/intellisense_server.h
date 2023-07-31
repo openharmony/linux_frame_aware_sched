@@ -44,10 +44,10 @@ public:
     void SetPara(const int32_t currentFps, const int32_t currentRenderType);
 
 private:
-    void NewForeground(int pid);
+    void NewForeground(int pid, int uid);
     void NewBackground(int pid);
     void NewDiedProcess(int pid);
-    void NewAppRecord(int pid);
+    void NewAppRecord(int pid, int uid);
     void AuthAppKilled(int uid);
     void AuthForeground(int uid);
     void AuthBackground(int uid);

@@ -17,9 +17,10 @@
 
 namespace OHOS {
 namespace RME {
-AppInfo::AppInfo(int pid)
+AppInfo::AppInfo(int pid, int uid)
     : m_appName(""),
       m_pid(pid),
+      m_uid(uid),
       m_uiTid(0),
       m_renderTid(0),
       m_isFocus(0),
@@ -75,6 +76,11 @@ void AppInfo::SetAppPid(const int pid)
 int AppInfo::GetAppPid()
 {
     return m_pid;
+}
+
+int AppInfo::GetAppUid()
+{
+    return m_uid;
 }
 
 AppState AppInfo::GetAppState()

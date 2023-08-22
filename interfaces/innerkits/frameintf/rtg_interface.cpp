@@ -52,6 +52,8 @@ const char RTG_SCHED_IPC_MAGIC = 0xAB;
     _IOWR(RTG_SCHED_IPC_MAGIC, END_SCENE, struct proc_state_data)
 #define CMD_ID_SET_MIN_UTIL \
     _IOWR(RTG_SCHED_IPC_MAGIC, SET_MIN_UTIL, struct proc_state_data)
+#define CMD_ID_SET_MAX_UTIL \
+    _IOWR(RTG_SCHED_IPC_MAGIC, SET_MAX_UTIL, struct proc_state_data)
 #define CMD_ID_SET_MARGIN \
     _IOWR(RTG_SCHED_IPC_MAGIC, SET_MARGIN, struct proc_state_data)
 #define CMD_ID_LIST_RTG \
@@ -350,6 +352,11 @@ int SetMinUtil(int grpId, int stateParam)
     }
     close(fd);
     return ret;
+}
+
+int SetMaxUtil(int grpId, int stateParam)
+{
+    return 0;
 }
 
 int SetMargin(int grpId, int stateParam)

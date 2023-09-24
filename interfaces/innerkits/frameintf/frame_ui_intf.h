@@ -48,6 +48,7 @@ public:
     void EndListFling() const;
     void FlushBegin() const;
     void FlushEnd() const;
+    void SetFrameParam(int requestId, int load, int schedFrameNum, int value) const;
 private:
     bool inited = false;
 };

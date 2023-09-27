@@ -203,6 +203,11 @@ void FrameUiIntf::FlushEnd() const
     return;
 }
 
+void FrameUiIntf::SetFrameParam(int requestId, int load, int schedFrameNum, int value) const
+{
+    return;
+}
+
 extern "C" void Init()
 {
     FrameUiIntf::GetInstance().Init();
@@ -311,6 +316,11 @@ extern "C" void FlushBegin()
 extern "C" void FlushEnd()
 {
     FrameUiIntf::GetInstance().FlushEnd();
+}
+
+extern "C" void SetFrameParam(int requestId, int load, int schedFrameNum, int value)
+{
+    FrameUiIntf::GetInstance().SetFrameParam(requestId, load, schedFrameNum, value);
 }
 } // namespace RME
 } // namespace OHOS

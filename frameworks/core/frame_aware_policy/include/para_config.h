@@ -21,9 +21,9 @@
 #include <vector>
 #include <memory>
 #include <cstdlib>
-#include "third_party/libxml2/include/libxml/parser.h"
-#include "third_party/libxml2/include/libxml/tree.h"
-#include "third_party/libxml2/include/libxml/xpath.h"
+#include "libxml/parser.h"
+#include "libxml/tree.h"
+#include "libxml/xpath.h"
 #include "rme_log_domain.h"
 #include "single_instance.h"
 

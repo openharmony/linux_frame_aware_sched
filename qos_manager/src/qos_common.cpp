@@ -27,13 +27,6 @@ namespace QosCommon {
 
 DEFINE_RMELOG_INTELLISENSE("qos_manager");
 
-static int TrivalOpenQosCtrlNode(void)
-{
-    char fileName[] = "/proc/thread-self/sched_qos_ctrl";
-    int fd = open(fileName, O_RDWR);
-    return fd;
-}
-
 static int TrivalOpenAuthCtrlNode(void)
 {
     char fileName[] = "/dev/auth_ctrl";
@@ -111,73 +104,6 @@ int AuthDelete(int uid)
     ret = ioctl(fd, BASIC_AUTH_CTRL_OPERATION, &data);
     if (ret < 0) {
         RME_LOGE("auth delete failed for uid %{public}d\n", uid);
-    }
-    close(fd);
-    return ret;
-}
-
-int QosApplyForThread(int level, int tid)
-{
-    struct QosCtrlData data;
-    int fd;
-
-    int ret;
-
-    fd = TrivalOpenQosCtrlNode();
-    if (fd < 0) {
-        RME_LOGE("thread %{public}d belong to user %{public}d open qos node failed\n", gettid(), getuid());
-        return fd;
-    }
-
-    data.level = level;
-    data.type = QOS_APPLY;
-    data.pid = tid;
-
-    ret = ioctl(fd, QOS_CTRL_BASIC_OPERATION, &data);
-    if (ret < 0) {
-        RME_LOGE("qos apply failed for thread %{public}d\n", tid);
-    }
-    close(fd);
-    return ret;
-}
-
-int QosLeaveForThread(int tid)
-{
-    struct QosCtrlData data;
-    int fd;
-    int ret;
-
-    fd = TrivalOpenQosCtrlNode();
-    if (fd < 0) {
-        RME_LOGE("thread %{public}d belong to user %{public}d open qos node failed\n", gettid(), getuid());
-        return fd;
-    }
-
-    data.type = QOS_LEAVE;
-    data.pid = tid;
-
-    ret = ioctl(fd, QOS_CTRL_BASIC_OPERATION, &data);
-    if (ret < 0) {
-        RME_LOGE("qos leave failed for thread %{public}d\n", tid);
-    }
-    close(fd);
-    return ret;
-}
-
-int QosPolicy(struct QosPolicyDatas *policyDatas)
-{
-    int fd;
-    int ret;
-
-    fd = TrivalOpenQosCtrlNode();
-    if (fd < 0) {
-        RME_LOGE("thread %{public}d belong to user %{public}d open qos node failed\n", gettid(), getuid());
-        return fd;
-    }
-
-    ret = ioctl(fd, QOS_CTRL_POLICY_OPERATION, policyDatas);
-    if (ret < 0) {
-        RME_LOGE("set qos policy failed for thread %{public}d\n", gettid());
     }
     close(fd);
     return ret;

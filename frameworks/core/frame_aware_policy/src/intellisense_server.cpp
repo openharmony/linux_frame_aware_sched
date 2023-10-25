@@ -214,6 +214,25 @@ void IntelliSenseServer::ReportRenderThread(const int pid, const int uid, int re
     }
 }
 
+void IntelliSenseServer::ReportContinuousTask(const int pid, const int uid, const int status)
+{
+    if (!m_switch) {
+        return;
+    }
+    HITRACE_METER(HITRACE_TAG_ACE);
+    switch (status) {
+        case static_cast<int>(ContinuousTaskState::TASK_START):
+            RME_LOGI("[ReportContinuousTask]:%{public}d continuous task start", pid);
+            break;
+        case static_cast<int>(ContinuousTaskState::TASK_END):
+            RME_LOGI("[ReportContinuousTask]:%{public}d continuous task end", pid);
+            break;
+        default:
+            RME_LOGI("[ReportContinuousTask]:unknown continuous task status!");
+            break;
+    }
+}
+
 void IntelliSenseServer::ReportWindowFocus(const int pid, const int uid, int isFocus)
 {
     if (!m_switch) {

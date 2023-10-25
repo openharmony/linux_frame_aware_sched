@@ -123,6 +123,18 @@ void FrameMsgIntf::ReportCgroupChange(const int pid, const int uid, const int ol
     });
 }
 
+void FrameMsgIntf::ReportContinuousTask(const int pid, const int uid, const int status)
+{
+    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
+    if (threadHandler_ == nullptr) {
+        RME_LOGI("[ReportProcessInfo]:threandHandler none!");
+        return;
+    }
+    threadHandler_->PostTask([pid, uid, status] {
+        IntelliSenseServer::GetInstance().ReportContinuousTask(pid, uid, status);
+    });
+}
+
 void FrameMsgIntf::Stop()
 {
     std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);

@@ -40,6 +40,7 @@ public:
     void ReportCgroupChange(const int pid, const int uid, const int oldGroup, const int newGroup);
     void ReportWindowFocus(const int pid, const int uid, int isFocus);
     void ReportRenderThread(const int pid, const int uid, int renderTid);
+    void ReportContinuousTask(const int pid, const int uid, const int status);
     bool ReadXml();
     void SetPara(const int32_t currentFps, const int32_t currentRenderType);
 

@@ -57,5 +57,23 @@ void FrameMsgIntfTest::TearDown()
     std::shared_ptr<AppExecFwk::EventHandler> thread = FrameMsgIntf::GetInstance().threadHandler_;
     EXPECT_TRUE(thread == nullptr);
 }
+
+/**
+ * @tc.name: ReportContinuousTaskTest
+ * @tc.desc: Test whether ReportContinuousTask interface is normal
+ * @tc.type: FUNC
+ */
+HWTEST_F(FrameMsgIntfTest, ReportContinuousTaskTest, TestSize.Level1)
+{
+    FrameMsgIntf repCon;
+    const int pid = 12345;
+    const int uid = 100086;
+    const int status0 = 0;
+    const int status1 = 1;
+    repCon.GetThreadHandler();
+    repCon.ReportContinuousTask(pid, uid, status0);
+    repCon.ReportContinuousTask(pid, uid, status1);
+}
+
 } // namespace RME
 } // namespace OHOS

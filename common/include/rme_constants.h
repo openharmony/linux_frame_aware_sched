@@ -33,6 +33,11 @@ enum class WindowState {
     FOCUS_NO,
 };
 
+enum class ContinuousTaskState {
+    TASK_START = 0,
+    TASK_END,
+};
+
 enum class ErrorCode {
     FAIL,
     SUCC,

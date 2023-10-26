@@ -30,6 +30,7 @@ namespace RME {
 namespace {
     constexpr size_t MAX_LENGTH = 100;
     constexpr size_t MAX_STR_LEN = 100;
+    constexpr int RTG_TYPE_MAX = 3;
 }
 DEFINE_RMELOG_INTELLISENSE("rtg_interface");
 
@@ -103,6 +104,31 @@ int EnableRtg(bool flag)
     }
     return 0;
 };
+
+int CreateNewRtgGrp(int prioType, int rtNum)
+{
+    struct rtg_grp_data grp_data;
+    int ret;
+    if (g_fd < 0) {
+        RME_LOGE("Open file /proc/self/sched_rtg_ctrl, errno = %{public}d", errno);
+        return g_fd;
+    }
+    (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
+    if ((prioType > 0) && (prioType < RTG_TYPE_MAX)) {
+        grp_data.prio_type = prioType;
+    }
+    if (rtNum > 0) {
+        grp_data.rt_cnt = rtNum;
+    }
+    grp_data.rtg_cmd = CMD_CREATE_RTG_GRP;
+    ret = ioctl(g_fd, CMD_ID_SET_RTG, &grp_data);
+    if (ret < 0) {
+        RME_LOGE("create rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
+    } else {
+        RME_LOGI("create rtg grp success, get rtg id %{public}d.", ret);
+    }
+    return ret;
+}
 
 int AddThreadToRtg(int tid, int grpId, int prioType)
 {

@@ -83,8 +83,8 @@ __attribute__((destructor))void BasicCloseRtgNode()
     if (g_fd < 0) {
         return;
     }
-    close(g_fd);
     RME_LOGI("rtg Close g_fd ret is %{public}d", g_fd);
+    close(g_fd);
 }
 
 int EnableRtg(bool flag)

@@ -123,11 +123,6 @@ void FrameMsgIntf::ReportCgroupChange(const int pid, const int uid, const int ol
     });
 }
 
-void FrameMsgIntf::ReportSlideEvent(const int pid, const int uid, const int64_t status)
-{
-    return;
-}
-
 void FrameMsgIntf::Stop()
 {
     std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);

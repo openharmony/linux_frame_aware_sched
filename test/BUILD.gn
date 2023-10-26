@@ -63,10 +63,7 @@ ohos_unittest("rtg_interface_test") {
 
   sources = [ "unittest/phone/rtg_interface_test.cpp" ]
 
-  include_dirs = [
-    "../common/include",
-    "../frameworks/core/frame_aware_policy/include",
-  ]
+  include_dirs = [ "../common/include" ]
 
   deps = frame_aware_sched_deps
 

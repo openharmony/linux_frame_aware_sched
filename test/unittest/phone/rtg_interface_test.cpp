@@ -17,7 +17,6 @@
 
 #define private public
 #define protected public
-#include "intellisense_server.h"
 #include "rtg_interface.h"
 #undef private
 #undef protected
@@ -75,7 +74,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceCreateAndDestroy, TestSize.Level1)
 {
     int ret;
     int grpId;
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(NORMAL_TASK, 0);
+    grpId = CreateNewRtgGrp(NORMAL_TASK, 0);
     EXPECT_GT(grpId, 0);
     ret = DestroyRtgGrp(grpId);
     EXPECT_EQ(ret, 0);
@@ -103,7 +102,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceAddRtg, TestSize.Level1)
     int ret;
     int grpId;
     int pid = getpid();
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = AddThreadToRtg(pid, grpId);
     EXPECT_EQ(ret, 0);
@@ -120,7 +119,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceAddErrorThread, TestSize.Level1)
 {
     int ret;
     int grpId;
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = AddThreadToRtg(-1, grpId);
     EXPECT_NE(ret, 0);
@@ -153,7 +152,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceAddRtgs, TestSize.Level1)
     int pid = getpid();
     vector<int> pids = {};
     pids.push_back(pid);
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = AddThreadsToRtg(pids, grpId);
     EXPECT_EQ(ret, 0);
@@ -171,7 +170,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceClearRtg, TestSize.Level1)
     int ret;
     int grpId;
     int pid = getpid();
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = AddThreadToRtg(pid, grpId);
     EXPECT_EQ(ret, 0);
@@ -202,7 +201,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceBeginFrameFreq, TestSize.Level1)
 {
     int ret;
     int grpId;
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = BeginFrameFreq(grpId, 0);
     EXPECT_EQ(ret, 0);
@@ -231,7 +230,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceEndFrameFreq, TestSize.Level1)
 {
     int ret;
     int grpId;
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = EndFrameFreq(grpId);
     EXPECT_EQ(ret, 0);
@@ -260,7 +259,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceEndScene, TestSize.Level1)
 {
     int ret;
     int grpId;
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = EndScene(grpId);
     EXPECT_EQ(ret, 0);
@@ -289,7 +288,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMinUtil, TestSize.Level1)
 {
     int ret;
     int grpId;
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = SetMinUtil(grpId, 0);
     EXPECT_EQ(ret, 0);
@@ -318,7 +317,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetMargin, TestSize.Level1)
 {
     int ret;
     int grpId;
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = SetMargin(grpId, 0);
     EXPECT_EQ(ret, 0);
@@ -348,7 +347,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceListRtgThread, TestSize.Level1)
     int ret;
     int grpId;
     vector<int> rs;
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = ListRtgThread(grpId, &rs);
     EXPECT_EQ(ret, 0);
@@ -365,7 +364,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceListRtgThreadWithNullRes, TestSize.Level1
 {
     int ret;
     int grpId;
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = ListRtgThread(grpId, nullptr);
     EXPECT_NE(ret, 0);
@@ -420,7 +419,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetAttr, TestSize.Level1)
 {
     int ret;
     int grpId;
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = SetFrameRateAndPrioType(grpId, 60, VIP);
     EXPECT_EQ(ret, 0);
@@ -437,7 +436,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetErrorAttr, TestSize.Level1)
 {
     int ret;
     int grpId;
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
+    grpId = CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
     ret = SetFrameRateAndPrioType(grpId, 90, -1);
     EXPECT_NE(ret, 0);
@@ -501,7 +500,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceAddMultipleThreads, TestSize.Level1)
         }
         threads.push_back(pid[i]);
     }
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(NORMAL_TASK, 0);
+    grpId = CreateNewRtgGrp(NORMAL_TASK, 0);
     EXPECT_GT(grpId, 0);
     ret = AddThreadsToRtg(threads, grpId);
     EXPECT_EQ(ret, 0);
@@ -529,7 +528,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceAddMultipleThreadsOutOfLimit, TestSize.Le
         }
         threads.push_back(pid[i]);
     }
-    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(NORMAL_TASK, 0);
+    grpId = CreateNewRtgGrp(NORMAL_TASK, 0);
     EXPECT_GT(grpId, 0);
     ret = AddThreadsToRtg(threads, grpId);
     EXPECT_NE(ret, 0);

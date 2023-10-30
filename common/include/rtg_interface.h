@@ -86,7 +86,6 @@ enum rtg_sched_cmdid {
 
 extern "C" {
     int EnableRtg(bool flag);
-    int CreateNewRtgGrp(int prioType = 0, int rtNum = 0); // Return GrpId if success
     int AddThreadToRtg(int tid, int grpId, int prioType = 0);
     int AddThreadsToRtg(vector<int> tids, int grpId, int prioType = 0);
     int RemoveRtgThread(int tid);

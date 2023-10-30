@@ -33,6 +33,7 @@ public:
     void ReportWindowFocus(const int pid, const int uid, const int isFocus);
     void ReportRenderThread(const int pid, const int uid, const int renderTid);
     void ReportContinuousTask(const int pid, const int uid, const int status);
+    void ReportSlideEvent(const int pid, const int uid, const int64_t status);
     void Stop();
 protected:
     FrameMsgIntf() = default;

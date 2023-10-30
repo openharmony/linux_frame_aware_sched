@@ -53,6 +53,7 @@ private:
     void AuthForeground(int uid);
     void AuthBackground(int uid);
     int TryCreateRtgForApp(AppInfo *app);
+    int CreateNewRtgGrp(int prioType = 0, int rtNum = 0);
     inline CgroupPolicy CheckCgroupState(const CgroupPolicy cgroup);
     std::list<AppInfo>::iterator GetRecordOfPid(int pid);
     std::list<AppInfo> m_historyApp = {};

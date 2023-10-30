@@ -14,13 +14,17 @@
  */
 
 #include "intellisense_server.h"
+#include <fcntl.h>
+#include <hitrace_meter.h>
 #include <list>
 #include <map>
 #include <new>
 #include <set>
+#include <securec.h>
 #include <string>
+#include <sys/ioctl.h>
+#include <unistd.h>
 #include <vector>
-#include <hitrace_meter.h>
 #include "qos_common.h"
 #include "para_config.h"
 #include "rtg_interface.h"
@@ -32,12 +36,17 @@ namespace {
     static std::string configFilePath = "/system/etc/frame_aware_sched/hwrme.xml"; // need To check the exact file path.
     constexpr int WEB_BASE_UID = 1000001;
     constexpr int WEB_END_UID = 1099999;
+    const char RTG_SCHED_IPC_MAGIC = 0xAB;
+    constexpr int RTG_TYPE_MAX = 3;
 }
 using namespace std;
 using namespace QosCommon;
 
 DEFINE_RMELOG_INTELLISENSE("ueaServer-IntelliSenseServer");
 IMPLEMENT_SINGLE_INSTANCE(IntelliSenseServer);
+
+#define CMD_ID_SET_RTG \
+    _IOWR(RTG_SCHED_IPC_MAGIC, SET_RTG, struct rtg_str_data)
 
 void IntelliSenseServer::Init()
 {
@@ -368,5 +377,32 @@ void IntelliSenseServer::AuthBackground(int uid)
     }
 }
 
+int IntelliSenseServer::CreateNewRtgGrp(int prioType, int rtNum)
+{
+    struct rtg_grp_data grp_data;
+    int ret;
+    char fileName[] = "/proc/self/sched_rtg_ctrl";
+    int fd = open(fileName, O_RDWR);
+    if (fd < 0) {
+        RME_LOGE("Open file /proc/self/sched_rth_ctrl, errno = %{public}d", errno);
+        return fd;
+    }
+    (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
+    if ((prioType > 0) && (prioType < RTG_TYPE_MAX)) {
+        grp_data.prio_type = prioType;
+    }
+    if (rtNum > 0) {
+        grp_data.rt_cnt = rtNum;
+    }
+    grp_data.rtg_cmd = CMD_CREATE_RTG_GRP;
+    ret = ioctl(fd, CMD_ID_SET_RTG, &grp_data);
+    if (ret < 0) {
+        RME_LOGE("create rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
+    } else {
+        RME_LOGI("create rtg grp success, get rtg id %{public}d.", ret);
+    }
+    close(fd);
+    return ret;
+}
 } // namespace RME
 } // namesapce OHOS

@@ -49,9 +49,9 @@ private:
     void NewBackground(int pid);
     void NewDiedProcess(int pid);
     void NewAppRecord(int pid, int uid);
-    void AuthAppKilled(int uid);
-    void AuthForeground(int uid);
-    void AuthBackground(int uid);
+    void AuthAppKilled(int pid);
+    void AuthForeground(int pid);
+    void AuthBackground(int pid);
     int TryCreateRtgForApp(AppInfo *app);
     int CreateNewRtgGrp(int prioType = 0, int rtNum = 0);
     inline CgroupPolicy CheckCgroupState(const CgroupPolicy cgroup);

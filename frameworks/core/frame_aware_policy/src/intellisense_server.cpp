@@ -284,11 +284,11 @@ void IntelliSenseServer::ReportCgroupChange(const int pid, const int uid, const 
     if (newState == CgroupPolicy::SP_BACKGROUND) {
         RME_LOGI("CgroupChange NewBackground");
         NewBackground(pid);
-        AuthBackground(uid);
+        AuthBackground(pid);
     } else if (newState == CgroupPolicy::SP_FOREGROUND) {
         RME_LOGI("web test CgroupChange NewForeground uid is %{public}d", uid);
         NewForeground(pid, uid);
-        AuthForeground(uid);
+        AuthForeground(pid);
     }
 }
 
@@ -298,7 +298,7 @@ void IntelliSenseServer::ReportAppInfo(const int pid, const int uid, const std::
         return;
     }
     if (state == ThreadState::CREATE) {
-        AuthForeground(uid);
+        AuthForeground(pid);
     }
     RME_LOGI("Get app info:%{public}d %{public}d %{public}s %{public}d",
         pid, uid, bundleName.c_str(), static_cast<int>(state));
@@ -320,7 +320,7 @@ void IntelliSenseServer::ReportProcessInfo(const int pid,
     switch (state) {
         case ThreadState::DIED:
             RME_LOGI("ProcessInfo NewDiedProcess");
-            AuthAppKilled(uid);
+            AuthAppKilled(pid);
             NewDiedProcess(pid);
             break;
         case ThreadState::CREATE:
@@ -345,35 +345,35 @@ void IntelliSenseServer::SetPara(const int32_t currentFps, const int32_t current
     RME_LOGI("[SetPara]:subEventPara map size: %{public}zu", tempMap.size());
 }
 
-void IntelliSenseServer::AuthAppKilled(int uid)
+void IntelliSenseServer::AuthAppKilled(int pid)
 {
-    int ret = AuthDelete(uid);
+    int ret = AuthDelete(pid);
     if (ret == 0) {
-        RME_LOGI("auth_delete %{public}d success", uid);
+        RME_LOGI("auth_delete %{public}d success", pid);
     } else {
-        RME_LOGE("auth_delete %{public}d failed", uid);
+        RME_LOGE("auth_delete %{public}d failed", pid);
     }
 }
 
-void IntelliSenseServer::AuthForeground(int uid)
+void IntelliSenseServer::AuthForeground(int pid)
 {
     unsigned int flag = AF_RTG_ALL;
     int status = AUTH_STATUS_FOREGROUND;
-    int ret = AuthEnable(uid, flag, status);
+    int ret = AuthEnable(pid, flag, status);
     if (ret == 0) {
-        RME_LOGI("auth_enable %{public}d success", uid);
+        RME_LOGI("auth_enable %{public}d success", pid);
     } else {
-        RME_LOGE("auth_enable %{public}d failed", uid);
+        RME_LOGE("auth_enable %{public}d failed", pid);
     }
 }
 
-void IntelliSenseServer::AuthBackground(int uid)
+void IntelliSenseServer::AuthBackground(int pid)
 {
-    int ret = AuthPause(uid);
+    int ret = AuthPause(pid);
     if (ret == 0) {
-        RME_LOGI("auth_pause %{public}d success", uid);
+        RME_LOGI("auth_pause %{public}d success", pid);
     } else {
-        RME_LOGE("auth_pause %{public}d failed", uid);
+        RME_LOGE("auth_pause %{public}d failed", pid);
     }
 }
 

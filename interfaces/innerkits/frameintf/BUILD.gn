@@ -110,6 +110,7 @@ ohos_shared_library("frame_msg_intf") {
   external_deps = [
     "c_utils:utils",
     "eventhandler:libeventhandler",
+    "ffrt:libffrt",
     "hilog:libhilog",
     "hitrace:hitrace_meter",
   ]

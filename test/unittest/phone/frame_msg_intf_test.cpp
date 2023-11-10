@@ -53,9 +53,6 @@ void FrameMsgIntfTest::SetUp()
 
 void FrameMsgIntfTest::TearDown()
 {
-    FrameMsgIntf::GetInstance().Stop();
-    std::shared_ptr<AppExecFwk::EventHandler> thread = FrameMsgIntf::GetInstance().threadHandler_;
-    EXPECT_TRUE(thread == nullptr);
 }
 
 /**
@@ -70,7 +67,7 @@ HWTEST_F(FrameMsgIntfTest, ReportContinuousTaskTest, TestSize.Level1)
     const int uid = 100086;
     const int status0 = 0;
     const int status1 = 1;
-    repCon.GetThreadHandler();
+    repCon.GetThreadQueue();
     repCon.ReportContinuousTask(pid, uid, status0);
     repCon.ReportContinuousTask(pid, uid, status1);
 }

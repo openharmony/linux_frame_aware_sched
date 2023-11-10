@@ -50,6 +50,8 @@ ohos_unittest("frame_msg_intf_test") {
 
   deps = frame_aware_sched_deps
 
+  external_deps = [ "ffrt:libffrt" ]
+
   if (is_standard_system) {
     public_deps = frame_aware_sched_public_deps
   }

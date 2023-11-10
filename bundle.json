@@ -24,6 +24,7 @@
             "components": [
                 "c_utils",
                 "eventhandler",
+                "ffrt",
                 "hitrace",
                 "hilog",
                 "samgr",

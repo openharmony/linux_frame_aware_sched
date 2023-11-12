@@ -15,7 +15,6 @@
 
 #include "frame_msg_intf.h"
 #include "intellisense_server.h"
-#include "event_handler.h"
 #include "rme_log_domain.h"
 
 namespace OHOS {
@@ -28,30 +27,33 @@ FrameMsgIntf& FrameMsgIntf::GetInstance()
     return instance;
 }
 
+FrameMsgIntf::~FrameMsgIntf()
+{
+    if (taskQueue_ != nullptr) {
+        delete taskQueue_;
+        taskQueue_ = nullptr;
+    }
+}
+
 bool FrameMsgIntf::Init()
 {
-    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
+    std::lock_guard<ffrt::mutex> autoLock(frameMsgIntfMutex_);
     RME_LOGI("init begin!");
-    if (!GetThreadHandler()) {
+    if (!GetThreadQueue()) {
         return false;
     }
-    threadHandler_->PostTask([] {
+    taskQueue_->submit([] {
         IntelliSenseServer::GetInstance().Init();
     });
     return true;
 }
 
-bool FrameMsgIntf::GetThreadHandler()
+bool FrameMsgIntf::GetThreadQueue()
 {
-    if (threadHandler_ == nullptr) {
-        runner_ = AppExecFwk::EventRunner::Create("frame_aware_sched_msg");
-        if (runner_ == nullptr) {
-            RME_LOGE("failed to create eventRunner!");
-            return false;
-        }
-        threadHandler_ = std::make_shared<AppExecFwk::EventHandler>(runner_);
-        if (threadHandler_ == nullptr) {
-            RME_LOGE("failed to create thread handler!");
+    if (taskQueue_  == nullptr) {
+        taskQueue_  = new(ffrt::queue)("frame_aware_sched_msg");
+        if (taskQueue_  == nullptr) {
+            RME_LOGE("failed to create taskQueue!");
             return false;
         }
     }
@@ -61,76 +63,76 @@ bool FrameMsgIntf::GetThreadHandler()
 
 void FrameMsgIntf::ReportWindowFocus(const int pid, const int uid, const int isFocus)
 {
-    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
-    if (threadHandler_ == nullptr) {
-        RME_LOGE("[ReportWindowFocus]:threandHandler none!");
+    std::lock_guard<ffrt::mutex> autoLock(frameMsgIntfMutex_);
+    if (taskQueue_ == nullptr) {
+        RME_LOGE("[ReportWindowFocus]:taskQueue none!");
         return;
     }
-    threadHandler_->PostTask([pid, uid, isFocus] {
+    taskQueue_->submit([pid, uid, isFocus] {
         IntelliSenseServer::GetInstance().ReportWindowFocus(pid, uid, isFocus);
     });
 }
 
 void FrameMsgIntf::ReportRenderThread(const int pid, const int uid, const int renderTid)
 {
-    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
+    std::lock_guard<ffrt::mutex> autoLock(frameMsgIntfMutex_);
     RME_LOGI("[ReportRenderThread]:render get %{public}d with render %{pubilc}d", pid, renderTid);
-    if (threadHandler_ == nullptr) {
-        RME_LOGE("[ReportRenderThread]:threandHandler none!");
+    if (taskQueue_ == nullptr) {
+        RME_LOGE("[ReportRenderThread]:taskQueue none!");
         return;
     }
-    threadHandler_->PostTask([pid, uid, renderTid] {
+    taskQueue_->submit([pid, uid, renderTid] {
         IntelliSenseServer::GetInstance().ReportRenderThread(pid, uid, renderTid);
     });
 }
 
 void FrameMsgIntf::ReportAppInfo(const int pid, const int uid, const std::string bundleName, ThreadState state)
 {
-    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
-    if (threadHandler_ == nullptr) {
-        RME_LOGI("[ReportAppInfo]:threandHandler none!");
+    std::lock_guard<ffrt::mutex> autoLock(frameMsgIntfMutex_);
+    if (taskQueue_ == nullptr) {
+        RME_LOGI("[ReportAppInfo]:taskQueue none!");
         return;
     }
     RME_LOGI("ReportProcessInfo pid is %{public}d, uid is %{public}d", pid, uid);
-    threadHandler_->PostTask([pid, uid, bundleName, state] {
+    taskQueue_->submit([pid, uid, bundleName, state] {
         IntelliSenseServer::GetInstance().ReportAppInfo(pid, uid, bundleName, state);
     });
 }
 
 void FrameMsgIntf::ReportProcessInfo(const int pid, const int uid, const std::string bundleName, ThreadState state)
 {
-    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
-    if (threadHandler_ == nullptr) {
-        RME_LOGI("[ReportProcessInfo]:threandHandler none!");
+    std::lock_guard<ffrt::mutex> autoLock(frameMsgIntfMutex_);
+    if (taskQueue_ == nullptr) {
+        RME_LOGI("[ReportProcessInfo]:taskQueue none!");
         return;
     }
-    threadHandler_->PostTask([pid, uid, bundleName, state] {
+    taskQueue_->submit([pid, uid, bundleName, state] {
         IntelliSenseServer::GetInstance().ReportProcessInfo(pid, uid, bundleName, state);
     });
 }
 
 void FrameMsgIntf::ReportCgroupChange(const int pid, const int uid, const int oldGroup, const int newGroup)
 {
-    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
-    if (threadHandler_ == nullptr) {
-        RME_LOGI("[ReportProcessInfo]:threandHandler none!");
+    std::lock_guard<ffrt::mutex> autoLock(frameMsgIntfMutex_);
+    if (taskQueue_ == nullptr) {
+        RME_LOGI("[ReportProcessInfo]:taskQueue none!");
         return;
     }
     RME_LOGI("CgroupChanged pid is %{public}d, uid is %{public}d, oldGroup is %{public}d, newGroup is %{public}d",
         pid, uid, oldGroup, newGroup);
-    threadHandler_->PostTask([pid, uid, oldGroup, newGroup] {
+    taskQueue_->submit([pid, uid, oldGroup, newGroup] {
         IntelliSenseServer::GetInstance().ReportCgroupChange(pid, uid, oldGroup, newGroup);
     });
 }
 
 void FrameMsgIntf::ReportContinuousTask(const int pid, const int uid, const int status)
 {
-    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
-    if (threadHandler_ == nullptr) {
-        RME_LOGI("[ReportProcessInfo]:threandHandler none!");
+    std::lock_guard<ffrt::mutex> autoLock(frameMsgIntfMutex_);
+    if (taskQueue_ == nullptr) {
+        RME_LOGI("[ReportProcessInfo]:taskQueue none!");
         return;
     }
-    threadHandler_->PostTask([pid, uid, status] {
+    taskQueue_->submit([pid, uid, status] {
         IntelliSenseServer::GetInstance().ReportContinuousTask(pid, uid, status);
     });
 }
@@ -142,15 +144,7 @@ void FrameMsgIntf::ReportSlideEvent(const int pid, const int uid, const int64_t 
 
 void FrameMsgIntf::Stop()
 {
-    std::lock_guard<std::mutex> autoLock(frameMsgIntfMutex_);
-    if (threadHandler_ != nullptr) {
-        threadHandler_->RemoveAllEvents();
-        threadHandler_ = nullptr;
-    }
-    if (runner_ != nullptr) {
-        runner_->Stop();
-        runner_ = nullptr;
-    }
+    return;
 }
 } // namespace RME
 } // namespace OHOS

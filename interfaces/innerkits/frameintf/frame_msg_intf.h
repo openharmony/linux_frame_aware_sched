@@ -16,6 +16,7 @@
 #ifndef FRAME_MSG_INTF_H
 #define FRAME_MSG_INTF_H
 
+#include "ffrt.h"
 #include "rme_constants.h"
 #include "single_instance.h"
 #include "event_handler.h"
@@ -26,7 +27,7 @@ class FrameMsgIntf {
 public:
     static FrameMsgIntf& GetInstance();
     bool Init();
-    bool GetThreadHandler();
+    bool GetThreadQueue();
     void ReportAppInfo(const int pid, const int uid, const std::string bundleName, ThreadState state);
     void ReportProcessInfo(const int pid, const int uid, const std::string bundleName, ThreadState state);
     void ReportCgroupChange(const int pid, const int uid, const int oldGroup, const int newGroup);
@@ -37,12 +38,10 @@ public:
     void Stop();
 protected:
     FrameMsgIntf() = default;
-    virtual ~FrameMsgIntf() = default;
+    ~FrameMsgIntf();
 private:
-    std::mutex frameMsgIntfMutex_;
-    std::shared_ptr<AppExecFwk::EventRunner> runner_;
-    std::shared_ptr<AppExecFwk::EventHandler> threadHandler_;
-    DISALLOW_COPY_AND_MOVE(FrameMsgIntf);
+    ffrt::mutex frameMsgIntfMutex_;
+    ffrt::queue* taskQueue_;
 };
 } // namespace RME
 } // namespace OHOS

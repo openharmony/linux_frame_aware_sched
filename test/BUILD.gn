@@ -80,12 +80,33 @@ ohos_unittest("rtg_interface_test") {
   subsystem_name = "resourceschedule"
 }
 
+ohos_unittest("intellisense_server_test") {
+  module_out_path = module_output_path
+
+  sources = [ "unittest/phone/intellisense_server_test.cpp" ]
+
+  include_dirs = [
+    "../common/include",
+    "../frameworks/core/frame_aware_policy/include",
+  ]
+
+  deps = frame_aware_sched_deps
+
+  if (is_standard_system) {
+    public_deps = frame_aware_sched_public_deps
+  }
+
+  part_name = "frame_aware_sched"
+  subsystem_name = "resourceschedule"
+}
+
 group("frame_unittest") {
   testonly = true
   deps = []
   if (!is_asan) {
     deps += [
       ":frame_msg_intf_test",
+      ":intellisense_server_test",
       ":rtg_interface_test",
     ]
   }

@@ -67,6 +67,5 @@ HWTEST_F(IntelliSenseServerTest, ReportContinuousTaskTest, TestSize.Level1)
     status = 2;
     IntelliSenseServer::GetInstance().ReportContinuousTask(pid, uid, status);
 }
-
 } // namespace RME
 } // namespace OHOS

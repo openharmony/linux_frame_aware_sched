@@ -34,7 +34,7 @@ static int TrivalOpenAuthCtrlNode(void)
     return fd;
 }
 
-int AuthEnable(int uid, unsigned int flag, unsigned int status)
+int AuthEnable(int pid, unsigned int flag, unsigned int status)
 {
     struct AuthCtrlData data;
     int fd;
@@ -46,7 +46,7 @@ int AuthEnable(int uid, unsigned int flag, unsigned int status)
         return fd;
     }
 
-    data.uid = uid;
+    data.pid = pid;
     data.rtgFlag = flag;
     data.qosFlag = AF_QOS_DELEGATED;
     data.status = status;
@@ -54,13 +54,13 @@ int AuthEnable(int uid, unsigned int flag, unsigned int status)
 
     ret = ioctl(fd, BASIC_AUTH_CTRL_OPERATION, &data);
     if (ret < 0) {
-        RME_LOGE("auth enable failed for uid %{public}d with status %{public}u\n", uid, status);
+        RME_LOGE("auth enable failed for pid %{public}d with status %{public}u\n", pid, status);
     }
     close(fd);
     return ret;
 }
 
-int AuthPause(int uid)
+int AuthPause(int pid)
 {
     struct AuthCtrlData data;
     int fd;
@@ -72,7 +72,7 @@ int AuthPause(int uid)
         return fd;
     }
 
-    data.uid = uid;
+    data.pid = pid;
     data.rtgFlag = 0;
     data.qosFlag = AF_QOS_DELEGATED;
     data.status = AUTH_STATUS_BACKGROUND;
@@ -80,13 +80,13 @@ int AuthPause(int uid)
 
     ret = ioctl(fd, BASIC_AUTH_CTRL_OPERATION, &data);
     if (ret < 0) {
-        RME_LOGE("auth pause failed for uid %{public}d\n", uid);
+        RME_LOGE("auth pause failed for pid %{public}d\n", pid);
     }
     close(fd);
     return ret;
 }
 
-int AuthDelete(int uid)
+int AuthDelete(int pid)
 {
     struct AuthCtrlData data;
     int fd;
@@ -98,12 +98,12 @@ int AuthDelete(int uid)
         return fd;
     }
 
-    data.uid = uid;
+    data.pid = pid;
     data.type = AUTH_DELETE;
 
     ret = ioctl(fd, BASIC_AUTH_CTRL_OPERATION, &data);
     if (ret < 0) {
-        RME_LOGE("auth delete failed for uid %{public}d\n", uid);
+        RME_LOGE("auth delete failed for pid %{public}d\n", pid);
     }
     close(fd);
     return ret;

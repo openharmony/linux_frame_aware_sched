@@ -21,7 +21,7 @@ namespace QosCommon {
 constexpr int AF_RTG_ALL = 0x1fff;
 
 struct AuthCtrlData {
-    int uid;
+    int pid;
     unsigned int type;
     unsigned int rtgFlag;
     unsigned int qosFlag;
@@ -47,9 +47,9 @@ enum AuthStatus {
 #define BASIC_AUTH_CTRL_OPERATION \
     _IOWR(0xCD, 1, struct AuthCtrlData)
 
-int AuthEnable(int uid, unsigned int flag, unsigned int status);
-int AuthPause(int uid);
-int AuthDelete(int uid);
+int AuthEnable(int pid, unsigned int flag, unsigned int status);
+int AuthPause(int pid);
+int AuthDelete(int pid);
 
 } // namespace QosCommon
 } // namespace OHOS

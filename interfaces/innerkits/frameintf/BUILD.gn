@@ -38,6 +38,13 @@ config("rtg_interface_config") {
 }
 
 ohos_shared_library("frame_trace_intf") {
+  branch_protector_ret = "pac_ret"
+  sanitize = {
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+  }
+
   sources = [ "frame_trace.cpp" ]
 
   cflags = [ "-fstack-protector-strong" ]
@@ -50,6 +57,13 @@ ohos_shared_library("frame_trace_intf") {
 }
 
 ohos_shared_library("frame_ui_intf") {
+  branch_protector_ret = "pac_ret"
+  sanitize = {
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+  }
+
   sources = [
     "../../../frameworks/core/frame_aware_collector/src/frame_msg_mgr.cpp",
     "../../../frameworks/core/frame_aware_collector/src/frame_window_mgr.cpp",
@@ -89,6 +103,13 @@ config("frame_msg_intf_config") {
 }
 
 ohos_shared_library("frame_msg_intf") {
+  branch_protector_ret = "pac_ret"
+  sanitize = {
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+  }
+
   sources = [
     "../../../frameworks/core/frame_aware_policy/src/app_info.cpp",
     "../../../frameworks/core/frame_aware_policy/src/intellisense_server.cpp",
@@ -120,6 +141,13 @@ ohos_shared_library("frame_msg_intf") {
 }
 
 ohos_shared_library("rtg_interface") {
+  branch_protector_ret = "pac_ret"
+  sanitize = {
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+  }
+
   sources = [ "rtg_interface.cpp" ]
 
   cflags = [

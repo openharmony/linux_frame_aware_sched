@@ -156,7 +156,7 @@ void FrameUiIntf::AnimateStart() const
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_ANIMATE_START);
 }
 
-void FrameUiIntf::RenderStart() const
+void FrameUiIntf::RenderStart(uint64_t timestamp) const
 {
     if (!inited) {
         return;
@@ -285,7 +285,7 @@ extern "C" void AnimateStart()
 
 extern "C" void RenderStart(uint64_t timestamp)
 {
-    FrameUiIntf::GetInstance().RenderStart();
+    FrameUiIntf::GetInstance().RenderStart(timestamp);
 }
 
 extern "C" void RenderEnd()

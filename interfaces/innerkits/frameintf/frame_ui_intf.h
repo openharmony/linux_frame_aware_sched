@@ -16,6 +16,8 @@
 #ifndef FRAME_UI_INTF_H
 #define FRAME_UI_INTF_H
 
+#include <cstdint>
+
 namespace OHOS {
 namespace RME {
 class FrameUiIntf {
@@ -40,7 +42,7 @@ public:
     void BeginProcessPostFlush() const;
     void ProcessCommandsStart() const;
     void AnimateStart() const;
-    void RenderStart() const;
+    void RenderStart(uint64_t timestamp) const;
     void RenderEnd() const;
     void SendCommandsStart() const;
 

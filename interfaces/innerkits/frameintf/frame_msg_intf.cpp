@@ -14,6 +14,7 @@
  */
 
 #include "frame_msg_intf.h"
+#include "ffrt_inner.h"
 #include "intellisense_server.h"
 #include "rme_log_domain.h"
 
@@ -51,7 +52,8 @@ bool FrameMsgIntf::Init()
 bool FrameMsgIntf::GetThreadQueue()
 {
     if (taskQueue_  == nullptr) {
-        taskQueue_  = new(ffrt::queue)("frame_aware_sched_msg");
+        taskQueue_  = new(ffrt::queue)("frame_aware_sched_msg_queue",
+            ffrt::queue_attr().qos(ffrt::qos_user_interactive));
         if (taskQueue_  == nullptr) {
             RME_LOGE("failed to create taskQueue!");
             return false;

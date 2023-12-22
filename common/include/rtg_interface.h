@@ -89,18 +89,14 @@ extern "C" {
     int AddThreadToRtg(int tid, int grpId, int prioType = 0);
     int AddThreadsToRtg(vector<int> tids, int grpId, int prioType = 0);
     int RemoveRtgThread(int tid);
-    int ClearRtgGrp(int grpId);
     int DestroyRtgGrp(int grpId);
     int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType);
-    int SetMaxVipRtgs(int rtframe);
-    int BeginFrameFreq(int grpId, int stateParam);
-    int EndFrameFreq(int grpId);
+    int BeginFrameFreq(int stateParam);
+    int EndFrameFreq(int stateParam);
     int EndScene(int grpId);
-    int SetMinUtil(int grpId, int stateParam);
+    int SetMinUtil(int stateParam);
     int SetMaxUtil(int grpId, int stateParam);
-    int SetMargin(int grpId, int stateParam);
-    int ListRtgThread(int grpId, vector<int> *rs); // list all tasks of grpId;
-    int ListRtgGroup(vector<int> *rs);
+    int SetMargin(int stateParam);
     int SearchRtgForTid(int tid);
     int GetRtgEnable();
 }

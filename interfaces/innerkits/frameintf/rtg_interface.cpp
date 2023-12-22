@@ -29,7 +29,6 @@ namespace OHOS {
 namespace RME {
 namespace {
     constexpr size_t MAX_LENGTH = 100;
-    constexpr size_t MAX_STR_LEN = 100;
 }
 DEFINE_RMELOG_INTELLISENSE("rtg_interface");
 
@@ -56,10 +55,6 @@ static int g_fd = -1;
     _IOWR(RTG_SCHED_IPC_MAGIC, SET_MAX_UTIL, struct proc_state_data)
 #define CMD_ID_SET_MARGIN \
     _IOWR(RTG_SCHED_IPC_MAGIC, SET_MARGIN, struct proc_state_data)
-#define CMD_ID_LIST_RTG \
-    _IOWR(RTG_SCHED_IPC_MAGIC, LIST_RTG, struct rtg_info)
-#define CMD_ID_LIST_RTG_THREAD \
-    _IOWR(RTG_SCHED_IPC_MAGIC, LIST_RTG_THREAD, struct rtg_grp_data)
 #define CMD_ID_SEARCH_RTG \
     _IOWR(RTG_SCHED_IPC_MAGIC, SEARCH_RTG, struct proc_state_data)
 #define CMD_ID_GET_ENABLE \
@@ -84,6 +79,7 @@ __attribute__((destructor))void BasicCloseRtgNode()
     }
     RME_LOGI("rtg Close g_fd ret is %{public}d", g_fd);
     close(g_fd);
+    g_fd = -1;
 }
 
 int EnableRtg(bool flag)
@@ -170,25 +166,6 @@ int RemoveRtgThread(int tid)
     return ret;
 };
 
-int ClearRtgGrp(int grpId)
-{
-    if (g_fd < 0) {
-        return g_fd;
-    }
-    struct rtg_grp_data grp_data;
-    int ret;
-    (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
-    grp_data.rtg_cmd = CMD_CLEAR_RTG_GRP;
-    grp_data.grp_id = grpId;
-    ret = ioctl(g_fd, CMD_ID_SET_RTG, &grp_data);
-    if (ret < 0) {
-        RME_LOGE("clear rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
-        RME_LOGI("clear rtg grp success, get rtg id %{public}d.", ret);
-    }
-    return ret;
-};
-
 int DestroyRtgGrp(int grpId)
 {
     if (g_fd < 0) {
@@ -207,28 +184,6 @@ int DestroyRtgGrp(int grpId)
     }
     return ret;
 };
-
-
-int SetMaxVipRtgs(int rtframe)
-{
-    if (g_fd < 0) {
-        return g_fd;
-    }
-    int ret = 0;
-    char str_data[MAX_STR_LEN] = {};
-    (void)sprintf_s(str_data, sizeof(str_data), "rtframe:%d", rtframe);
-    struct rtg_str_data strData;
-    strData.len = strlen(str_data);
-    strData.data = str_data;
-
-    ret = ioctl(g_fd, CMD_ID_SET_CONFIG, &strData);
-    if (ret < 0) {
-        RME_LOGE("set single config failed, ret = %{public}d", ret);
-    } else {
-        RME_LOGI("set single config success, get rtg id %{public}d.", ret);
-    }
-    return ret;
-}
 
 int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
 {
@@ -251,29 +206,27 @@ int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
     return ret;
 }
 
-int BeginFrameFreq(int grpId, int stateParam)
+int BeginFrameFreq(int stateParam)
 {
     if (g_fd < 0) {
         return g_fd;
     }
     int ret = 0;
     struct proc_state_data state_data;
-    state_data.grp_id = grpId;
     state_data.state_param = stateParam;
 
     ret = ioctl(g_fd, CMD_ID_BEGIN_FRAME_FREQ, &state_data);
     return ret;
 }
 
-int EndFrameFreq(int grpId)
+int EndFrameFreq(int stateParam)
 {
     if (g_fd < 0) {
         return g_fd;
     }
     int ret = 0;
     struct proc_state_data state_data;
-    state_data.grp_id = grpId;
-    state_data.state_param = 0;
+    state_data.state_param = stateParam;
 
     ret = ioctl(g_fd, CMD_ID_END_FRAME_FREQ, &state_data);
     return ret;
@@ -296,11 +249,10 @@ int EndScene(int grpId)
     return ret;
 }
 
-int SetMinUtil(int grpId, int stateParam)
+int SetMinUtil(int stateParam)
 {
     int ret = 0;
     struct proc_state_data state_data;
-    state_data.grp_id = grpId;
     state_data.state_param = stateParam;
 
     if (g_fd < 0) {
@@ -320,66 +272,16 @@ int SetMaxUtil(int grpId, int stateParam)
     return 0;
 }
 
-int SetMargin(int grpId, int stateParam)
+int SetMargin(int stateParam)
 {
     int ret = 0;
     struct proc_state_data state_data;
-    state_data.grp_id = grpId;
     state_data.state_param = stateParam;
 
     if (g_fd < 0) {
         return g_fd;
     }
     ret = ioctl(g_fd, CMD_ID_SET_MARGIN, &state_data);
-    return ret;
-}
-
-int ListRtgGroup(vector<int> *rs)
-{
-    int ret = 0;
-    struct rtg_info rtg_info;
-    if (g_fd < 0) {
-        return g_fd;
-    }
-    if (!rs) {
-        return -1;
-    }
-    (void)memset_s(&rtg_info, sizeof(struct rtg_info), 0, sizeof(struct rtg_info));
-    ret = ioctl(g_fd, CMD_ID_LIST_RTG, &rtg_info);
-    if (ret < 0) {
-        RME_LOGE("list rtg group failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
-        RME_LOGI("list rtg group success with num %{public}d", rtg_info.rtg_num);
-        rs->clear();
-        for (int i = 0; i < rtg_info.rtg_num; i++) {
-            rs->push_back(rtg_info.rtgs[i]);
-        }
-    }
-    return ret;
-}
-
-int ListRtgThread(int grpId, vector<int> *rs)
-{
-    if (g_fd < 0) {
-        return g_fd;
-    }
-    int ret = 0;
-    struct rtg_grp_data grp_data;
-    if (!rs) {
-        return -1;
-    }
-    (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
-    grp_data.grp_id = grpId;
-    ret = ioctl(g_fd, CMD_ID_LIST_RTG_THREAD, &grp_data);
-    if (ret < 0) {
-        RME_LOGE("list rtg thread failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
-    } else {
-        RME_LOGI("list rtg thread success with tid num %{public}d", grp_data.tid_num);
-        rs->clear();
-        for (int i = 0; i < grp_data.tid_num; i++) {
-            rs->push_back(grp_data.tids[i]);
-        }
-    }
     return ret;
 }
 

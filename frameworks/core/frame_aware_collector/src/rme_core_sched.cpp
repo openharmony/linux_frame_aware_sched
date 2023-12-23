@@ -64,7 +64,7 @@ void RmeCoreSched::BeginFlushAnimation()
             return;
         }
     }
-    int ret = BeginFrameFreq(m_rtg, 0);
+    int ret = BeginFrameFreq(0);
     m_uiTid = gettid();
     if (!m_uiHasSend) {
         StartTrace(HITRACE_TAG_ACE,
@@ -83,7 +83,7 @@ void RmeCoreSched::BeginFlushBuild()
 {
     StartTrace(HITRACE_TAG_ACE,
         ("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_BEGIN)).c_str());
-    SetMargin(m_rtg, MARGIN_BEGIN);
+    SetMargin(MARGIN_BEGIN);
     FinishTrace(HITRACE_TAG_ACE);
 }
 
@@ -97,7 +97,7 @@ void RmeCoreSched::BeginFlushRender()
 {
     StartTrace(HITRACE_TAG_ACE,
         ("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_MIDDLE)).c_str());
-    SetMargin(m_rtg, MARGIN_MIDDLE);
+    SetMargin(MARGIN_MIDDLE);
     FinishTrace(HITRACE_TAG_ACE);
 }
 
@@ -122,7 +122,7 @@ void RmeCoreSched::RenderStart()
 {
     StartTrace(HITRACE_TAG_ACE,
         ("FrameS-SetMargin-rtg:" + to_string(m_rtg) + " margin:" + to_string(MARGIN_END)).c_str());
-    SetMargin(m_rtg, MARGIN_END);
+    SetMargin(MARGIN_END);
     FinishTrace(HITRACE_TAG_ACE);
 }
 
@@ -132,7 +132,7 @@ void RmeCoreSched::SendCommandsStart()
         return;
     }
     StartTrace(HITRACE_TAG_ACE, "SendCommandsStart-EndFreq");
-    EndFrameFreq(m_rtg);
+    EndFrameFreq(0);
     FinishTrace(HITRACE_TAG_ACE);
 }
 

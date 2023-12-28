@@ -25,7 +25,7 @@ enum class ThreadType {
 
 enum class ThreadState {
     CREATE = 0,
-    DIED,
+    DIED = 5,
 };
 
 enum class WindowState {

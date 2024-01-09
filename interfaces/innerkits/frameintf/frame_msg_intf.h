@@ -41,7 +41,7 @@ protected:
     ~FrameMsgIntf();
 private:
     ffrt::mutex frameMsgIntfMutex_;
-    ffrt::queue* taskQueue_;
+    ffrt::queue* taskQueue_ = nullptr;
 };
 } // namespace RME
 } // namespace OHOS

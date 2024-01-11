@@ -379,7 +379,11 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceSetErrorAttr, TestSize.Level1)
     int grpId;
     grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(VIP, 0);
     EXPECT_GT(grpId, 0);
-    ret = SetFrameRateAndPrioType(grpId, 90, -1);
+    ret = SetFrameRateAndPrioType(grpId, 0, VIP);
+    EXPECT_NE(ret, 0);
+    ret = SetFrameRateAndPrioType(grpId, -1, VIP);
+    EXPECT_NE(ret, 0);
+    ret = SetFrameRateAndPrioType(grpId, 121, VIP);
     EXPECT_NE(ret, 0);
     ret = DestroyRtgGrp(grpId);
     EXPECT_EQ(ret, 0);

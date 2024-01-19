@@ -18,6 +18,9 @@
 #include <string>
 #include "rme_log_domain.h"
 
+#undef LOG_TAG
+#define LOG_TAG "ueaClient-FrameWindowMgr"
+
 namespace OHOS {
 namespace RME {
 namespace {
@@ -25,7 +28,6 @@ namespace {
 }
 
 IMPLEMENT_SINGLE_INSTANCE(FrameWindowMgr);
-DEFINE_RMELOG_INTELLISENSE("ueaClient-FrameWindowMgr");
 
 int FrameWindowMgr::GetEnable()
 {

@@ -15,14 +15,15 @@
 
 #include "para_config.h"
 
+#undef LOG_TAG
+#define LOG_TAG "ueaServer-ParaConfig"
+
 namespace OHOS {
 namespace RME {
 namespace {
     constexpr int FPS_MAX_VALUE = 120;
     constexpr int RENDER_TYPE_MAX_VALUE = 2;
 }
-
-DEFINE_RMELOG_INTELLISENSE("ueaServer-ParaConfig");
 
 std::map<std::string, std::string> ParaConfig::m_generalConfig;
 std::map<std::string, std::map<std::string, int>> ParaConfig::m_subEventConfig;

@@ -20,13 +20,12 @@
 #include <fcntl.h>
 #include "rme_log_domain.h"
 
-#undef LOG_TAG
-#define LOG_TAG "qos_manager"
-
 constexpr unsigned int AF_QOS_DELEGATED = 0x0001;
 
 namespace OHOS {
 namespace QosCommon {
+
+DEFINE_RMELOG_INTELLISENSE("qos_manager");
 
 static int TrivalOpenAuthCtrlNode(void)
 {

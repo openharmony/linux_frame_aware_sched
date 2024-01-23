@@ -18,11 +18,9 @@
 #include "intellisense_server.h"
 #include "rme_log_domain.h"
 
-#undef LOG_TAG
-#define LOG_TAG "ueaServer-FrameMsgIntf"
-
 namespace OHOS {
 namespace RME {
+DEFINE_RMELOG_INTELLISENSE("ueaServer-FrameMsgIntf");
 
 FrameMsgIntf& FrameMsgIntf::GetInstance()
 {

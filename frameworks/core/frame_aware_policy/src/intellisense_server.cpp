@@ -30,9 +30,6 @@
 #include "rtg_interface.h"
 #include "rme_log_domain.h"
 
-#undef LOG_TAG
-#define LOG_TAG "ueaServer-IntelliSenseServer"
-
 namespace OHOS {
 namespace RME {
 namespace {
@@ -45,6 +42,7 @@ namespace {
 using namespace std;
 using namespace QosCommon;
 
+DEFINE_RMELOG_INTELLISENSE("ueaServer-IntelliSenseServer");
 IMPLEMENT_SINGLE_INSTANCE(IntelliSenseServer);
 
 #define CMD_ID_SET_RTG \

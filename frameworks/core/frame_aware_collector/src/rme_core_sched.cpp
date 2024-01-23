@@ -21,9 +21,6 @@
 #include "rtg_interface.h"
 #include "rme_log_domain.h"
 
-#undef LOG_TAG
-#define LOG_TAG "ueaClient-RmeCoreSched"
-
 namespace OHOS {
 namespace RME {
 namespace {
@@ -31,6 +28,7 @@ namespace {
     constexpr int MARGIN_MIDDLE = -5;
     constexpr int MARGIN_END = -13;
 }
+DEFINE_RMELOG_INTELLISENSE("ueaClient-RmeCoreSched");
 RmeCoreSched::RmeCoreSched() {}
 
 RmeCoreSched::~RmeCoreSched()

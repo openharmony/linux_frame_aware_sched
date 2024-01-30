@@ -20,9 +20,11 @@
 #include "frame_msg_mgr.h"
 #include "rme_log_domain.h"
 
+#undef LOG_TAG
+#define LOG_TAG "ueaClient-FrameUiIntf"
+
 namespace OHOS {
 namespace RME {
-DEFINE_RMELOG_INTELLISENSE("ueaClient-FrameUiIntf");
 
 FrameUiIntf& FrameUiIntf::GetInstance()
 {

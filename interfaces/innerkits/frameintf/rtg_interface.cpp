@@ -25,12 +25,14 @@
 #include "bits/ioctl.h"
 #include "rme_log_domain.h"
 
+#undef LOG_TAG
+#define LOG_TAG "rtg_interface"
+
 namespace OHOS {
 namespace RME {
 namespace {
     constexpr size_t MAX_LENGTH = 100;
 }
-DEFINE_RMELOG_INTELLISENSE("rtg_interface");
 
 const char RTG_SCHED_IPC_MAGIC = 0xAB;
 static int g_fd = -1;

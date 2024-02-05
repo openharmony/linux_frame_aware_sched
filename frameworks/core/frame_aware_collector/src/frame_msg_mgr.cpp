@@ -19,9 +19,11 @@
 #include <utility>
 #include "rme_log_domain.h"
 
+#undef LOG_TAG
+#define LOG_TAG "ueaClient-FrameMsgMgr"
+
 namespace OHOS {
 namespace RME {
-DEFINE_RMELOG_INTELLISENSE("ueaClient-FrameMsgMgr");
 IMPLEMENT_SINGLE_INSTANCE(FrameMsgMgr);
 
 FrameMsgMgr::FrameMsgMgr()

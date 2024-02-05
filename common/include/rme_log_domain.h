@@ -16,12 +16,14 @@
 #ifndef RME_LOG_DOMAIN_H
 #define RME_LOG_DOMAIN_H
 
+#undef LOG_DOMAIN
+#define LOG_DOMAIN 0xD001706
+
 #include <cstdint>
 #include "hilog/log.h"
 
 namespace OHOS {
 namespace RmeLogDomain {
-constexpr uint32_t RME_INTELLISENSE = 0xD001706;
 
 /*
 #ifdef RME_LOGF
@@ -45,14 +47,11 @@ constexpr uint32_t RME_INTELLISENSE = 0xD001706;
 #endif
 */
 
-#define DEFINE_RMELOG_INTELLISENSE(name) \
-    static constexpr OHOS::HiviewDFX::HiLogLabel RME_LOG_LABEL = {LOG_CORE, OHOS::RmeLogDomain::RME_INTELLISENSE, name}
-
-#define RME_LOGF(...) (void)OHOS::HiviewDFX::HiLog::Fatal(RME_LOG_LABEL, ##__VA_ARGS__)
-#define RME_LOGE(...) (void)OHOS::HiviewDFX::HiLog::Error(RME_LOG_LABEL, ##__VA_ARGS__)
-#define RME_LOGW(...) (void)OHOS::HiviewDFX::HiLog::Warn(RME_LOG_LABEL, ##__VA_ARGS__)
-#define RME_LOGI(...) (void)OHOS::HiviewDFX::HiLog::Info(RME_LOG_LABEL, ##__VA_ARGS__)
-#define RME_LOGD(...) (void)OHOS::HiviewDFX::HiLog::Debug(RME_LOG_LABEL, ##__VA_ARGS__)
+#define RME_LOGF(...) HILOG_FATAL(LOG_CORE, ##__VA_ARGS__)
+#define RME_LOGE(...) HILOG_ERROR(LOG_CORE, ##__VA_ARGS__)
+#define RME_LOGW(...) HILOG_WARN(LOG_CORE, ##__VA_ARGS__)
+#define RME_LOGI(...) HILOG_INFO(LOG_CORE, ##__VA_ARGS__)
+#define RME_LOGD(...) HILOG_DEBUG(LOG_CORE, ##__VA_ARGS__)
 } // namespace RmeLogDomain
 } // namespace OHOS
 #endif // RME_LOG_DOMAIN_H

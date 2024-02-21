@@ -29,7 +29,7 @@ using namespace testing::ext;
 
 #define RTG_INTERFACE_SO_PATH "/system/lib/librtg_interface.z.so"
 
-enum rtg_type : int {
+enum RtgType : int {
     VIP = 0,
     TOP_TASK_KEY,
     NORMAL_TASK,

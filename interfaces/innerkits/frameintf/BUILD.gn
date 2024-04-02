@@ -133,7 +133,7 @@ ohos_shared_library("frame_msg_intf") {
     "ffrt:libffrt",
     "hilog:libhilog",
     "hitrace:hitrace_meter",
-    "libxml2:libxml2"
+    "libxml2:libxml2",
   ]
 
   subsystem_name = "resourceschedule"

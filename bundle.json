@@ -28,7 +28,7 @@
                 "libxml2",
                 "samgr",
                 "safwk"
-            ],
+            ]
         },
         "build": {
             "sub_component": [

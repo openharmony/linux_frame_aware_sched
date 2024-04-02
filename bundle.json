@@ -14,9 +14,7 @@
         "subsystem": "resourceschedule",
         "syscap": [],
         "features": [],
-        "adapted_system_type": [
-            "standard"
-        ],
+        "adapted_system_type": [ "standard" ],
         "rom": "2048KB",
         "ram": "10240KB",
         "deps": {
@@ -30,7 +28,7 @@
                 "libxml2",
                 "samgr",
                 "safwk"
-            ]
+            ],
         },
         "build": {
             "sub_component": [

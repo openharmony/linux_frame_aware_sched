@@ -127,14 +127,13 @@ ohos_shared_library("frame_msg_intf") {
 
   public_configs = [ ":frame_msg_intf_config" ]
 
-  deps = [ "//third_party/libxml2:libxml2" ]
-
   external_deps = [
     "c_utils:utils",
     "eventhandler:libeventhandler",
     "ffrt:libffrt",
     "hilog:libhilog",
     "hitrace:hitrace_meter",
+    "libxml2:libxml2"
   ]
 
   subsystem_name = "resourceschedule"
@@ -158,14 +157,12 @@ ohos_shared_library("rtg_interface") {
 
   public_configs = [ ":rtg_interface_config" ]
 
-  include_dirs = [
-    "../../../common/include",
-    "//third_party/bounds_checking_function/include",
+  include_dirs = [ "../../../common/include" ]
+
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "hilog:libhilog",
   ]
-
-  deps = [ "//third_party/bounds_checking_function:libsec_shared" ]
-
-  external_deps = [ "hilog:libhilog" ]
 
   install_enable = true
   subsystem_name = "resourceschedule"

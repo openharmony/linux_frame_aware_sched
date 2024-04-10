@@ -19,17 +19,15 @@
         "ram": "10240KB",
         "deps": {
             "components": [
+                "bounds_checking_function",
                 "c_utils",
                 "eventhandler",
                 "ffrt",
                 "hitrace",
                 "hilog",
+                "libxml2",
                 "samgr",
                 "safwk"
-            ],
-            "third_party": [
-                "bounds_checking_function",
-                "libxml2"
             ]
         },
         "build": {

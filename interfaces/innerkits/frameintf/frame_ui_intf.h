@@ -51,6 +51,12 @@ public:
     void FlushBegin() const;
     void FlushEnd() const;
     void SetFrameParam(int requestId, int load, int schedFrameNum, int value) const;
+
+    void HandleSwapBuffer() const;
+    void RequestNextVSync() const;
+    void EnableSelfRender() const;
+    void DisableSelfRender() const;
+    void ReceiveVSync() const;
 private:
     bool inited = false;
 };

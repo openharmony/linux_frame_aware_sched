@@ -210,6 +210,31 @@ void FrameUiIntf::SetFrameParam(int requestId, int load, int schedFrameNum, int 
     return;
 }
 
+void FrameUiIntf::RequestNextVSync() const
+{
+    return;
+}
+
+void FrameUiIntf::HandleSwapBuffer() const
+{
+    return;
+}
+
+void FrameUiIntf::EnableSelfRender() const
+{
+    return;
+}
+
+void FrameUiIntf::DisableSelfRender() const
+{
+    return;
+}
+
+void FrameUiIntf::ReceiveVSync() const
+{
+    return;
+}
+
 extern "C" void Init()
 {
     FrameUiIntf::GetInstance().Init();
@@ -323,6 +348,31 @@ extern "C" void FlushEnd()
 extern "C" void SetFrameParam(int requestId, int load, int schedFrameNum, int value)
 {
     FrameUiIntf::GetInstance().SetFrameParam(requestId, load, schedFrameNum, value);
+}
+
+extern "C" void RequestNextVSync()
+{
+    FrameUiIntf::GetInstance().RequestNextVSync();
+}
+
+extern "C" void HandleSwapBuffer()
+{
+    FrameUiIntf::GetInstance().HandleSwapBuffer();
+}
+
+extern "C" void EnableSelfRender()
+{
+    FrameUiIntf::GetInstance().EnableSelfRender();
+}
+
+extern "C" void DisableSelfRender()
+{
+    FrameUiIntf::GetInstance().DisableSelfRender();
+}
+
+extern "C" void ReceiveVSync()
+{
+    FrameUiIntf::GetInstance().ReceiveVSync();
 }
 } // namespace RME
 } // namespace OHOS

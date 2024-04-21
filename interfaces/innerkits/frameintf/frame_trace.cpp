@@ -17,57 +17,57 @@
 
 namespace FRAME_TRACE {
 
-struct TraceHandle* CreateTraceTag(const std::string traceTag)
+struct TraceHandle* CreateTraceTag([[maybe_unused]] const std::string traceTag)
 {
     return nullptr;
 }
 
-void SetTraceLimit(struct TraceHandle* traceHandle, unsigned int traceLimit)
+void SetTraceLimit([[maybe_unused]] struct TraceHandle* traceHandle, [[maybe_unused]] unsigned int traceLimit)
 {
     return;
 }
 
-void EnableTraceForThread(struct TraceHandle* traceHandle)
+void EnableTraceForThread([[maybe_unused]] struct TraceHandle* traceHandle)
 {
     return;
 }
 
-void StartFrameTrace(struct TraceHandle* traceHandle)
+void StartFrameTrace([[maybe_unused]] struct TraceHandle* traceHandle)
 {
     return;
 }
 
-void StopFrameTrace(struct TraceHandle* traceHandle)
+void StopFrameTrace([[maybe_unused]] struct TraceHandle* traceHandle)
 {
     return;
 }
 
-void TraceAndExecute(std::function<void()> &&func, TraceType traceType)
+void TraceAndExecute([[maybe_unused]] std::function<void()> &&func, [[maybe_unused]] TraceType traceType)
 {
     return;
 }
 
-bool JudgeUnequalFrameTrace(struct TidHandle* tidHandle)
+bool JudgeUnequalFrameTrace([[maybe_unused]] struct TidHandle* tidHandle)
 {
     return false;
 }
 
-void UpdateFrameTraceTid(struct TidHandle* tidHandle)
+void UpdateFrameTraceTid([[maybe_unused]] struct TidHandle* tidHandle)
 {
     return;
 }
 
-bool FrameAwareTraceEnable(const std::string &traceTag)
+bool FrameAwareTraceEnable([[maybe_unused]] const std::string &traceTag)
 {
     return false;
 }
 
-void QuickStartFrameTrace(const std::string &traceTag)
+void QuickStartFrameTrace([[maybe_unused]] const std::string &traceTag)
 {
     return;
 }
 
-void QuickEndFrameTrace(const std::string &traceTag)
+void QuickEndFrameTrace([[maybe_unused]] const std::string &traceTag)
 {
     return;
 }

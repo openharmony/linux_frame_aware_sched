@@ -203,7 +203,7 @@ int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
     if (ret < 0) {
         RME_LOGE("set rtg attr failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     } else {
-        RME_LOGI("set rtg attr success, get rtg id %{public}d.", ret);
+        RME_LOGD("set rtg attr success, get rtg id %{public}d.", ret);
     }
     return ret;
 }

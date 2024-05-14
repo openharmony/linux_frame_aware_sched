@@ -239,7 +239,7 @@ void IntelliSenseServer::ReportContinuousTask(const int pid, const int uid, cons
             RME_LOGI("[ReportContinuousTask]:%{public}d continuous task end", pid);
             break;
         default:
-            RME_LOGI("[ReportContinuousTask]:unknown continuous task status!");
+            RME_LOGD("[ReportContinuousTask]:unknown continuous task status!");
             break;
     }
 }

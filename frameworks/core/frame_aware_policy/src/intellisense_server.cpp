@@ -330,7 +330,7 @@ void IntelliSenseServer::ReportProcessInfo(const int pid,
             NewAppRecord(pid, uid);
             break;
         default:
-            RME_LOGI("unknown state : %{public}d", static_cast<int>(state));
+            RME_LOGD("unknown state : %{public}d", static_cast<int>(state));
             break;
     }
     return;

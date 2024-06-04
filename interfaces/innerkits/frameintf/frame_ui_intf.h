@@ -57,6 +57,8 @@ public:
     void EnableSelfRender() const;
     void DisableSelfRender() const;
     void ReceiveVSync() const;
+    void MonitorGpuStart() const;
+    void MonitorGpuEnd() const;
 private:
     bool inited = false;
 };

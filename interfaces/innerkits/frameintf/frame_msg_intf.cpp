@@ -146,6 +146,11 @@ void FrameMsgIntf::ReportSlideEvent(const int pid, const int uid, const int64_t 
     return;
 }
 
+void FrameMsgIntf::ReportInteractionScene(const int64_t status)
+{
+    return;
+}
+
 void FrameMsgIntf::Stop()
 {
     return;

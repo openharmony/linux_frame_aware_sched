@@ -235,6 +235,16 @@ void FrameUiIntf::ReceiveVSync() const
     return;
 }
 
+void FrameUiIntf::MonitorGpuStart() const
+{
+    return;
+}
+
+void FrameUiIntf::MonitorGpuEnd() const
+{
+    return;
+}
+
 extern "C" void Init()
 {
     FrameUiIntf::GetInstance().Init();
@@ -373,6 +383,16 @@ extern "C" void DisableSelfRender()
 extern "C" void ReceiveVSync()
 {
     FrameUiIntf::GetInstance().ReceiveVSync();
+}
+
+extern "C" void MonitorGpuStart()
+{
+    FrameUiIntf::GetInstance().MonitorGpuStart();
+}
+
+extern "C" void MonitorGpuEnd()
+{
+    FrameUiIntf::GetInstance().MonitorGpuEnd();
 }
 } // namespace RME
 } // namespace OHOS

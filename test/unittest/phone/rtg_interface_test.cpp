@@ -75,7 +75,7 @@ HWTEST_F(RtgInterfaceTest, RtgInterfaceCreateAndDestroy, TestSize.Level1)
 {
     int ret;
     int grpId;
-    grpId = grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(NORMAL_TASK, 0);
+    grpId = IntelliSenseServer::GetInstance().CreateNewRtgGrp(NORMAL_TASK, 0);
     EXPECT_GT(grpId, 0);
     ret = DestroyRtgGrp(grpId);
     EXPECT_EQ(ret, 0);

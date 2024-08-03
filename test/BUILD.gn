@@ -33,7 +33,7 @@ ohos_unittest("frame_ui_intf_test") {
   deps = [ "../interfaces/innerkits/frameintf:frame_ui_intf" ]
 
   if (is_standard_system) {
-    external_deps += [ "googletest:gtest_main" ]
+    external_deps = [ "googletest:gtest_main" ]
   }
   part_name = "frame_aware_sched"
   subsystem_name = "resourceschedule"
@@ -71,7 +71,7 @@ ohos_unittest("rtg_interface_test") {
   deps = frame_aware_sched_deps
 
   if (is_standard_system) {
-    external_deps += [ "googletest:gtest_main" ]
+    external_deps = [ "googletest:gtest_main" ]
   }
 
   part_name = "frame_aware_sched"
@@ -91,7 +91,7 @@ ohos_unittest("intellisense_server_test") {
   deps = frame_aware_sched_deps
 
   if (is_standard_system) {
-    external_deps += [ "googletest:gtest_main" ]
+    external_deps = [ "googletest:gtest_main" ]
   }
 
   part_name = "frame_aware_sched"

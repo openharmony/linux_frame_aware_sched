@@ -48,7 +48,11 @@ ohos_unittest("frame_msg_intf_test") {
 
   deps = frame_aware_sched_deps
 
-  external_deps = [ "ffrt:libffrt" ]
+  external_deps = [
+    "c_utils:utils",
+    "eventhandler:libeventhandler",
+    "ffrt:libffrt",
+  ]
 
   if (is_standard_system) {
     external_deps += [ "googletest:gtest_main" ]

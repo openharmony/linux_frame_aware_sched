@@ -61,9 +61,6 @@ void RtgInterfaceTest::SetUp()
 
 void RtgInterfaceTest::TearDown()
 {
-    // disable rtg after use the interface
-    bool ret = EnableRtg(false);
-    EXPECT_EQ(ret, false);
 }
 
 /**

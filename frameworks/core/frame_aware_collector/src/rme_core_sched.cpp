@@ -35,7 +35,6 @@ RmeCoreSched::RmeCoreSched() {}
 
 RmeCoreSched::~RmeCoreSched()
 {
-    EnableRtg(false);
     return;
 }
 

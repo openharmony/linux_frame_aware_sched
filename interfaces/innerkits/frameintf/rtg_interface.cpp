@@ -31,7 +31,7 @@
 namespace OHOS {
 namespace RME {
 namespace {
-    constexpr size_t MAX_LENGTH = 100;
+constexpr size_t MAX_LENGTH = 100;
 }
 
 const char RTG_SCHED_IPC_MAGIC = 0xAB;
@@ -62,7 +62,7 @@ static int g_fd = -1;
 #define CMD_ID_GET_ENABLE \
     _IOWR(RTG_SCHED_IPC_MAGIC, GET_ENABLE, struct rtg_enable_data)
 
-__attribute__((constructor))void BasicOpenRtgNode()
+__attribute__((constructor)) void BasicOpenRtgNode()
 {
     char fileName[] = "/proc/self/sched_rtg_ctrl";
     g_fd = open(fileName, O_RDWR);
@@ -74,7 +74,7 @@ __attribute__((constructor))void BasicOpenRtgNode()
     return;
 }
 
-__attribute__((destructor))void BasicCloseRtgNode()
+__attribute__((destructor)) void BasicCloseRtgNode()
 {
     if (g_fd < 0) {
         return;
@@ -86,6 +86,7 @@ __attribute__((destructor))void BasicCloseRtgNode()
 
 int EnableRtg(bool flag)
 {
+    int ret = 0;
     struct rtg_enable_data enableData;
     char configStr[] = "load_freq_switch:1;sched_cycle:1";
     enableData.enable = flag;
@@ -94,17 +95,22 @@ int EnableRtg(bool flag)
     if (g_fd < 0) {
         return g_fd;
     }
-    if (ioctl(g_fd, CMD_ID_SET_ENABLE, &enableData)) {
-        RME_LOGE("set rtg config enable failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
+    ret = ioctl(g_fd, CMD_ID_SET_ENABLE, &enableData);
+    if (ret != 0) {
+        RME_LOGE("set rtg config to [%{public}d] failed, ret = %{public}d, errno = %{public}d (%{public}s)",
+            flag,
+            ret,
+            errno,
+            strerror(errno));
     } else {
-        RME_LOGI("set rtg config enable success.");
+        RME_LOGI("set rtg config to [%{public}d] success.", flag);
     }
     return 0;
 };
 
 int AddThreadToRtg(int tid, int grpId, int prioType)
 {
-    if (g_fd < 0) {   
+    if (g_fd < 0) {
         return g_fd;
     }
     struct rtg_grp_data grp_data;
@@ -116,6 +122,15 @@ int AddThreadToRtg(int tid, int grpId, int prioType)
     grp_data.rtg_cmd = CMD_ADD_RTG_THREAD;
     grp_data.prio_type = prioType;
     ret = ioctl(g_fd, CMD_ID_SET_RTG, &grp_data);
+    if (ret != 0) {
+        RME_LOGE("add thread to rtg failed, grpId = %{public}d, ret = %{public}d, errno = %{public}d (%{public}s)",
+            grpId,
+            ret,
+            errno,
+            strerror(errno));
+    } else {
+        RME_LOGI("add thread to rtg success");
+    }
     return ret;
 }
 
@@ -142,8 +157,14 @@ int AddThreadsToRtg(vector<int> tids, int grpId, int prioType)
         grp_data.tids[i] = tids[i];
     }
     ret = ioctl(g_fd, CMD_ID_SET_RTG, &grp_data);
-    if (!ret) {
+    if (ret == 0) {
         RME_LOGI("add rtg grp success");
+    } else {
+        RME_LOGE("add thread to rtg failed, grpId = %{public}d, ret = %{public}d, errno = %{public}d (%{public}s)",
+            grpId,
+            ret,
+            errno,
+            strerror(errno));
     }
     return ret;
 };
@@ -160,10 +181,10 @@ int RemoveRtgThread(int tid)
     grp_data.tids[0] = tid;
     grp_data.rtg_cmd = CMD_REMOVE_RTG_THREAD;
     ret = ioctl(g_fd, CMD_ID_SET_RTG, &grp_data);
-    if (ret < 0) {
-        RME_LOGE("remove grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
+    if (ret != 0) {
+        RME_LOGE("remove grp failed, ret = %{public}d, errno = %{public}d (%{public}s)", ret, errno, strerror(errno));
     } else {
-        RME_LOGI("remove grp success, get rtg id %{public}d.", ret);
+        RME_LOGI("remove grp success.");
     }
     return ret;
 };
@@ -179,8 +200,12 @@ int DestroyRtgGrp(int grpId)
     grp_data.rtg_cmd = CMD_DESTROY_RTG_GRP;
     grp_data.grp_id = grpId;
     ret = ioctl(g_fd, CMD_ID_SET_RTG, &grp_data);
-    if (ret < 0) {
-        RME_LOGE("destroy rtg grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
+    if (ret != 0) {
+        RME_LOGE("destroy rtg grp failed, grpId = %{public}d, ret = %{public}d, errno = %{public}d (%{public}s)",
+            grpId,
+            ret,
+            errno,
+            strerror(errno));
     } else {
         RME_LOGI("destroy rtg grp success, get rtg id:%{public}d, ret:%{public}d.", grpId, ret);
     }
@@ -200,10 +225,17 @@ int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
     strData.data = str_data;
 
     ret = ioctl(g_fd, CMD_ID_SET_RTG_ATTR, &strData);
-    if (ret < 0) {
-        RME_LOGE("set rtg attr failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
+    if (ret != 0) {
+        RME_LOGE("set rtg attr failed (rtgId:%{public}d;rate:%{public}d;type:%{public}d), ret = %{public}d, errno = "
+                 "%{public}d (%{public}s)",
+            rtgId,
+            rate,
+            rtgType,
+            ret,
+            errno,
+            strerror(errno));
     } else {
-        RME_LOGD("set rtg attr success, get rtg id %{public}d.", ret);
+        RME_LOGD("set rtg attr success.");
     }
     return ret;
 }
@@ -245,8 +277,8 @@ int EndScene(int grpId)
     state_data.grp_id = grpId;
 
     ret = ioctl(g_fd, CMD_ID_END_SCENE, &state_data);
-    if (ret >= 0) {
-        RME_LOGI("set EndScene success, get ret %{public}d.", ret);
+    if (ret == 0) {
+        RME_LOGI("set EndScene success.");
     }
     return ret;
 }
@@ -261,8 +293,8 @@ int SetMinUtil(int stateParam)
         return g_fd;
     }
     ret = ioctl(g_fd, CMD_ID_SET_MIN_UTIL, &state_data);
-    if (ret < 0) {
-        RME_LOGE("set min util failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
+    if (ret != 0) {
+        RME_LOGE("set min util failed, ret = %{public}d, errno = %{public}d (%{public}s)", ret, errno, strerror(errno));
     } else {
         RME_LOGI("set min util success, get ret %{public}d.", ret);
     }
@@ -312,8 +344,14 @@ int GetRtgEnable()
     if (g_fd < 0) {
         return g_fd;
     }
+    int ret = 0;
     struct rtg_enable_data enableData;
-    return ioctl(g_fd, CMD_ID_GET_ENABLE, &enableData);
+    ret = ioctl(g_fd, CMD_ID_GET_ENABLE, &enableData);
+    if (ret < 0) {
+        RME_LOGE(
+            "get rtg enable failed, ret = %{public}d, errno = %{public}d (%{public}s)", ret, errno, strerror(errno));
+    }
+    return ret;
 }
-} // namespace RME
-} // namespace OHOS
+}  // namespace RME
+}  // namespace OHOS

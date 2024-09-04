@@ -139,7 +139,7 @@ int AddThreadToRtg(int tid, int grpId, int prioType, bool isSelfRender)
     return ret;
 }
 
-int AddThreadsToRtg(vector<int> tids, int grpId, int prioType)
+int AddThreadsToRtg(vector<int> tids, int grpId, int prioType, bool isSelfRender)
 {
     struct rtg_grp_data grp_data;
     int ret;

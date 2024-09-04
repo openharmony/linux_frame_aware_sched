@@ -179,7 +179,7 @@ int AddThreadsToRtg(vector<int> tids, int grpId, int prioType, bool isSelfRender
     return ret;
 };
 
-int RemoveRtgThread(int tid, isSelfRender)
+int RemoveRtgThread(int tid, bool isSelfRender)
 {
     if (g_fd < 0) {
         return g_fd;

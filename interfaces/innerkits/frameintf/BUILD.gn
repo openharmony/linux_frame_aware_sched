@@ -86,7 +86,6 @@ ohos_shared_library("frame_ui_intf") {
     "hitrace:hitrace_meter",
   ]
 
-  innerapi_tags = [ "platformsdk" ]
   subsystem_name = "resourceschedule"
   part_name = "frame_aware_sched"
 }

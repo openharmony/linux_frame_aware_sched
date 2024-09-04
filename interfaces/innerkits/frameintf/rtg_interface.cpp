@@ -102,7 +102,7 @@ int EnableRtg(bool flag)
     return 0;
 };
 
-int AddThreadToRtg(int tid, int grpId, int prioType)
+int AddThreadToRtg(int tid, int grpId, int prioType, bool isSelfRender)
 {
     if (g_fd < 0) {   
         return g_fd;
@@ -113,13 +113,18 @@ int AddThreadToRtg(int tid, int grpId, int prioType)
     grp_data.tid_num = 1;
     grp_data.tids[0] = tid;
     grp_data.grp_id = grpId;
-    grp_data.rtg_cmd = CMD_ADD_RTG_THREAD;
+
     grp_data.prio_type = prioType;
+    if (isSelfRender) {
+        grp_data.rtg_cmd = CMD_ADD_SELF_RENDER_RTG_THREAD;
+    } else {
+        grp_data.rtg_cmd = CMD_ADD_RTG_THREAD;
+    }
     ret = ioctl(g_fd, CMD_ID_SET_RTG, &grp_data);
     return ret;
 }
 
-int AddThreadsToRtg(vector<int> tids, int grpId, int prioType)
+int AddThreadsToRtg(vector<int> tids, int grpId, int prioType, bool isSelfRender)
 {
     struct rtg_grp_data grp_data;
     int ret;
@@ -133,8 +138,13 @@ int AddThreadsToRtg(vector<int> tids, int grpId, int prioType)
     }
     grp_data.tid_num = num;
     grp_data.grp_id = grpId;
-    grp_data.rtg_cmd = CMD_ADD_RTG_THREAD;
+
     grp_data.prio_type = prioType;
+    if (isSelfRender) {
+        grp_data.rtg_cmd = CMD_ADD_SELF_RENDER_RTG_THREAD;
+    } else {
+        grp_data.rtg_cmd = CMD_ADD_RTG_THREAD;
+    }
     for (int i = 0; i < num; i++) {
         if (tids[i] < 0) {
             return -1;
@@ -148,7 +158,7 @@ int AddThreadsToRtg(vector<int> tids, int grpId, int prioType)
     return ret;
 };
 
-int RemoveRtgThread(int tid)
+int RemoveRtgThread(int tid, bool isSelfRender)
 {
     if (g_fd < 0) {
         return g_fd;
@@ -158,7 +168,11 @@ int RemoveRtgThread(int tid)
     (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
     grp_data.tid_num = 1;
     grp_data.tids[0] = tid;
-    grp_data.rtg_cmd = CMD_REMOVE_RTG_THREAD;
+    if (isSelfRender) {
+        grp_data.rtg_cmd = CMD_REMOVE_SELF_RENDER_RTG_THREAD;
+    } else {
+        grp_data.rtg_cmd = CMD_REMOVE_RTG_THREAD;
+    }
     ret = ioctl(g_fd, CMD_ID_SET_RTG, &grp_data);
     if (ret < 0) {
         RME_LOGE("remove grp failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
@@ -167,6 +181,39 @@ int RemoveRtgThread(int tid)
     }
     return ret;
 };
+
+int RemoveRtgThreads(vector<int> tids, bool isSelfRender)
+{
+    struct rtg_grp_data grp_data;
+    int ret;
+    if (g_fd < 0) {
+        return g_fd;
+    }
+    (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
+    int num = static_cast<int>(tids.size());
+    if (num > MAX_TID_NUM) {
+        return -1;
+    }
+    grp_data.tid_num = num;
+    if (isSelfRender) {
+        grp_data.rtg_cmd = CMD_REMOVE_SELF_RENDER_RTG_THREAD;
+    } else {
+        grp_data.rtg_cmd = CMD_REMOVE_RTG_THREAD;
+    }
+    for (int i = 0; i < num; i++) {
+        if (tids[i] < 0) {
+            return -1;
+        }
+        grp_data.tids[i] = tids[i];
+    }
+    ret = ioctl(g_fd, CMD_ID_SET_RTG, &grp_data);
+    if (ret < 0) {
+        RME_LOGE("remove grp threads failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
+    } else {
+        RME_LOGI("remove grp threads success, get rtg id %{public}d.", ret);
+    }
+    return ret;
+}
 
 int DestroyRtgGrp(int grpId)
 {

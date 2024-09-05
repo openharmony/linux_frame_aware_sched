@@ -152,7 +152,7 @@ int AddThreadsToRtg(vector<int> tids, int grpId, int prioType, [[maybe_unused]] 
     return ret;
 };
 
-int RemoveRtgThread(int tid, bool [[maybe_unused]] isRender)
+int RemoveRtgThread(int tid, [[maybe_unused]] bool isRender)
 {
     if (g_fd < 0) {
         return g_fd;

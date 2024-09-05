@@ -121,6 +121,7 @@ int AddThreadToRtg(int tid, int grpId, int prioType, [[maybe_unused]] bool isRen
     grp_data.grp_id = grpId;
     grp_data.rtg_cmd = CMD_ADD_RTG_THREAD;
     grp_data.prio_type = prioType;
+    ret = ioctl(g_fd, CMD_ID_SET_RTG, &grp_data);
     if (ret != 0) {
         RME_LOGE("add thread to rtg failed, grpId = %{public}d, ret = %{public}d, errno = %{public}d (%{public}s)",
             grpId,

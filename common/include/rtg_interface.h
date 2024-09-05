@@ -86,10 +86,10 @@ enum rtg_sched_cmdid {
 
 extern "C" {
     int EnableRtg(bool flag);
-    int AddThreadToRtg(int tid, int grpId, int prioType = 0, bool isRender = false);
-    int AddThreadsToRtg(vector<int> tids, int grpId, int prioType = 0, bool isRender = false);
-    int RemoveRtgThread(int tid, bool isRender = false);
-    int RemoveRtgThreads(vector<int> tids, bool isRender = false);
+    int AddThreadToRtg(int tid, int grpId, int prioType = 0, bool isBlue = false);
+    int AddThreadsToRtg(vector<int> tids, int grpId, int prioType = 0, bool isBlue = false);
+    int RemoveRtgThread(int tid, bool isBlue = false);
+    int RemoveRtgThreads(vector<int> tids, bool isBlue = false);
     int DestroyRtgGrp(int grpId);
     int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType);
     int BeginFrameFreq(int stateParam);

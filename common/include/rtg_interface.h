@@ -49,9 +49,7 @@ enum grp_ctrl_cmd {
     CMD_ADD_RTG_THREAD,
     CMD_REMOVE_RTG_THREAD,
     CMD_CLEAR_RTG_GRP,
-    CMD_DESTROY_RTG_GRP,
-    CMD_ADD_SELF_RENDER_RTG_THREAD,
-    CMD_REMOVE_SELF_RENDER_RTG_THREAD,
+    CMD_DESTROY_RTG_GRP
 };
 
 struct rtg_grp_data {
@@ -88,10 +86,10 @@ enum rtg_sched_cmdid {
 
 extern "C" {
     int EnableRtg(bool flag);
-    int AddThreadToRtg(int tid, int grpId, int prioType = 0, bool isSelfRender = false);
-    int AddThreadsToRtg(vector<int> tids, int grpId, int prioType = 0, bool isSelfRender = false);
-    int RemoveRtgThread(int tid, bool isSelfRender = false);
-    int RemoveRtgThreads(vector<int> tids, bool isSelfRender = false);
+    int AddThreadToRtg(int tid, int grpId, int prioType = 0, bool isRender = false);
+    int AddThreadsToRtg(vector<int> tids, int grpId, int prioType = 0, bool isRender = false);
+    int RemoveRtgThread(int tid, bool isRender = false);
+    int RemoveRtgThreads(vector<int> tids, bool isRender = false);
     int DestroyRtgGrp(int grpId);
     int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType);
     int BeginFrameFreq(int stateParam);

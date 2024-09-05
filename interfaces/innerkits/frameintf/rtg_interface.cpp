@@ -189,7 +189,7 @@ int RemoveRtgThread(int tid, [[maybe_unused]] bool isRender)
     return ret;
 };
 
-int RemoveRtgThreads(vector<int> tids, [[maybe_unused]] bool isSelfRender)
+int RemoveRtgThreads(vector<int> tids, [[maybe_unused]] bool isRender)
 {
     struct rtg_grp_data grp_data;
     int ret;

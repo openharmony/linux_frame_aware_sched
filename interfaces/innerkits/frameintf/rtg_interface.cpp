@@ -108,7 +108,7 @@ int EnableRtg(bool flag)
     return 0;
 };
 
-int AddThreadToRtg(int tid, int grpId, int prioType, [[maybe_unused]] bool isRender)
+int AddThreadToRtg(int tid, int grpId, int prioType, [[maybe_unused]] bool isBlue)
 {
     if (g_fd < 0) {
         return g_fd;
@@ -134,7 +134,7 @@ int AddThreadToRtg(int tid, int grpId, int prioType, [[maybe_unused]] bool isRen
     return ret;
 }
 
-int AddThreadsToRtg(vector<int> tids, int grpId, int prioType, bool isRender)
+int AddThreadsToRtg(vector<int> tids, int grpId, int prioType, [[maybe_unused]] bool isBlue)
 {
     struct rtg_grp_data grp_data;
     int ret;
@@ -169,7 +169,7 @@ int AddThreadsToRtg(vector<int> tids, int grpId, int prioType, bool isRender)
     return ret;
 };
 
-int RemoveRtgThread(int tid, [[maybe_unused]] bool isRender)
+int RemoveRtgThread(int tid, [[maybe_unused]] bool isBlue)
 {
     if (g_fd < 0) {
         return g_fd;
@@ -189,7 +189,7 @@ int RemoveRtgThread(int tid, [[maybe_unused]] bool isRender)
     return ret;
 };
 
-int RemoveRtgThreads(vector<int> tids, [[maybe_unused]] bool isRender)
+int RemoveRtgThreads(vector<int> tids, [[maybe_unused]] bool isBlue)
 {
     struct rtg_grp_data grp_data;
     int ret;

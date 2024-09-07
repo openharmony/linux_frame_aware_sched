@@ -104,7 +104,7 @@ int EnableRtg(bool flag)
 
 int AddThreadToRtg(int tid, int grpId, int prioType, [[maybe_unused]] bool isBlue)
 {
-    if (g_fd < 0) {   
+    if (g_fd < 0) {
         return g_fd;
     }
     struct rtg_grp_data grp_data;

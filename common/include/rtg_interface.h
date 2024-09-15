@@ -84,6 +84,8 @@ enum rtg_sched_cmdid {
     RTG_CTRL_MAX_NR,
 };
 
+bool GetAppExpelAbility(const std::string &appBundleName);
+
 extern "C" {
     int EnableRtg(bool flag);
     int AddThreadToRtg(int tid, int grpId, int prioType = 0, bool isBlue = false);
@@ -101,9 +103,6 @@ extern "C" {
     int SearchRtgForTid(int tid);
     int GetRtgEnable();
 }
-
-bool GetAppExpelAbility(const std::string &appBundleName);
-
 } // namespace RME
 } // namespace OHOS
 #endif // OHOS_FRAME_AWARE_SCHED_COMMON_INCLUDE_RTG_INTERFACE_H

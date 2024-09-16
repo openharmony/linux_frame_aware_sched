@@ -382,5 +382,10 @@ int GetRtgEnable()
     }
     return ret;
 }
+
+bool GetAppExpelAbility(const std::string &appBundleName)
+{
+    return false;
+}
 }  // namespace RME
 }  // namespace OHOS

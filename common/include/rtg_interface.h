@@ -84,6 +84,8 @@ enum rtg_sched_cmdid {
     RTG_CTRL_MAX_NR,
 };
 
+bool GetAppExpelAbility(const std::string &appBundleName);
+
 extern "C" {
     int EnableRtg(bool flag);
     int AddThreadToRtg(int tid, int grpId, int prioType = 0, bool isBlue = false);

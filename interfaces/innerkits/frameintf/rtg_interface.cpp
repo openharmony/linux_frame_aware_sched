@@ -348,5 +348,10 @@ int GetRtgEnable()
     struct rtg_enable_data enableData;
     return ioctl(g_fd, CMD_ID_GET_ENABLE, &enableData);
 }
+
+bool GetAppExpelAbility(const std::string &appBundleName)
+{
+    return false;
+}
 } // namespace RME
 } // namespace OHOS

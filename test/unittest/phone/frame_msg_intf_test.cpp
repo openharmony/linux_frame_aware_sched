@@ -67,10 +67,10 @@ HWTEST_F(FrameMsgIntfTest, ReportContinuousTaskTest, TestSize.Level1)
     const int uid = 100086;
     const int status0 = 0;
     const int status1 = 1;
-    repCon.GetThreadQueue();
+    int ret = repCon.GetThreadQueue();
+    EXPECT_EQ(ret, true);
     repCon.ReportContinuousTask(pid, uid, status0);
     repCon.ReportContinuousTask(pid, uid, status1);
 }
-
 } // namespace RME
 } // namespace OHOS

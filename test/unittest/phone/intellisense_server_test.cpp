@@ -58,6 +58,7 @@ HWTEST_F(IntelliSenseServerTest, ReportContinuousTaskTest, TestSize.Level1)
     int pid = 777;
     int uid = 888;
     int status = 0;
+    EXPECT_EQ(IntelliSenseServer::GetInstance().m_needReadXml, true);
     IntelliSenseServer::GetInstance().m_switch = false;
     IntelliSenseServer::GetInstance().ReportContinuousTask(pid, uid, status);
     IntelliSenseServer::GetInstance().m_switch = true;

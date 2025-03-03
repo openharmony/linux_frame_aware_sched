@@ -16,7 +16,7 @@ import("//build/ohos_var.gni")
 import("//build/test.gni")
 import("../frameaware.gni")
 
-module_output_path = "frameawareschedtest/"
+module_output_path = "frame_aware_sched/frame_aware_sched"
 
 frame_aware_sched_configs =
     [ "../interfaces/innerkits/frameintf:frame_msg_intf_config" ]

@@ -384,7 +384,8 @@ int IntelliSenseServer::CreateNewRtgGrp(int prioType, int rtNum)
     struct rtg_grp_data grp_data;
     int ret;
     char fileName[] = "/proc/self/sched_rtg_ctrl";
-    int fd = open(fileName, O_RDWR);
+    FILE* f = fopen(fileName, "w+");
+    int fd =  fileno(f);
     if (fd < 0) {
         RME_LOGE("Open file /proc/self/sched_rth_ctrl, errno = %{public}d", errno);
         return fd;
@@ -403,7 +404,7 @@ int IntelliSenseServer::CreateNewRtgGrp(int prioType, int rtNum)
     } else {
         RME_LOGI("create rtg grp success, get rtg id %{public}d.", ret);
     }
-    close(fd);
+    fclose(f);
     return ret;
 }
 } // namespace RME

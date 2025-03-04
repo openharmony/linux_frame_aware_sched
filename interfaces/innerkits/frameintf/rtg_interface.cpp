@@ -36,6 +36,7 @@ constexpr size_t MAX_LENGTH = 100;
 
 const char RTG_SCHED_IPC_MAGIC = 0xAB;
 static int g_fd = -1;
+static FILE* fd = nullptr;
 
 #define CMD_ID_SET_ENABLE \
     _IOWR(RTG_SCHED_IPC_MAGIC, SET_ENABLE, struct rtg_enable_data)
@@ -65,7 +66,8 @@ static int g_fd = -1;
 __attribute__((constructor)) void BasicOpenRtgNode()
 {
     char fileName[] = "/proc/self/sched_rtg_ctrl";
-    g_fd = open(fileName, O_RDWR);
+    fd = fopen(fileName, "w+");
+    g_fd = fileno(fd);
     if (g_fd < 0) {
         RME_LOGI("rtg Open fail, errno = %{public}d(%{public}s), dev = %{public}s", errno, strerror(errno), fileName);
         return;
@@ -80,7 +82,7 @@ __attribute__((destructor)) void BasicCloseRtgNode()
         return;
     }
     RME_LOGI("rtg Close g_fd ret is %{public}d", g_fd);
-    close(g_fd);
+    fclose(fd);
     g_fd = -1;
 }
 

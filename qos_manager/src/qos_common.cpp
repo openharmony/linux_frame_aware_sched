@@ -28,12 +28,13 @@ constexpr unsigned int AF_QOS_DELEGATED = 0x0001;
 namespace OHOS {
 namespace QosCommon {
 
-static FILE* f = nullptr;
-
 static int TrivalOpenAuthCtrlNode(void)
 {
     char fileName[] = "/dev/auth_ctrl";
-    f = fopen(fileName, "w+");
+    FILE* f = fopen(fileName, "w+");
+    if (f == nullptr) {
+        return -1;
+    }
     int fd = fileno(f);
     return fd;
 }
@@ -60,6 +61,7 @@ int AuthEnable(int pid, unsigned int flag, unsigned int status)
     if (ret < 0) {
         RME_LOGE("auth enable failed for pid %{public}d with status %{public}u\n", pid, status);
     }
+    FILE* f = fdopen(fd, "w+");
     fclose(f);
     return ret;
 }
@@ -86,6 +88,7 @@ int AuthPause(int pid)
     if (ret < 0) {
         RME_LOGE("auth pause failed for pid %{public}d\n", pid);
     }
+    FILE* f = fdopen(fd, "w+");
     fclose(f);
     return ret;
 }
@@ -109,6 +112,7 @@ int AuthDelete(int pid)
     if (ret < 0) {
         RME_LOGE("auth delete failed for pid %{public}d\n", pid);
     }
+    FILE* f = fdopen(fd, "w+");
     fclose(f);
     return ret;
 }

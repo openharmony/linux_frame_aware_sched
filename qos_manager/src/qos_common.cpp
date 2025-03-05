@@ -31,7 +31,7 @@ namespace QosCommon {
 static int TrivalOpenAuthCtrlNode(void)
 {
     char fileName[] = "/dev/auth_ctrl";
-    FILE* f = fopen(fileName, "w+");
+    FILE* f = fopen(fileName, "r+");
     if (f == nullptr) {
         return -1;
     }
@@ -61,7 +61,7 @@ int AuthEnable(int pid, unsigned int flag, unsigned int status)
     if (ret < 0) {
         RME_LOGE("auth enable failed for pid %{public}d with status %{public}u\n", pid, status);
     }
-    FILE* f = fdopen(fd, "w+");
+    FILE* f = fdopen(fd, "r+");
     fclose(f);
     return ret;
 }
@@ -88,7 +88,7 @@ int AuthPause(int pid)
     if (ret < 0) {
         RME_LOGE("auth pause failed for pid %{public}d\n", pid);
     }
-    FILE* f = fdopen(fd, "w+");
+    FILE* f = fdopen(fd, "r+");
     fclose(f);
     return ret;
 }
@@ -112,7 +112,7 @@ int AuthDelete(int pid)
     if (ret < 0) {
         RME_LOGE("auth delete failed for pid %{public}d\n", pid);
     }
-    FILE* f = fdopen(fd, "w+");
+    FILE* f = fdopen(fd, "r+");
     fclose(f);
     return ret;
 }

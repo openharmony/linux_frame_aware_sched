@@ -384,7 +384,7 @@ int IntelliSenseServer::CreateNewRtgGrp(int prioType, int rtNum)
     struct rtg_grp_data grp_data;
     int ret;
     char fileName[] = "/proc/self/sched_rtg_ctrl";
-    FILE* f = fopen(fileName, "w+");
+    FILE* f = fopen(fileName, "r+");
     if (f == nullptr) {
         RME_LOGE("Open file /proc/self/sched_rth_ctrl, errno = %{public}d", errno);
         return -1;

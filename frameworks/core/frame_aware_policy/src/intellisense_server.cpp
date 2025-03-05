@@ -385,9 +385,12 @@ int IntelliSenseServer::CreateNewRtgGrp(int prioType, int rtNum)
     int ret;
     char fileName[] = "/proc/self/sched_rtg_ctrl";
     FILE* f = fopen(fileName, "w+");
+    if (f == nullptr) {
+        RME_LOGE("Open file /proc/self/sched_rth_ctrl, errno = %{public}d", errno);
+        return -1;
+    }
     int fd =  fileno(f);
     if (fd < 0) {
-        RME_LOGE("Open file /proc/self/sched_rth_ctrl, errno = %{public}d", errno);
         return fd;
     }
     (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));

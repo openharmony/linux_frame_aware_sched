@@ -65,7 +65,7 @@ static int g_fd = -1;
 __attribute__((constructor)) void BasicOpenRtgNode()
 {
     char fileName[] = "/proc/self/sched_rtg_ctrl";
-    FILE* fd = fopen(fileName, "w+");
+    FILE* fd = fopen(fileName, "r+");
     if (fd == nullptr) {
         RME_LOGI("rtg Open fail, errno = %{public}d(%{public}s), dev = %{public}s", errno, strerror(errno), fileName);
         return;
@@ -83,7 +83,7 @@ __attribute__((destructor)) void BasicCloseRtgNode()
     if (g_fd < 0) {
         return;
     }
-    FILE* fd = fdopen(g_fd, "w+");
+    FILE* fd = fdopen(g_fd, "r+");
     if (fd != nullptr) {
         RME_LOGI("rtg Close g_fd ret is %{public}d", g_fd);
         fclose(fd);

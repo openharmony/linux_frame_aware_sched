@@ -407,7 +407,10 @@ int IntelliSenseServer::CreateNewRtgGrp(int prioType, int rtNum)
     } else {
         RME_LOGI("create rtg grp success, get rtg id %{public}d.", ret);
     }
-    fclose(f);
+    int fc = fclose(f);
+    if (fc != 0) {
+        RME_LOGE("fclose file /proc/self/sched_rth_ctrl, errno = %{public}d (%{public}s)", errno, strerror(errno));
+    }
     return ret;
 }
 } // namespace RME

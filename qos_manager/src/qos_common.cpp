@@ -62,7 +62,9 @@ int AuthEnable(int pid, unsigned int flag, unsigned int status)
         RME_LOGE("auth enable failed for pid %{public}d with status %{public}u\n", pid, status);
     }
     FILE* f = fdopen(fd, "r+");
-    fclose(f);
+    if (f != nullptr) {
+        fclose(f);
+    }
     return ret;
 }
 
@@ -89,7 +91,9 @@ int AuthPause(int pid)
         RME_LOGE("auth pause failed for pid %{public}d\n", pid);
     }
     FILE* f = fdopen(fd, "r+");
-    fclose(f);
+    if (f != nullptr) {
+        fclose(f);
+    }
     return ret;
 }
 
@@ -113,7 +117,9 @@ int AuthDelete(int pid)
         RME_LOGE("auth delete failed for pid %{public}d\n", pid);
     }
     FILE* f = fdopen(fd, "r+");
-    fclose(f);
+    if (f != nullptr) {
+        fclose(f);
+    }
     return ret;
 }
 

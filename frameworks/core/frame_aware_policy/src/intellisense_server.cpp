@@ -384,9 +384,13 @@ int IntelliSenseServer::CreateNewRtgGrp(int prioType, int rtNum)
     struct rtg_grp_data grp_data;
     int ret;
     char fileName[] = "/proc/self/sched_rtg_ctrl";
-    int fd = open(fileName, O_RDWR);
-    if (fd < 0) {
+    FILE* f = fopen(fileName, "r+");
+    if (f == nullptr) {
         RME_LOGE("Open file /proc/self/sched_rth_ctrl, errno = %{public}d", errno);
+        return -1;
+    }
+    int fd =  fileno(f);
+    if (fd < 0) {
         return fd;
     }
     (void)memset_s(&grp_data, sizeof(struct rtg_grp_data), 0, sizeof(struct rtg_grp_data));
@@ -403,7 +407,10 @@ int IntelliSenseServer::CreateNewRtgGrp(int prioType, int rtNum)
     } else {
         RME_LOGI("create rtg grp success, get rtg id %{public}d.", ret);
     }
-    close(fd);
+    int fc = fclose(f);
+    if (fc != 0) {
+        RME_LOGE("fclose file /proc/self/sched_rth_ctrl, errno = %{public}d (%{public}s)", errno, strerror(errno));
+    }
     return ret;
 }
 } // namespace RME

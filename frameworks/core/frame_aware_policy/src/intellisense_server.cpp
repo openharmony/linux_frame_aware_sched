@@ -389,7 +389,7 @@ int IntelliSenseServer::CreateNewRtgGrp(int prioType, int rtNum)
         RME_LOGE("Open file /proc/self/sched_rth_ctrl, errno = %{public}d", errno);
         return -1;
     }
-    int fd =  fileno(f);
+    int fd = fileno(f);
     if (fd < 0) {
         return fd;
     }

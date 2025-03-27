@@ -90,6 +90,7 @@ __attribute__((destructor)) void BasicCloseRtgNode()
         RME_LOGE("rtg fclose file /proc/self/sched_rtg_ctrl, errno = %{public}d (%{public}s)", errno, strerror(errno));
     }
     g_fd = -1;
+    g_f = nullptr;
 }
 
 int EnableRtg(bool flag)

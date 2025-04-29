@@ -18,6 +18,8 @@
 
 namespace OHOS {
 namespace RME {
+enum class FrameSchedEvent {};
+
 enum class FrameEvent {
     EVENT_BEGIN_FRAME,
     EVENT_FLUSH_ANIMATION_START,

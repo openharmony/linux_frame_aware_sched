@@ -17,6 +17,8 @@
 #define FRAME_UI_INTF_H
 
 #include <cstdint>
+#include "frame_info_const.h"
+#include <unordered_map>
 
 namespace OHOS {
 namespace RME {
@@ -25,6 +27,7 @@ public:
     static FrameUiIntf& GetInstance();
     void Init();
     int GetSenseSchedEnable();
+    void ReportSchedEvent(FrameSchedEvent event, const std::unordered_map<std::string, std::string>& payload);
     void BeginFlushAnimation() const;
     void EndFlushAnimation() const;
 

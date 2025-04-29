@@ -245,6 +245,11 @@ void FrameUiIntf::MonitorGpuEnd() const
     return;
 }
 
+void FrameUiIntf::ReportSchedEvent(FrameSchedEvent event, const std::unordered_map<std::string, std::string>& payload)
+{
+    return;
+}
+
 extern "C" void Init()
 {
     FrameUiIntf::GetInstance().Init();
@@ -393,6 +398,11 @@ extern "C" void MonitorGpuStart()
 extern "C" void MonitorGpuEnd()
 {
     FrameUiIntf::GetInstance().MonitorGpuEnd();
+}
+
+extern "C" void ReportSchedEvent(FrameSchedEvent event, const std::unordered_map<std::string, std::string>& payload)
+{
+    FrameUiIntf::GetInstance().ReportSchedEvent(event, payload);
 }
 } // namespace RME
 } // namespace OHOS

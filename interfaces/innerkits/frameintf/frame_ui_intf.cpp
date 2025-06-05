@@ -235,12 +235,17 @@ void FrameUiIntf::ReceiveVSync() const
     return;
 }
 
-void FrameUiIntf::MonitorGpuStart() const
+void FrameUiIntf::MonitorGpuStart(uint32_t fenceId) const
 {
     return;
 }
 
 void FrameUiIntf::MonitorGpuEnd() const
+{
+    return;
+}
+
+void FrameUiIntf::SendFenceId(uint32_t fenceId) const
 {
     return;
 }
@@ -390,14 +395,19 @@ extern "C" void ReceiveVSync()
     FrameUiIntf::GetInstance().ReceiveVSync();
 }
 
-extern "C" void MonitorGpuStart()
+extern "C" void MonitorGpuStart(uint32_t fenceId)
 {
-    FrameUiIntf::GetInstance().MonitorGpuStart();
+    FrameUiIntf::GetInstance().MonitorGpuStart(fenceId);
 }
 
 extern "C" void MonitorGpuEnd()
 {
     FrameUiIntf::GetInstance().MonitorGpuEnd();
+}
+
+extern "C" void SendFenceId(uint32_t fenceId)
+{
+    FrameUiIntf::GetInstance().SendFenceId(fenceId);
 }
 
 extern "C" void ReportSchedEvent(FrameSchedEvent event, const std::unordered_map<std::string, std::string>& payload)

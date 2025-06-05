@@ -60,8 +60,9 @@ public:
     void EnableSelfRender() const;
     void DisableSelfRender() const;
     void ReceiveVSync() const;
-    void MonitorGpuStart() const;
+    void MonitorGpuStart(uint32_t fenceId) const;
     void MonitorGpuEnd() const;
+    void SendFenceId(uint32_t fenceId) const;
 private:
     bool inited = false;
 };

@@ -410,6 +410,11 @@ extern "C" void SendFenceId(uint32_t fenceId)
     FrameUiIntf::GetInstance().SendFenceId(fenceId);
 }
 
+extern "C" bool IsScbScene()
+{
+    return false;
+}
+
 extern "C" void ReportSchedEvent(FrameSchedEvent event, const std::unordered_map<std::string, std::string>& payload)
 {
     FrameUiIntf::GetInstance().ReportSchedEvent(event, payload);

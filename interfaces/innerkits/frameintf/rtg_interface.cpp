@@ -68,12 +68,12 @@ __attribute__((constructor)) void BasicOpenRtgNode()
     char fileName[] = "/proc/self/sched_rtg_ctrl";
     g_f = fopen(fileName, "r+");
     if (g_f == nullptr) {
-        RME_LOGI("rtg Open fail, errno = %{public}d(%{public}s)", errno, strerror(errno));
+        RME_LOGI("rtg fOpen fail, errno = %{public}d(%{public}s)", errno, strerror(errno));
         return;
     }
     g_fd = fileno(g_f);
     if (g_fd < 0) {
-        RME_LOGI("rtg Open fail, errno = %{public}d(%{public}s)", errno, strerror(errno));
+        RME_LOGI("rtg fileno fail, errno = %{public}d(%{public}s)", errno, strerror(errno));
         return;
     }
     RME_LOGI("rtg Open success");

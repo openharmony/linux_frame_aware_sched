@@ -309,7 +309,7 @@ int EndScene(int grpId)
 {
     int ret = 0;
     if (g_fd < 0) {
-        RME_LOGE("Open file failed");
+        RME_LOGE("[EndScene]:Open file failed");
         return g_fd;
     }
     struct proc_state_data state_data;

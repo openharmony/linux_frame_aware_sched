@@ -33,7 +33,6 @@ std::vector<int> ParaConfig::m_renderTypeList;
 bool ParaConfig::IsXmlPrepared(const std::string& filePath)
 {
     xmlDocPtr docPtr = xmlReadFile(filePath.c_str(), nullptr, XML_PARSE_NOBLANKS);
-    RME_LOGI("[IsXmlPrepared]:filePath:%{public}s", filePath.c_str());
     if (docPtr == nullptr) {
         RME_LOGE("[IsXmlPrepared]:load xml error!");
         return false;

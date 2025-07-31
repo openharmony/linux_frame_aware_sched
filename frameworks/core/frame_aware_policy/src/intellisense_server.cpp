@@ -386,7 +386,7 @@ int IntelliSenseServer::CreateNewRtgGrp(int prioType, int rtNum)
     char fileName[] = "/proc/self/sched_rtg_ctrl";
     FILE* f = fopen(fileName, "r+");
     if (f == nullptr) {
-        RME_LOGE("Open file failed, errno = %{public}d", errno);
+        RME_LOGE("[CreateNewRtgGrp]:fopen file failed, errno = %{public}d", errno);
         return -1;
     }
     int fd = fileno(f);
@@ -409,7 +409,7 @@ int IntelliSenseServer::CreateNewRtgGrp(int prioType, int rtNum)
     }
     int fc = fclose(f);
     if (fc != 0) {
-        RME_LOGE("fclose file failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
+        RME_LOGE("[CreateNewRtgGrp]:fclose file failed, errno = %{public}d (%{public}s)", errno, strerror(errno));
     }
     return ret;
 }

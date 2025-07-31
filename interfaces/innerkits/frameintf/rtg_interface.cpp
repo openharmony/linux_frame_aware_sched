@@ -68,11 +68,12 @@ __attribute__((constructor)) void BasicOpenRtgNode()
     char fileName[] = "/proc/self/sched_rtg_ctrl";
     g_f = fopen(fileName, "r+");
     if (g_f == nullptr) {
-        RME_LOGI("rtg Open fail, errno = %{public}d(%{public}s), dev = %{public}s", errno, strerror(errno), fileName);
+        RME_LOGI("rtg fOpen fail, errno = %{public}d(%{public}s)", errno, strerror(errno));
         return;
     }
     g_fd = fileno(g_f);
     if (g_fd < 0) {
+        RME_LOGI("rtg fileno fail, errno = %{public}d(%{public}s)", errno, strerror(errno));
         return;
     }
     RME_LOGI("rtg Open success");
@@ -87,7 +88,7 @@ __attribute__((destructor)) void BasicCloseRtgNode()
     RME_LOGI("rtg Close g_fd ret is %{public}d", g_fd);
     int fc = fclose(g_f);
     if (fc != 0) {
-        RME_LOGE("rtg fclose file /proc/self/sched_rtg_ctrl, errno = %{public}d (%{public}s)", errno, strerror(errno));
+        RME_LOGE("rtg fclose file, errno = %{public}d (%{public}s)", errno, strerror(errno));
     }
     g_fd = -1;
     g_f = nullptr;
@@ -308,7 +309,7 @@ int EndScene(int grpId)
 {
     int ret = 0;
     if (g_fd < 0) {
-        RME_LOGE("Open fail /proc/self/sched_rtg_ctrl");
+        RME_LOGE("[EndScene]:Open file failed");
         return g_fd;
     }
     struct proc_state_data state_data;

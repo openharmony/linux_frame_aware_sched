@@ -65,15 +65,15 @@ bool FrameMsgIntf::GetThreadQueue()
     return true;
 }
 
-void FrameMsgIntf::ReportWindowFocus(const int pid, const int uid, const int isFocus)
+void FrameMsgIntf::ReportWindowFocus(const int pid, const int uid, const int isFocus, const int displayId)
 {
     std::lock_guard<ffrt::mutex> autoLock(frameMsgIntfMutex_);
     if (taskQueue_ == nullptr) {
         RME_LOGE("[ReportWindowFocus]:taskQueue none!");
         return;
     }
-    taskQueue_->submit([pid, uid, isFocus] {
-        IntelliSenseServer::GetInstance().ReportWindowFocus(pid, uid, isFocus);
+    taskQueue_->submit([pid, uid, isFocus, displayId] {
+        IntelliSenseServer::GetInstance().ReportWindowFocus(pid, uid, isFocus, displayId);
     });
 }
 

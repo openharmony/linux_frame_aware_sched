@@ -244,7 +244,7 @@ void IntelliSenseServer::ReportContinuousTask(const int pid, const int uid, cons
     }
 }
 
-void IntelliSenseServer::ReportWindowFocus(const int pid, const int uid, int isFocus)
+void IntelliSenseServer::ReportWindowFocus(const int pid, const int uid, int isFocus, int displayId)
 {
     if (!m_switch) {
         return;
@@ -252,10 +252,10 @@ void IntelliSenseServer::ReportWindowFocus(const int pid, const int uid, int isF
     HITRACE_METER(HITRACE_TAG_ACE);
     switch (isFocus) {
         case static_cast<int>(WindowState::FOCUS_YES): // isFocus: 0
-            RME_LOGI("[ReportWindowFocus]:%{public}d get focus", pid);
+            RME_LOGI("[ReportWindowFocus]:%{public}d get focus in screen %{public}d", pid, displayId);
             break;
         case static_cast<int>(WindowState::FOCUS_NO): // isFocus: 1
-            RME_LOGI("[ReportWindowFocus]:%{public}d lost focus", pid);
+            RME_LOGI("[ReportWindowFocus]:%{public}d lost focus in screen %{public}d", pid, displayId);
             break;
         default:
             RME_LOGI("[ReportWindowFocus]:unknown msg!");

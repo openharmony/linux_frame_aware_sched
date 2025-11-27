@@ -306,8 +306,8 @@ void IntelliSenseServer::ReportAppInfo(const int pid, const int uid, const std::
         pid, uid, bundleName.c_str(), static_cast<int>(state));
 }
 
-void IntelliSenseServer::ReportProcessInfo(const int pid,
-    const int uid, const std::string bundleName, ThreadState state)
+void IntelliSenseServer::ReportProcessInfo(const int pid, const int uid, const int hostPid,
+                                           const std::string bundleName, ThreadState state)
 {
     if (uid >= WEB_BASE_UID && uid <= WEB_END_UID) {
         return;

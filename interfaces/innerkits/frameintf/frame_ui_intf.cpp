@@ -158,7 +158,7 @@ void FrameUiIntf::AnimateStart() const
     FrameMsgMgr::GetInstance().EventUpdate(FrameEvent::EVENT_ANIMATE_START);
 }
 
-void FrameUiIntf::RenderStart(uint64_t timestamp) const
+void FrameUiIntf::RenderStart(uint64_t timestamp, int skipFirstFrame) const
 {
     if (!inited) {
         return;
@@ -255,6 +255,66 @@ void FrameUiIntf::ReportSchedEvent(FrameSchedEvent event, const std::unordered_m
     return;
 }
 
+void FrameUiIntf::DirectRenderEnd()
+{
+    return;
+}
+ 
+void FrameUiIntf::UniRenderStart()
+{
+    return;
+}
+ 
+void FrameUiIntf::UniRenderEnd()
+{
+    return;
+}
+ 
+void FrameUiIntf::CheckUnblockMainThreadPoint()
+{
+    return;
+}
+ 
+void FrameUiIntf::CheckPostAndWaitPoint()
+{
+    return;
+}
+ 
+void FrameUiIntf::CheckBeginFlushPoint()
+{
+    return;
+}
+ 
+void FrameUiIntf::ReportBufferCount(int count)
+{
+    return;
+}
+ 
+void FrameUiIntf::ReportHardwareInfo(int tid)
+{
+    return;
+}
+ 
+void FrameUiIntf::ReportFrameDeadline(int deadline, uint32_t currentRate)
+{
+    return;
+}
+ 
+void FrameUiIntf::ReportUnmarshalData(int unmarshalTid, size_t dataSize)
+{
+    return;
+}
+ 
+void FrameUiIntf::ReportDDGRTaskInfo()
+{
+    return;
+}
+ 
+void FrameUiIntf::ReportScbSceneInfo(const std::string& description, bool eventStatus)
+{
+    return;
+}
+
 extern "C" void Init()
 {
     FrameUiIntf::GetInstance().Init();
@@ -330,9 +390,9 @@ extern "C" void AnimateStart()
     FrameUiIntf::GetInstance().AnimateStart();
 }
 
-extern "C" void RenderStart(uint64_t timestamp)
+extern "C" void RenderStart(uint64_t timestamp, int skipFirstFrame)
 {
-    FrameUiIntf::GetInstance().RenderStart(timestamp);
+    FrameUiIntf::GetInstance().RenderStart(timestamp, skipFirstFrame);
 }
 
 extern "C" void RenderEnd()
@@ -418,6 +478,76 @@ extern "C" bool IsScbScene()
 extern "C" void ReportSchedEvent(FrameSchedEvent event, const std::unordered_map<std::string, std::string>& payload)
 {
     FrameUiIntf::GetInstance().ReportSchedEvent(event, payload);
+}
+
+extern "C" void RSRenderStart()
+{
+    FrameUiIntf::GetInstance().RSDrawRenderStart();
+}
+ 
+extern "C" void RenderEnd()
+{
+    FrameUiIntf::GetInstance().RenderEnd();
+}
+ 
+extern "C" void DirectRenderEnd()
+{
+    FrameUiIntf::GetInstance().DirectRenderEnd();
+}
+ 
+extern "C" void UniRenderStart()
+{
+    FrameUiIntf::GetInstance().UniRenderStart();
+}
+ 
+extern "C" void UniRenderEnd()
+{
+    FrameUiIntf::GetInstance().UniRenderEnd();
+}
+ 
+extern "C" void CheckUnblockMainThreadPoint()
+{
+    FrameUiIntf::GetInstance().CheckUnblockMainThreadPoint();
+}
+ 
+extern "C" void CheckPostAndWaitPoint()
+{
+    FrameUiIntf::GetInstance().CheckPostAndWaitPoint();
+}
+ 
+extern "C" void CheckBeginFlushPoint()
+{
+    FrameUiIntf::GetInstance().CheckBeginFlushPoint();
+}
+ 
+extern "C" void ReportBufferCount(int count)
+{
+    FrameUiIntf::GetInstance().ReportBufferCount(count);
+}
+ 
+extern "C" void ReportHardwareInfo(int tid)
+{
+    FrameUiIntf::GetInstance().ReportHardwareInfo(tid);
+}
+ 
+extern "C" void ReportFrameDeadline(int deadline, uint32_t currentRate)
+{
+    FrameUiIntf::GetInstance().ReportFrameDeadline(deadline, currentRate);
+}
+ 
+extern "C" void ReportUnmarshalData(int unmarshalTid, size_t dataSize)
+{
+    FrameUiIntf::GetInstance().ReportUnmarshalData(unmarshalTid, dataSize);
+}
+ 
+extern "C" void ReportDDGRTaskInfo()
+{
+    FrameUiIntf::GetInstance().ReportDDGRTaskInfo();
+}
+ 
+extern "C" void ReportScbSceneInfo(const std::string& description, bool eventStatus)
+{
+    FrameUiIntf::GetInstance().ReportScbSceneInfo(description, eventStatus);
 }
 } // namespace RME
 } // namespace OHOS

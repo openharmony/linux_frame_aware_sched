@@ -103,15 +103,16 @@ void FrameMsgIntf::ReportAppInfo(const int pid, const int uid, const std::string
     });
 }
 
-void FrameMsgIntf::ReportProcessInfo(const int pid, const int uid, const std::string bundleName, ThreadState state)
+void FrameMsgIntf::ReportProcessInfo(const int pid, const int uid, const int hostPid, const std::string bundleName,
+                                     ThreadState state)
 {
     std::lock_guard<ffrt::mutex> autoLock(frameMsgIntfMutex_);
     if (taskQueue_ == nullptr) {
         RME_LOGI("[ReportProcessInfo]:taskQueue none!");
         return;
     }
-    taskQueue_->submit([pid, uid, bundleName, state] {
-        IntelliSenseServer::GetInstance().ReportProcessInfo(pid, uid, bundleName, state);
+    taskQueue_->submit([pid, uid, hostPid, bundleName, state] {
+        IntelliSenseServer::GetInstance().ReportProcessInfo(pid, uid, hostPid, bundleName, state);
     });
 }
 

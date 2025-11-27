@@ -29,6 +29,15 @@ config("frame_trace_intf_config") {
   include_dirs = [ "./" ]
 }
 
+config("frame_ui_intf_public_config") {
+  visibility = [ ":*" ]
+ 
+  include_dirs = [
+    "./",
+    "../../../common/include",
+  ]
+}
+
 config("rtg_interface_config") {
   visibility = [ ":*" ]
   include_dirs = [
@@ -69,6 +78,8 @@ ohos_shared_library("frame_ui_intf") {
   ]
 
   configs = [ ":frame_ui_intf_config" ]
+
+  public_configs = [ ":frame_ui_intf_public_config" ]
 
   external_deps = [
     "c_utils:utils",

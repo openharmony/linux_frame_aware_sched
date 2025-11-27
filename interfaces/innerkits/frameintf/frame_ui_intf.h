@@ -45,7 +45,7 @@ public:
     void BeginProcessPostFlush() const;
     void ProcessCommandsStart() const;
     void AnimateStart() const;
-    void RenderStart(uint64_t timestamp) const;
+    void RenderStart(uint64_t timestamp, int skipFirstFrame = 0) const;
     void RenderEnd() const;
     void SendCommandsStart() const;
 
@@ -63,9 +63,44 @@ public:
     void MonitorGpuStart(uint32_t fenceId) const;
     void MonitorGpuEnd() const;
     void SendFenceId(uint32_t fenceId) const;
+
+    void DirectRenderEnd();
+    void UniRenderStart();
+    void UniRenderEnd();
+    void CheckUnblockMainThreadPoint();
+    void CheckPostAndWaitPoint();
+    void CheckBeginFlushPoint();
+    void ReportBufferCount(int count);
+    void ReportHardwareInfo(int tid);
+    void ReportFrameDeadline(int deadline, uint32_t currentRate);
+    void ReportUnmarshalData(int unmarshalTid, size_t dataSize);
+    void ReportDDGRTaskInfo();
+    void ReportScbSceneInfo(const std::string& description, bool eventStatus);
 private:
     bool inited = false;
 };
+
+extern "C" {
+    void RenderStart(uint64_t timestamp, int skipFirstFrame = 0);
+    void RenderEnd();
+    void DirectRenderEnd();
+    void UniRenderStart();
+    void UniRenderEnd();
+    void CheckUnblockMainThreadPoint();
+    void CheckPostAndWaitPoint();
+    void CheckBeginFlushPoint();
+    void ReportBufferCount(int count);
+    void ReportHardwareInfo(int tid);
+    void ReportFrameDeadline(int deadline, uint32_t currentRate);
+    void ReportUnmarshalData(int unmarshalTid, size_t dataSize);
+    void ReportDDGRTaskInfo();
+    void ReportScbSceneInfo(const std::string& description, bool eventStatus);
+ 
+    bool IsScbScene();
+    void SendFenceId(uint32_t fenceIndex);
+    void MonitorGpuStart(uint32_t fenceIndex);
+    void MonitorGpuEnd();
+}
 } // namespace RME
 } // namespace OHOS
 #endif

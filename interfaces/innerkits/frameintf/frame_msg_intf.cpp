@@ -53,10 +53,10 @@ bool FrameMsgIntf::Init()
 
 bool FrameMsgIntf::GetThreadQueue()
 {
-    if (taskQueue_  == nullptr) {
-        taskQueue_  = new(ffrt::queue)("frame_aware_sched_msg_queue",
+    if (taskQueue_ == nullptr) {
+        taskQueue_ = new(ffrt::queue)("frame_aware_sched_msg_queue",
             ffrt::queue_attr().qos(ffrt::qos_user_interactive));
-        if (taskQueue_  == nullptr) {
+        if (taskQueue_ == nullptr) {
             RME_LOGE("failed to create taskQueue!");
             return false;
         }

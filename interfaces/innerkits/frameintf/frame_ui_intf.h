@@ -81,25 +81,9 @@ private:
 };
 
 extern "C" {
-    void RenderStart(uint64_t timestamp, int skipFirstFrame = 0);
-    void RenderEnd();
-    void DirectRenderEnd();
-    void UniRenderStart();
-    void UniRenderEnd();
-    void CheckUnblockMainThreadPoint();
-    void CheckPostAndWaitPoint();
-    void CheckBeginFlushPoint();
-    void ReportBufferCount(int count);
-    void ReportHardwareInfo(int tid);
-    void ReportFrameDeadline(int deadline, uint32_t currentRate);
-    void ReportUnmarshalData(int unmarshalTid, size_t dataSize);
-    void ReportDDGRTaskInfo();
-    void ReportScbSceneInfo(const std::string& description, bool eventStatus);
- 
-    bool IsScbScene();
-    void SendFenceId(uint32_t fenceIndex);
-    void MonitorGpuStart(uint32_t fenceIndex);
-    void MonitorGpuEnd();
+    void Init();
+    void ReportSchedEvent(OHOS::RME::FrameSchedEvent event,
+        const std::unordered_map<std::string, std::string>& payload);
 }
 } // namespace RME
 } // namespace OHOS

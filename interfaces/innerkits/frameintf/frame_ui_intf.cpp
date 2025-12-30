@@ -329,6 +329,11 @@ extern "C" void AnimateStart()
 {
     FrameUiIntf::GetInstance().AnimateStart();
 }
+ 
+extern "C" void RenderStart(uint64_t timestamp) 
+{ 
+    FrameUiIntf::GetInstance().RenderStart(timestamp); 
+} 
 
 extern "C" void RenderEnd()
 {

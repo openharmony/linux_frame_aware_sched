@@ -85,6 +85,7 @@ enum rtg_sched_cmdid {
 };
 
 bool GetAppExpelAbility(const std::string &appBundleName);
+int CreateNewRtgGrp(int prioType, int rtNum);
 
 extern "C" {
     int EnableRtg(bool flag);

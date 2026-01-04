@@ -397,5 +397,10 @@ bool GetAppExpelAbility(const std::string &appBundleName)
 {
     return false;
 }
+
+int CreateNewRtgGrp(int prioType, int rtNum)
+{
+    return -1;
+}
 }  // namespace RME
 }  // namespace OHOS

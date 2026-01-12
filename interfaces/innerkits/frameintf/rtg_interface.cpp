@@ -251,14 +251,15 @@ int DestroyRtgGrp(int grpId)
     return ret;
 };
 
-int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
+int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType, int realInterval)
 {
     if (g_fd < 0) {
         return g_fd;
     }
     int ret = 0;
     char str_data[MAX_LENGTH] = {};
-    (void)sprintf_s(str_data, sizeof(str_data), "rtgId:%d;rate:%d;type:%d", rtgId, rate, rtgType);
+    (void)sprintf_s(str_data, sizeof(str_data), "rtgId:%d;rate:%d;type:%d;realInterval:%d",
+        rtgId, rate, rtgType, realInterval);
     struct rtg_str_data strData;
     strData.len = strlen(str_data);
     strData.data = str_data;

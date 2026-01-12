@@ -94,7 +94,7 @@ extern "C" {
     int RemoveRtgThread(int tid, bool isBlue = false);
     int RemoveRtgThreads(vector<int> tids, bool isBlue = false);
     int DestroyRtgGrp(int grpId);
-    int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType);
+    int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType, int realInterval = 0);
     int BeginFrameFreq(int stateParam);
     int EndFrameFreq(int stateParam);
     int EndScene(int grpId);

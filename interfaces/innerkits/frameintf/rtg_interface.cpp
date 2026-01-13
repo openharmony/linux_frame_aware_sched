@@ -251,7 +251,7 @@ int DestroyRtgGrp(int grpId)
     return ret;
 };
 
-int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
+int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType, int realInterval)
 {
     if (g_fd < 0) {
         return g_fd;
@@ -265,11 +265,12 @@ int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType)
 
     ret = ioctl(g_fd, CMD_ID_SET_RTG_ATTR, &strData);
     if (ret != 0) {
-        RME_LOGE("set rtg attr failed (rtgId:%{public}d;rate:%{public}d;type:%{public}d), ret = %{public}d, errno = "
-                 "%{public}d (%{public}s)",
+        RME_LOGE("set rtg attr failed (rtgId:%{public}d;rate:%{public}d;type:%{public}d;realInterval:%{public}d), "
+                 "ret = %{public}d, errno = %{public}d (%{public}s)",
             rtgId,
             rate,
             rtgType,
+            realInterval,
             ret,
             errno,
             strerror(errno));

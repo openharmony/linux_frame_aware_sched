@@ -258,19 +258,19 @@ int SetFrameRateAndPrioType(int rtgId, int rate, int rtgType, int realInterval)
     }
     int ret = 0;
     char str_data[MAX_LENGTH] = {};
-    (void)sprintf_s(str_data, sizeof(str_data), "rtgId:%d;rate:%d;type:%d;realInterval:%d",
-        rtgId, rate, rtgType, realInterval);
+    (void)sprintf_s(str_data, sizeof(str_data), "rtgId:%d;rate:%d;type:%d", rtgId, rate, rtgType);
     struct rtg_str_data strData;
     strData.len = strlen(str_data);
     strData.data = str_data;
 
     ret = ioctl(g_fd, CMD_ID_SET_RTG_ATTR, &strData);
     if (ret != 0) {
-        RME_LOGE("set rtg attr failed (rtgId:%{public}d;rate:%{public}d;type:%{public}d), ret = %{public}d, errno = "
-                 "%{public}d (%{public}s)",
+        RME_LOGE("set rtg attr failed (rtgId:%{public}d;rate:%{public}d;type:%{public}d;realInterval:%{public}d), "
+                 "ret = %{public}d, errno = %{public}d (%{public}s)",
             rtgId,
             rate,
             rtgType,
+            realInterval,
             ret,
             errno,
             strerror(errno));

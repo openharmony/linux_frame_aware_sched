@@ -49,6 +49,7 @@ ohos_unittest("frame_msg_intf_test") {
   deps = frame_aware_sched_deps
 
   external_deps = [
+    "bounds_checking_function:libsec_shared",
     "c_utils:utils",
     "eventhandler:libeventhandler",
     "ffrt:libffrt",

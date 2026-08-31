@@ -14,6 +14,7 @@
  */
 
 #include "para_config.h"
+#include "parse_config_int.h"
 
 #undef LOG_TAG
 #define LOG_TAG "ueaServer-ParaConfig"
@@ -129,7 +130,11 @@ void ParaConfig::SplitString(const std::string& context, const std::string& char
     size_t pos = toSplitStr.find(character);
 
     while (pos != toSplitStr.npos) {
-        int curVal = atoi(toSplitStr.substr(0, pos).c_str());
+        int curVal = 0;
+        if (!ParseConfigInt(toSplitStr.substr(0, pos), curVal)) {
+            RME_LOGE("[SplitString]: invalid integer! attr name:%{public}s", attrName.c_str());
+            return;
+        }
         if (curVal <= 0 && curVal > maxVal) {
             RME_LOGE("[SplitString]:get data error! attr name:%{public}s", attrName.c_str());
             return;
@@ -169,7 +174,14 @@ void ParaConfig::ReadFrameConfig(const xmlNodePtr& root)
                 xmlFree(context);
                 break;
             }
-            frameConfigTmp[nodeName] = atoi(reinterpret_cast<const char*>(context));
+            int parsedVal = 0;
+            if (!ParseConfigInt(reinterpret_cast<const char*>(context), parsedVal)) {
+                RME_LOGE("[GetFrameConfig]: invalid integer! nodeName:%{public}s, key:%{public}s",
+                    nodeName.c_str(), key.c_str());
+                xmlFree(context);
+                break;
+            }
+            frameConfigTmp[nodeName] = parsedVal;
             RME_LOGI("[GetFrameConfig]: nodeName:%{public}s, val:%{public}s",
                 nodeName.c_str(), reinterpret_cast<const char*>(context));
             xmlFree(context);
@@ -185,8 +197,13 @@ void ParaConfig::ReadAttr(xmlNodePtr& root, const std::string& attrName, std::st
     while (attrPtr != nullptr) {
         if (!xmlStrcmp(attrPtr->name, reinterpret_cast<const xmlChar*>(attrName.c_str()))) {
             xmlChar* resAttr = xmlGetProp(root, reinterpret_cast<const xmlChar*>(attrName.c_str()));
-            res = std::to_string(atoi((char*)resAttr));
-            RME_LOGI("[ReadAttr]: attr <%{public}s> read res: %{public}s!", attrName.c_str(), res.c_str());
+            int parsedVal = 0;
+            if (!ParseConfigInt(reinterpret_cast<const char*>(resAttr), parsedVal)) {
+                RME_LOGE("[ReadAttr]: invalid integer attr <%{public}s>!", attrName.c_str());
+            } else {
+                res = std::to_string(parsedVal);
+                RME_LOGI("[ReadAttr]: attr <%{public}s> read res: %{public}s!", attrName.c_str(), res.c_str());
+            }
             xmlFree(resAttr);
         }
         attrPtr = attrPtr->next;

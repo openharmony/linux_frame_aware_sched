@@ -27,6 +27,7 @@
 #include <vector>
 #include "qos_common.h"
 #include "para_config.h"
+#include "parse_config_int.h"
 #include "rtg_interface.h"
 #include "rme_log_domain.h"
 
@@ -56,7 +57,13 @@ void IntelliSenseServer::Init()
         RME_LOGI("[Init]: readXml failed!");
         return;
     }
-    m_switch = std::stoi(m_generalPara["enable"]);
+    int enableVal = 0;
+    auto enableIt = m_generalPara.find("enable");
+    if (enableIt == m_generalPara.end() || !ParseConfigInt(enableIt->second, enableVal)) {
+        RME_LOGE("[Init]: invalid enable value in xml!");
+        return;
+    }
+    m_switch = (enableVal != 0);
     if (!m_switch) {
         RME_LOGI("[Init]:xml switch close!");
         return;
